@@ -30,36 +30,58 @@ import net.micode.notes.data.Notes.NoteColumns;
 
 public class AlarmInitReceiver extends BroadcastReceiver {
 
-    private static final String [] PROJECTION = new String [] {
-        NoteColumns.ID,
-        NoteColumns.ALERTED_DATE
+    /**
+     * 查询提醒表中所有已提醒过的笔记
+     */
+    private static final String[] PROJECTION = new String[]{
+            NoteColumns.ID,
+            NoteColumns.ALERTED_DATE
     };
 
-    private static final int COLUMN_ID                = 0;
-    private static final int COLUMN_ALERTED_DATE      = 1;
+    /**
+     * 笔记 ID 列的索引
+     */
+    private static final int COLUMN_ID = 0;
 
+    /**
+     * 提醒时间列的索引
+     */
+    private static final int COLUMN_ALERTED_DATE = 1;
+
+    /**
+     * 接收系统闹钟广播并处理
+     *
+     * @param context 广播接收器上下文
+     * @param intent  要处理的广播消息
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
+        // 获取当前时间戳
         long currentDate = System.currentTimeMillis();
+
+        // 查询提醒表中所有已提醒过的笔记，并设置提醒闹钟
         Cursor c = context.getContentResolver().query(Notes.CONTENT_NOTE_URI,
                 PROJECTION,
                 NoteColumns.ALERTED_DATE + ">? AND " + NoteColumns.TYPE + "=" + Notes.TYPE_NOTE,
-                new String[] { String.valueOf(currentDate) },
+                new String[]{String.valueOf(currentDate)},
                 null);
 
         if (c != null) {
             if (c.moveToFirst()) {
                 do {
+                    // 获取提醒时间和笔记 ID，并构建相应的 Intent 和 PendingIntent
                     long alertDate = c.getLong(COLUMN_ALERTED_DATE);
                     Intent sender = new Intent(context, AlarmReceiver.class);
                     sender.setData(ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, c.getLong(COLUMN_ID)));
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, sender, 0);
-                    AlarmManager alermManager = (AlarmManager) context
-                            .getSystemService(Context.ALARM_SERVICE);
+
+                    // 设置提醒闹钟
+                    AlarmManager alermManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     alermManager.set(AlarmManager.RTC_WAKEUP, alertDate, pendingIntent);
                 } while (c.moveToNext());
             }
             c.close();
         }
     }
+
 }
