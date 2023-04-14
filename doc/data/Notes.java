@@ -17,50 +17,49 @@
 package net.micode.notes.data;
 
 import android.net.Uri;
+// 定义“笔记”类
 public class Notes {
+    
     public static final String AUTHORITY = "micode_notes";
     public static final String TAG = "Notes";
+    // 定义笔记类型常量
     public static final int TYPE_NOTE     = 0;
     public static final int TYPE_FOLDER   = 1;
     public static final int TYPE_SYSTEM   = 2;
 
     /**
-     * Following IDs are system folders' identifiers
-     * {@link Notes#ID_ROOT_FOLDER } is default folder
-     * {@link Notes#ID_TEMPARAY_FOLDER } is for notes belonging no folder
-     * {@link Notes#ID_CALL_RECORD_FOLDER} is to store call records
+     * 以下ID为系统文件夹的标识符
+     * {@link Notes#ID_ROOT_FOLDER } 默认文件夹
+     * {@link Notes#ID_TEMPARAY_FOLDER } 用于没有文件夹的笔记
+     * {@link Notes#ID_CALL_RECORD_FOLDER} 存储通话记录
      */
     public static final int ID_ROOT_FOLDER = 0;
     public static final int ID_TEMPARAY_FOLDER = -1;
     public static final int ID_CALL_RECORD_FOLDER = -2;
     public static final int ID_TRASH_FOLER = -3;
-
+    // 定义意图(extra)的键
     public static final String INTENT_EXTRA_ALERT_DATE = "net.micode.notes.alert_date";
     public static final String INTENT_EXTRA_BACKGROUND_ID = "net.micode.notes.background_color_id";
     public static final String INTENT_EXTRA_WIDGET_ID = "net.micode.notes.widget_id";
     public static final String INTENT_EXTRA_WIDGET_TYPE = "net.micode.notes.widget_type";
     public static final String INTENT_EXTRA_FOLDER_ID = "net.micode.notes.folder_id";
     public static final String INTENT_EXTRA_CALL_DATE = "net.micode.notes.call_date";
-
+    // 定义小部件的类型常量
     public static final int TYPE_WIDGET_INVALIDE      = -1;
     public static final int TYPE_WIDGET_2X            = 0;
     public static final int TYPE_WIDGET_4X            = 1;
-
+    // 定义数据常量
     public static class DataConstants {
         public static final String NOTE = TextNote.CONTENT_ITEM_TYPE;
         public static final String CALL_NOTE = CallNote.CONTENT_ITEM_TYPE;
     }
 
-    /**
-     * Uri to query all notes and folders
-     */
+    // 定义笔记的uri，可用于查询所有笔记和文件夹
     public static final Uri CONTENT_NOTE_URI = Uri.parse("content://" + AUTHORITY + "/note");
 
-    /**
-     * Uri to query data
-     */
+    // 定义数据的uri
     public static final Uri CONTENT_DATA_URI = Uri.parse("content://" + AUTHORITY + "/data");
-
+    // 定义笔记和文件夹的列名
     public interface NoteColumns {
         /**
          * The unique ID for a row
@@ -166,7 +165,7 @@ public class Notes {
          */
         public static final String VERSION = "version";
     }
-
+    // 定义数据表的列名
     public interface DataColumns {
         /**
          * The unique ID for a row
@@ -240,7 +239,7 @@ public class Notes {
          */
         public static final String DATA5 = "data5";
     }
-
+    // 定义文本笔记类
     public static final class TextNote implements DataColumns {
         /**
          * Mode to indicate the text in check list mode or not
@@ -256,7 +255,7 @@ public class Notes {
 
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/text_note");
     }
-
+    // 定义通话笔记类
     public static final class CallNote implements DataColumns {
         /**
          * Call date for this record

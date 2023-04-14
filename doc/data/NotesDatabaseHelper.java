@@ -26,22 +26,22 @@ import net.micode.notes.data.Notes.DataColumns;
 import net.micode.notes.data.Notes.DataConstants;
 import net.micode.notes.data.Notes.NoteColumns;
 
-
+// 定义一个名为NotesDatabaseHelper的公共类，继承自SQLiteOpenHelper
 public class NotesDatabaseHelper extends SQLiteOpenHelper {
+    // 定义数据库名和版本号
     private static final String DB_NAME = "note.db";
-
     private static final int DB_VERSION = 4;
-
+    // 定义表名称常量
     public interface TABLE {
         public static final String NOTE = "note";
 
         public static final String DATA = "data";
     }
-
+    // 定义日志标签
     private static final String TAG = "NotesDatabaseHelper";
-
+    // 定义一个NotesDatabaseHelper类型的私有静态实例变量
     private static NotesDatabaseHelper mInstance;
-
+    // 定义创建note表的SQL语句
     private static final String CREATE_NOTE_TABLE_SQL =
         "CREATE TABLE " + TABLE.NOTE + "(" +
             NoteColumns.ID + " INTEGER PRIMARY KEY," +
@@ -85,6 +85,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     /**
      * Increase folder's note count when move note to the folder
      */
+
     private static final String NOTE_INCREASE_FOLDER_COUNT_ON_UPDATE_TRIGGER =
         "CREATE TRIGGER increase_folder_count_on_update "+
         " AFTER UPDATE OF " + NoteColumns.PARENT_ID + " ON " + TABLE.NOTE +
@@ -97,6 +98,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     /**
      * Decrease folder's note count when move note from folder
      */
+
     private static final String NOTE_DECREASE_FOLDER_COUNT_ON_UPDATE_TRIGGER =
         "CREATE TRIGGER decrease_folder_count_on_update " +
         " AFTER UPDATE OF " + NoteColumns.PARENT_ID + " ON " + TABLE.NOTE +
@@ -110,6 +112,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     /**
      * Increase folder's note count when insert new note to the folder
      */
+  
     private static final String NOTE_INCREASE_FOLDER_COUNT_ON_INSERT_TRIGGER =
         "CREATE TRIGGER increase_folder_count_on_insert " +
         " AFTER INSERT ON " + TABLE.NOTE +
@@ -135,6 +138,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     /**
      * Update note's content when insert data with type {@link DataConstants#NOTE}
      */
+    // 定义更新笔记内容的触发器（插入类型为NOTE的数据时）
     private static final String DATA_UPDATE_NOTE_CONTENT_ON_INSERT_TRIGGER =
         "CREATE TRIGGER update_note_content_on_insert " +
         " AFTER INSERT ON " + TABLE.DATA +
@@ -148,6 +152,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     /**
      * Update note's content when data with {@link DataConstants#NOTE} type has changed
      */
+    // 定义更新笔记内容的触发器（数据类型为NOTE时发生变化）
     private static final String DATA_UPDATE_NOTE_CONTENT_ON_UPDATE_TRIGGER =
         "CREATE TRIGGER update_note_content_on_update " +
         " AFTER UPDATE ON " + TABLE.DATA +
