@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 package net.micode.notes.widget;
 
 import android.appwidget.AppWidgetManager;
