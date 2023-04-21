@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// 导入相关类和包
 package net.micode.notes.gtask.data;
 
 import android.appwidget.AppWidgetManager;
@@ -37,12 +38,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
+// 定义 SqlNote 类
 public class SqlNote {
+    // 定义日志标签，用于调试和输出日志信息
     private static final String TAG = SqlNote.class.getSimpleName();
-
+    // 定义一个无效的 ID 常量
     private static final int INVALID_ID = -99999;
-
+    // 定义 PROJECTION_NOTE 数组，用于查询数据库时指定需要的列
     public static final String[] PROJECTION_NOTE = new String[] {
             NoteColumns.ID, NoteColumns.ALERTED_DATE, NoteColumns.BG_COLOR_ID,
             NoteColumns.CREATED_DATE, NoteColumns.HAS_ATTACHMENT, NoteColumns.MODIFIED_DATE,
@@ -122,6 +124,7 @@ public class SqlNote {
 
     private ArrayList<SqlData> mDataList;
 
+    // 构造方法：用于创建新的笔记对象
     public SqlNote(Context context) {
         mContext = context;
         mContentResolver = context.getContentResolver();
@@ -143,6 +146,7 @@ public class SqlNote {
         mDataList = new ArrayList<SqlData>();
     }
 
+    // 构造方法：用于从数据库的 Cursor 加载笔记对象
     public SqlNote(Context context, Cursor c) {
         mContext = context;
         mContentResolver = context.getContentResolver();
@@ -154,6 +158,7 @@ public class SqlNote {
         mDiffNoteValues = new ContentValues();
     }
 
+    // 构造方法：通过笔记 ID 从数据库加载笔记对象
     public SqlNote(Context context, long id) {
         mContext = context;
         mContentResolver = context.getContentResolver();
@@ -166,12 +171,13 @@ public class SqlNote {
 
     }
 
+    // 通过笔记 ID 从数据库加载笔记数据
     private void loadFromCursor(long id) {
         Cursor c = null;
         try {
             c = mContentResolver.query(Notes.CONTENT_NOTE_URI, PROJECTION_NOTE, "(_id=?)",
                     new String[] {
-                        String.valueOf(id)
+                            String.valueOf(id)
                     }, null);
             if (c != null) {
                 c.moveToNext();
@@ -185,6 +191,7 @@ public class SqlNote {
         }
     }
 
+    // 从 Cursor 加载 SqlNote 对象的数据
     private void loadFromCursor(Cursor c) {
         mId = c.getLong(ID_COLUMN);
         mAlertDate = c.getLong(ALERTED_DATE_COLUMN);
@@ -200,13 +207,14 @@ public class SqlNote {
         mVersion = c.getLong(VERSION_COLUMN);
     }
 
+    // 加载笔记的数据内容
     private void loadDataContent() {
         Cursor c = null;
         mDataList.clear();
         try {
             c = mContentResolver.query(Notes.CONTENT_DATA_URI, SqlData.PROJECTION_DATA,
                     "(note_id=?)", new String[] {
-                        String.valueOf(mId)
+                            String.valueOf(mId)
                     }, null);
             if (c != null) {
                 if (c.getCount() == 0) {
@@ -228,6 +236,7 @@ public class SqlNote {
 
     public boolean setContent(JSONObject js) {
         try {
+            // 获取包含笔记信息的 JSON 对象
             JSONObject note = js.getJSONObject(GTaskStringUtils.META_HEAD_NOTE);
             if (note.getInt(NoteColumns.TYPE) == Notes.TYPE_SYSTEM) {
                 Log.w(TAG, "cannot set system folder");
@@ -468,13 +477,14 @@ public class SqlNote {
                 throw new IllegalStateException("Try to update note with invalid id");
             }
             if (mDiffNoteValues.size() > 0) {
-                mVersion ++;
+                mVersion++;
                 int result = 0;
                 if (!validateVersion) {
                     result = mContentResolver.update(Notes.CONTENT_NOTE_URI, mDiffNoteValues, "("
-                            + NoteColumns.ID + "=?)", new String[] {
-                        String.valueOf(mId)
-                    });
+                            + NoteColumns.ID + "=?)",
+                            new String[] {
+                                    String.valueOf(mId)
+                            });
                 } else {
                     result = mContentResolver.update(Notes.CONTENT_NOTE_URI, mDiffNoteValues, "("
                             + NoteColumns.ID + "=?) AND (" + NoteColumns.VERSION + "<=?)",
