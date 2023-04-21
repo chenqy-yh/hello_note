@@ -15,7 +15,7 @@
  */
 
 package net.micode.notes.gtask.data;
-
+// 导入所需的类和包
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -34,12 +34,13 @@ import net.micode.notes.gtask.exception.ActionFailureException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+// 定义一个名为SqlData的类，用于表示SQL数据
 public class SqlData {
+    // 定义类的标签和常量
     private static final String TAG = SqlData.class.getSimpleName();
 
     private static final int INVALID_ID = -99999;
-
+    // 定义查询的投影和列索引常量
     public static final String[] PROJECTION_DATA = new String[] {
             DataColumns.ID, DataColumns.MIME_TYPE, DataColumns.CONTENT, DataColumns.DATA1,
             DataColumns.DATA3
@@ -54,7 +55,7 @@ public class SqlData {
     public static final int DATA_CONTENT_DATA_1_COLUMN = 3;
 
     public static final int DATA_CONTENT_DATA_3_COLUMN = 4;
-
+    // 定义类的属性
     private ContentResolver mContentResolver;
 
     private boolean mIsCreate;
@@ -70,7 +71,7 @@ public class SqlData {
     private String mDataContentData3;
 
     private ContentValues mDiffDataValues;
-
+    // 构造方法，初始化类的属性
     public SqlData(Context context) {
         mContentResolver = context.getContentResolver();
         mIsCreate = true;
@@ -81,14 +82,14 @@ public class SqlData {
         mDataContentData3 = "";
         mDiffDataValues = new ContentValues();
     }
-
+    // 基于现有的游标创建SqlData实例
     public SqlData(Context context, Cursor c) {
         mContentResolver = context.getContentResolver();
         mIsCreate = false;
         loadFromCursor(c);
         mDiffDataValues = new ContentValues();
     }
-
+    // 从游标加载数据
     private void loadFromCursor(Cursor c) {
         mDataId = c.getLong(DATA_ID_COLUMN);
         mDataMimeType = c.getString(DATA_MIME_TYPE_COLUMN);
@@ -96,7 +97,7 @@ public class SqlData {
         mDataContentData1 = c.getLong(DATA_CONTENT_DATA_1_COLUMN);
         mDataContentData3 = c.getString(DATA_CONTENT_DATA_3_COLUMN);
     }
-
+    // 从JSONObject设置内容
     public void setContent(JSONObject js) throws JSONException {
         long dataId = js.has(DataColumns.ID) ? js.getLong(DataColumns.ID) : INVALID_ID;
         if (mIsCreate || mDataId != dataId) {
@@ -129,7 +130,7 @@ public class SqlData {
         }
         mDataContentData3 = dataContentData3;
     }
-
+    // 获取内容并将其转换为JSONObject
     public JSONObject getContent() throws JSONException {
         if (mIsCreate) {
             Log.e(TAG, "it seems that we haven't created this in database yet");
@@ -143,7 +144,7 @@ public class SqlData {
         js.put(DataColumns.DATA3, mDataContentData3);
         return js;
     }
-
+    // 提交更改到数据库
     public void commit(long noteId, boolean validateVersion, long version) {
 
         if (mIsCreate) {
@@ -182,7 +183,7 @@ public class SqlData {
         mDiffDataValues.clear();
         mIsCreate = false;
     }
-
+    // 获取数据ID
     public long getId() {
         return mDataId;
     }

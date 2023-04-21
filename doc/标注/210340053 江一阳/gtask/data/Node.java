@@ -16,11 +16,14 @@
 
 package net.micode.notes.gtask.data;
 
+// 导入所需的类和包
 import android.database.Cursor;
 
 import org.json.JSONObject;
 
+// 定义一个抽象类Node，用于表示各种数据节点
 public abstract class Node {
+    // 定义同步操作的常量
     public static final int SYNC_ACTION_NONE = 0;
 
     public static final int SYNC_ACTION_ADD_REMOTE = 1;
@@ -38,7 +41,7 @@ public abstract class Node {
     public static final int SYNC_ACTION_UPDATE_CONFLICT = 7;
 
     public static final int SYNC_ACTION_ERROR = 8;
-
+    // 定义节点的基本属性
     private String mGid;
 
     private String mName;
@@ -47,6 +50,7 @@ public abstract class Node {
 
     private boolean mDeleted;
 
+    // 构造方法，初始化节点的属性
     public Node() {
         mGid = null;
         mName = "";
@@ -54,18 +58,25 @@ public abstract class Node {
         mDeleted = false;
     }
 
+    // 定义抽象方法，用于获取创建操作的JSON对象
     public abstract JSONObject getCreateAction(int actionId);
 
+    // 定义抽象方法，用于获取更新操作的JSON对象
     public abstract JSONObject getUpdateAction(int actionId);
 
+    // 定义抽象方法，用于根据远程JSON设置节点的内容
     public abstract void setContentByRemoteJSON(JSONObject js);
 
+    // 定义抽象方法，用于根据本地JSON设置节点的内容
     public abstract void setContentByLocalJSON(JSONObject js);
 
+    // 定义抽象方法，用于根据内容获取本地JSON
     public abstract JSONObject getLocalJSONFromContent();
 
+    // 定义抽象方法，用于获取同步操作类型
     public abstract int getSyncAction(Cursor c);
 
+    // 定义setter方法，用于设置节点的属性
     public void setGid(String gid) {
         this.mGid = gid;
     }
@@ -82,6 +93,7 @@ public abstract class Node {
         this.mDeleted = deleted;
     }
 
+    // 定义getter方法，用于获取节点的属性
     public String getGid() {
         return this.mGid;
     }
