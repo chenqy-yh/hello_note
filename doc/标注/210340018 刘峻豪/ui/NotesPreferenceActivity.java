@@ -29,6 +29,7 @@
  * limitations under the License.
  */
 
+
 package net.micode.notes.ui;
 
 import android.accounts.Account;
