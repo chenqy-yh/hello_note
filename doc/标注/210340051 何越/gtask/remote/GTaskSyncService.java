@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 public class GTaskSyncService extends Service {
+    // 同步动作的广播名称，ACTION_START_SYNC 表示开始同步，ACTION_CANCEL_SYNC 表示取消同步，ACTION_INVALID 表示无效
     public final static String ACTION_STRING_NAME = "sync_action_type";
 
     public final static int ACTION_START_SYNC = 0;
@@ -31,17 +32,17 @@ public class GTaskSyncService extends Service {
     public final static int ACTION_CANCEL_SYNC = 1;
 
     public final static int ACTION_INVALID = 2;
-
+    // 广播名称和广播消息
     public final static String GTASK_SERVICE_BROADCAST_NAME = "net.micode.notes.gtask.remote.gtask_sync_service";
 
     public final static String GTASK_SERVICE_BROADCAST_IS_SYNCING = "isSyncing";
 
     public final static String GTASK_SERVICE_BROADCAST_PROGRESS_MSG = "progressMsg";
-
+    // 同步任务和同步进度
     private static GTaskASyncTask mSyncTask = null;
 
     private static String mSyncProgress = "";
-
+    // 开始同步
     private void startSync() {
         if (mSyncTask == null) {
             mSyncTask = new GTaskASyncTask(this, new GTaskASyncTask.OnCompleteListener() {
@@ -55,7 +56,7 @@ public class GTaskSyncService extends Service {
             mSyncTask.execute();
         }
     }
-
+    // 取消同步
     private void cancelSync() {
         if (mSyncTask != null) {
             mSyncTask.cancelSync();
@@ -92,11 +93,11 @@ public class GTaskSyncService extends Service {
             mSyncTask.cancelSync();
         }
     }
-
+    // 不支持绑定
     public IBinder onBind(Intent intent) {
         return null;
     }
-
+    // 发送同步进度广播
     public void sendBroadcast(String msg) {
         mSyncProgress = msg;
         Intent intent = new Intent(GTASK_SERVICE_BROADCAST_NAME);
@@ -104,25 +105,25 @@ public class GTaskSyncService extends Service {
         intent.putExtra(GTASK_SERVICE_BROADCAST_PROGRESS_MSG, msg);
         sendBroadcast(intent);
     }
-
+     // 静态方法，开始同步任务
     public static void startSync(Activity activity) {
         GTaskManager.getInstance().setActivityContext(activity);
         Intent intent = new Intent(activity, GTaskSyncService.class);
         intent.putExtra(GTaskSyncService.ACTION_STRING_NAME, GTaskSyncService.ACTION_START_SYNC);
         activity.startService(intent);
     }
-
+    // 静态方法，取消同步任务
     public static void cancelSync(Context context) {
-        Intent intent = new Intent(context, GTaskSyncService.class);
-        intent.putExtra(GTaskSyncService.ACTION_STRING_NAME, GTaskSyncService.ACTION_CANCEL_SYNC);
+        Intent intent = new Intent(context, GTaskSyncService.class);// 创建一个新的意图Intent，指向GTaskSyncService类，传入context参数
+        intent.putExtra(GTaskSyncService.ACTION_STRING_NAME, GTaskSyncService.ACTION_CANCEL_SYNC);// 给Intent添加一个ACTION_CANCEL_SYNC的字符串Extra参数
         context.startService(intent);
     }
 
-    public static boolean isSyncing() {
+    public static boolean isSyncing() {// 定义一个公共的静态方法isSyncing，返回值为布尔类型
         return mSyncTask != null;
     }
 
-    public static String getProgressString() {
+    public static String getProgressString() {// 定义一个公共的静态方法getProgressString，返回值为字符串类型
         return mSyncProgress;
     }
 }
