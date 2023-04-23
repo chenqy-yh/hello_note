@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 package net.micode.notes.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -37,7 +38,7 @@ public abstract class NoteWidgetProvider extends AppWidgetProvider {
         NoteColumns.ID,
         NoteColumns.BG_COLOR_ID,
         NoteColumns.SNIPPET
-    };
+    };//小米便签的桌面挂件
 
     public static final int COLUMN_ID           = 0;
     public static final int COLUMN_BG_COLOR_ID  = 1;
@@ -104,7 +105,7 @@ public abstract class NoteWidgetProvider extends AppWidgetProvider {
                 rv.setImageViewResource(R.id.widget_bg_image, getBgResourceId(bgId));
                 intent.putExtra(Notes.INTENT_EXTRA_BACKGROUND_ID, bgId);
                 /**
-                 * Generate the pending intent to start host for the widget
+                 * 生成为小组件启动主机的挂起意图
                  */
                 PendingIntent pendingIntent = null;
                 if (privacyMode) {

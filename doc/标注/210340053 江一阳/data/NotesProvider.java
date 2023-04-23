@@ -16,7 +16,6 @@
 
 package net.micode.notes.data;
 
-
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -34,21 +33,21 @@ import net.micode.notes.data.Notes.DataColumns;
 import net.micode.notes.data.Notes.NoteColumns;
 import net.micode.notes.data.NotesDatabaseHelper.TABLE;
 
-
 public class NotesProvider extends ContentProvider {
+    // 声明 UriMatcher，用于匹配 Uri 和对应的操作
     private static final UriMatcher mMatcher;
 
     private NotesDatabaseHelper mHelper;
 
     private static final String TAG = "NotesProvider";
+    // 声明 UriMatcher，用于匹配 Uri 和对应的操作
+    private static final int URI_NOTE = 1;
+    private static final int URI_NOTE_ITEM = 2;
+    private static final int URI_DATA = 3;
+    private static final int URI_DATA_ITEM = 4;
 
-    private static final int URI_NOTE            = 1;
-    private static final int URI_NOTE_ITEM       = 2;
-    private static final int URI_DATA            = 3;
-    private static final int URI_DATA_ITEM       = 4;
-
-    private static final int URI_SEARCH          = 5;
-    private static final int URI_SEARCH_SUGGEST  = 6;
+    private static final int URI_SEARCH = 5;
+    private static final int URI_SEARCH_SUGGEST = 6;
 
     static {
         mMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -62,29 +61,33 @@ public class NotesProvider extends ContentProvider {
     }
 
     /**
-     * x'0A' represents the '\n' character in sqlite. For title and content in the search result,
+     * x'0A' represents the '\n' character in sqlite. For title and content in the
+     * search result,
      * we will trim '\n' and white space in order to show more information.
      */
+    // 声明 UriMatcher，用于匹配 Uri 和对应的操作
     private static final String NOTES_SEARCH_PROJECTION = NoteColumns.ID + ","
-        + NoteColumns.ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA + ","
-        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_1 + ","
-        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_2 + ","
-        + R.drawable.search_result + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1 + ","
-        + "'" + Intent.ACTION_VIEW + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_ACTION + ","
-        + "'" + Notes.TextNote.CONTENT_TYPE + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA;
-
+            + NoteColumns.ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA + ","
+            + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_1 + ","
+            + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_2 + ","
+            + R.drawable.search_result + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1 + ","
+            + "'" + Intent.ACTION_VIEW + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_ACTION + ","
+            + "'" + Notes.TextNote.CONTENT_TYPE + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA;
+    // 声明常量，表示查询搜索建议的 SQL 语句
     private static String NOTES_SNIPPET_SEARCH_QUERY = "SELECT " + NOTES_SEARCH_PROJECTION
-        + " FROM " + TABLE.NOTE
-        + " WHERE " + NoteColumns.SNIPPET + " LIKE ?"
-        + " AND " + NoteColumns.PARENT_ID + "<>" + Notes.ID_TRASH_FOLER
-        + " AND " + NoteColumns.TYPE + "=" + Notes.TYPE_NOTE;
+            + " FROM " + TABLE.NOTE
+            + " WHERE " + NoteColumns.SNIPPET + " LIKE ?"
+            + " AND " + NoteColumns.PARENT_ID + "<>" + Notes.ID_TRASH_FOLER
+            + " AND " + NoteColumns.TYPE + "=" + Notes.TYPE_NOTE;
 
+    // 初始化 NotesProvider
     @Override
     public boolean onCreate() {
         mHelper = NotesDatabaseHelper.getInstance(getContext());
         return true;
     }
 
+    // 查询数据
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
             String sortOrder) {
@@ -227,6 +230,7 @@ public class NotesProvider extends ContentProvider {
         return count;
     }
 
+    // 实现了更新数据的功能
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int count = 0;
@@ -271,6 +275,16 @@ public class NotesProvider extends ContentProvider {
         return (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : "");
     }
 
+    /**
+     * 
+     * 增加Note的版本号，每次更新Note时，都需要对其版本号加1。
+     * 
+     * @param id            需要更新版本号的Note的ID，如果为-1，则更新所有Note的版本号。
+     * 
+     * @param selection     查询条件。
+     * 
+     * @param selectionArgs 查询条件中的参数。
+     **/
     private void increaseNoteVersion(long id, String selection, String[] selectionArgs) {
         StringBuilder sql = new StringBuilder(120);
         sql.append("UPDATE ");

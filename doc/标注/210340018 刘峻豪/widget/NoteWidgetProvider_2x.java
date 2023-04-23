@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 package net.micode.notes.widget;
 
 import android.appwidget.AppWidgetManager;
@@ -24,23 +25,25 @@ import net.micode.notes.data.Notes;
 import net.micode.notes.tool.ResourceParser;
 
 
-public class NoteWidgetProvider_4x extends NoteWidgetProvider {
+public class NoteWidgetProvider_2x extends NoteWidgetProvider {
+     //2倍大小的桌面挂件
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.update(context, appWidgetManager, appWidgetIds);
     }
 
+    @Override
     protected int getLayoutId() {
-        return R.layout.widget_4x;
+        return R.layout.widget_2x;
     }
 
     @Override
     protected int getBgResourceId(int bgId) {
-        return ResourceParser.WidgetBgResources.getWidget4xBgResource(bgId);
+        return ResourceParser.WidgetBgResources.getWidget2xBgResource(bgId);
     }
 
     @Override
     protected int getWidgetType() {
-        return Notes.TYPE_WIDGET_4X;
+        return Notes.TYPE_WIDGET_2X;
     }
 }
