@@ -66,4 +66,11 @@
         <item name="android:displayOptions" />
         <item name="android:visibility">gone</item>
     </style>
+
+    <!-- popwindow animation style   -->
+    <style name="popwin_anim_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
+    </style>
+
 </resources>

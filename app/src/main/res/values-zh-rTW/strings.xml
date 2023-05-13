@@ -123,5 +123,8 @@
     <plurals name="search_results_title">
         <item quantity="other"><xliff:g id="NUMBER">%1$s</xliff:g> 條符合”<xliff:g id="SEARCH">%2$s</xliff:g>“的搜尋結果</item>
     </plurals>
+    <!--  custom  -->
+	<string name="login_title">登錄</string>
+    <string name="press_again_exit">再按一次退出</string>
 
 </resources>

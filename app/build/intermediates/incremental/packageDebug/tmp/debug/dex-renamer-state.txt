@@ -1,4 +1,4 @@
-#Wed Apr 12 17:26:29 CST 2023
-base.0=E\:\\SOFTproj\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+#Sat May 13 15:18:53 CST 2023
+base.0=E\:\\andriodProj\\my_note\\gitProject\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

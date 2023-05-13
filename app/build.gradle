@@ -1,18 +1,45 @@
+//apply plugin: 'com.android.application'
+//
+//android {
+//    compileSdkVersion 33
+//    defaultConfig {
+//        applicationId "net.micode.notes"
+//        minSdkVersion 14
+//        targetSdkVersion 33
+//        useLibrary 'org.apache.http.legacy'
+//    }
+//
+//    compileOptions {
+//        encoding "UTF-8"
+//        sourceCompatibility JavaVersion.VERSION_1_7
+//        targetCompatibility JavaVersion.VERSION_1_7
+//    }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+//        }
+//    }
+//
+//    tasks.withType(JavaCompile) {
+//        options.encoding = "UTF-8"
+//    }
+//}
+
+
+
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "33.0.2"
-
+    buildToolsVersion "30.0.3"
+    useLibrary "org.apache.http.legacy"
     defaultConfig {
         applicationId "net.micode.notes"
         minSdkVersion 14
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 29
-    }
-    compileOptions {
-        encoding "UTF-8"
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     buildTypes {
@@ -21,10 +48,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
+
+    dependencies {
+        implementation 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+        implementation 'mysql:mysql-connector-java:8.0.27'
+        implementation("com.squareup.okhttp3:okhttp:4.9.3")
     }
 }
-android{
-    useLibrary 'org.apache.http.legacy'
-}
+

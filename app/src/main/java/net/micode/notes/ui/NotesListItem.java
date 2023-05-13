@@ -48,54 +48,66 @@ public class NotesListItem extends LinearLayout {
         mCheckBox = (CheckBox) findViewById(android.R.id.checkbox);
     }
 
+
+    /**
+     * 将NoteItemData对象绑定到ViewHolder中对应的UI元素。
+     *
+     * @param context    调用此方法的Activity或Fragment的上下文。
+     * @param data       包含笔记项信息的NoteItemData对象。
+     * @param choiceMode 表示RecyclerView是否处于选择 模式的布尔值。
+     * @param checked    表示当前项目在选择模式下是否已选中的布尔值。
+     */
     public void bind(Context context, NoteItemData data, boolean choiceMode, boolean checked) {
+        // 根据RecyclerView是否处于选择模式以及笔记项类型，显示或隐藏复选框。
         if (choiceMode && data.getType() == Notes.TYPE_NOTE) {
             mCheckBox.setVisibility(View.VISIBLE);
             mCheckBox.setChecked(checked);
         } else {
             mCheckBox.setVisibility(View.GONE);
         }
-
+        // 将笔记项数据设置为传入的NoteItemData对象。
         mItemData = data;
+        // 如果笔记项是通话记录文件夹，
         if (data.getId() == Notes.ID_CALL_RECORD_FOLDER) {
-            mCallName.setVisibility(View.GONE);
-            mAlert.setVisibility(View.VISIBLE);
-            mTitle.setTextAppearance(context, R.style.TextAppearancePrimaryItem);
-            mTitle.setText(context.getString(R.string.call_record_folder_name)
+            mCallName.setVisibility(View.GONE); // 隐藏通话名称TextView。
+            mAlert.setVisibility(View.VISIBLE); // 显示警报图标。
+            mTitle.setTextAppearance(context, R.style.TextAppearancePrimaryItem); // 将标题样式设置为主要项样式。
+            mTitle.setText(context.getString(R.string.call_record_folder_name) // 设置标题文本为通话记录文件夹名称和文件夹中文件数量。
                     + context.getString(R.string.format_folder_files_count, data.getNotesCount()));
-            mAlert.setImageResource(R.drawable.call_record);
-        } else if (data.getParentId() == Notes.ID_CALL_RECORD_FOLDER) {
-            mCallName.setVisibility(View.VISIBLE);
-            mCallName.setText(data.getCallName());
-            mTitle.setTextAppearance(context,R.style.TextAppearanceSecondaryItem);
-            mTitle.setText(DataUtils.getFormattedSnippet(data.getSnippet()));
-            if (data.hasAlert()) {
-                mAlert.setImageResource(R.drawable.clock);
-                mAlert.setVisibility(View.VISIBLE);
+            mAlert.setImageResource(R.drawable.call_record); // 将警报图标设置为电话记录图标。
+        } else if (data.getParentId() == Notes.ID_CALL_RECORD_FOLDER) { // 如果笔记项是通话记录文件夹的子项，
+            mCallName.setVisibility(View.VISIBLE); // 显示通话名称TextView。
+            mCallName.setText(data.getCallName()); // 将通话名称文本设置为呼叫者的姓名。
+            mTitle.setTextAppearance(context, R.style.TextAppearanceSecondaryItem); // 将标题样式设置为次要项样式。
+            mTitle.setText(DataUtils.getFormattedSnippet(data.getSnippet())); // 将标题文本设置为笔记项的格式化片段。
+            if (data.hasAlert()) { // 如果笔记项有警报，
+                mAlert.setImageResource(R.drawable.clock); // 将警报图标设置为时钟图标。
+                mAlert.setVisibility(View.VISIBLE); // 显示警报图标。
             } else {
-                mAlert.setVisibility(View.GONE);
+                mAlert.setVisibility(View.GONE); // 否则隐藏警报图标。
             }
-        } else {
-            mCallName.setVisibility(View.GONE);
-            mTitle.setTextAppearance(context, R.style.TextAppearancePrimaryItem);
+        } else { // 如果笔记项既不是通话记录文件夹，也不是通话记录文件夹的子项，
+            mCallName.setVisibility(View.GONE); // 隐藏通话名称TextView。
+            mTitle.setTextAppearance(context, R.style.TextAppearancePrimaryItem); // 将标题样式设置为主要项样式。
 
+            // 如果笔记项是文件夹，
             if (data.getType() == Notes.TYPE_FOLDER) {
-                mTitle.setText(data.getSnippet()
-                        + context.getString(R.string.format_folder_files_count,
-                                data.getNotesCount()));
-                mAlert.setVisibility(View.GONE);
-            } else {
-                mTitle.setText(DataUtils.getFormattedSnippet(data.getSnippet()));
-                if (data.hasAlert()) {
-                    mAlert.setImageResource(R.drawable.clock);
-                    mAlert.setVisibility(View.VISIBLE);
+                mTitle.setText(data.getSnippet() // 设置标题文本为文件夹名称和文件夹中文件数量。
+                        + context.getString(R.string.format_folder_files_count, data.getNotesCount()));
+                mAlert.setVisibility(View.GONE); // 隐藏警报图标。
+            } else { // 如果笔记项不是文件夹，
+                mTitle.setText(DataUtils.getFormattedSnippet(data.getSnippet())); // 将标题文本设置为笔记项的格式化片段。
+                if (data.hasAlert()) { // 如果笔记项有警报，
+                    mAlert.setImageResource(R.drawable.clock); // 将警报图标设置为时钟图标。
+                    mAlert.setVisibility(View.VISIBLE); // 显示警报图标。
                 } else {
-                    mAlert.setVisibility(View.GONE);
+                    mAlert.setVisibility(View.GONE); // 否则隐藏警报图标。
                 }
             }
         }
+    // 设置时间文本为笔记项修改日期的相对时间跨度。
         mTime.setText(DateUtils.getRelativeTimeSpanString(data.getModifiedDate()));
-
+    // 根据笔记项类型设置ViewHolder的背景色。
         setBackground(data);
     }
 

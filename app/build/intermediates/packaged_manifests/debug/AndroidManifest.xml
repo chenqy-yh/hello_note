@@ -83,6 +83,24 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity
+            android:name="net.micode.notes.ui.AlarmAlertActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="net.micode.notes.ui.NotesPreferenceActivity"
+            android:label="@string/preferences_title"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Holo.Light" >
+        </activity>
+        <activity
+            android:name="net.micode.notes.ui.NoteLoginActivity"
+            android:label="@string/login_title"
+            android:launchMode="singleTop"
+            android:theme="@style/NoteTheme" >
+        </activity>
 
         <provider
             android:name="net.micode.notes.data.NotesProvider"
@@ -124,19 +142,6 @@
             android:name="net.micode.notes.ui.AlarmReceiver"
             android:process=":remote" >
         </receiver>
-
-        <activity
-            android:name="net.micode.notes.ui.AlarmAlertActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" >
-        </activity>
-        <activity
-            android:name="net.micode.notes.ui.NotesPreferenceActivity"
-            android:label="@string/preferences_title"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Holo.Light" >
-        </activity>
 
         <service
             android:name="net.micode.notes.gtask.remote.GTaskSyncService"

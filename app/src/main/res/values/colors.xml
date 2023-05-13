@@ -17,4 +17,15 @@
 
 <resources>
     <color name="user_query_highlight">#335b5b5b</color>
+
+    <!--  custom button  -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cutePink">#f43a68</color>
+    <color name="white">#ffffff</color>>
+    <color name="black">#000000</color>
+
+
+
 </resources>

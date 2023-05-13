@@ -34,31 +34,18 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Display;
-import android.view.HapticFeedbackConstants;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import net.micode.notes.R;
 import net.micode.notes.data.Notes;
@@ -135,17 +122,36 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private final static int REQUEST_CODE_OPEN_NODE = 102;
     private final static int REQUEST_CODE_NEW_NODE  = 103;
 
+
+    //Customized by chenqy
+    private boolean isLogin = false;
+    private long mExitTime = 0;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_list);
         initResources();
-
+        initCustom();
         /**
          * Insert an introduction when user firstly use this application
          */
         setAppInfoFromRawRes();
     }
+
+
+    //checkIsLogin
+    private boolean checkLogin(){
+        //TODO  通过验证本地存储的token与服务器进行匹配判断是否登陆
+        //如果未登陆，删除本地token
+        //如果登陆，置isLogin为true
+        return isLogin;
+    }
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -229,7 +235,21 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         mTitleBar = (TextView) findViewById(R.id.tv_title_bar);
         mState = ListEditState.NOTE_LIST;
         mModeCallBack = new ModeCallback();
+
+
     }
+
+    private void initCustom(){
+        if(!checkLogin()){
+            //未登陆状态
+            Intent it = new Intent(NotesListActivity.this, NoteLoginActivity.class);
+            it.setAction(Intent.ACTION_VIEW);
+            startActivity(it);
+        }
+    }
+
+
+
 
     private class ModeCallback implements ListView.MultiChoiceModeListener, OnMenuItemClickListener {
         private DropdownMenu mDropDownMenu;
@@ -681,7 +701,13 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 startAsyncNotesListQuery();
                 break;
             case NOTE_LIST:
-                super.onBackPressed();
+                if(System.currentTimeMillis() - mExitTime > 2000){
+                    Toast.makeText(this, R.string.press_again_exit, Toast.LENGTH_SHORT).show();
+                    mExitTime = System.currentTimeMillis();
+                    return;
+                }else{
+                    super.onBackPressed();
+                }
                 break;
             default:
                 break;
