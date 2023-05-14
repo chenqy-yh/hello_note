@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-		xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
@@ -24,19 +25,23 @@
 			android:layout_centerHorizontal="true"
 	>
 		<TextView
-				android:text="用户名:"
+				android:text="手机号:"
 				android:textSize="20sp"
 				android:textColor="#000000"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginRight="20dp"
 		/>
 		<EditText
-				android:hint="请输入用户名"
+				android:hint="请输入手机号码"
 				android:textSize="20sp"
-				android:id="@+id/note_login_username"
-				android:layout_width="match_parent" android:layout_height="wrap_content"
+				android:id="@+id/note_login_phone_num"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
 				android:paddingLeft="20dp"
+				android:inputType="phone"
 		/>
+
 	</LinearLayout>
 
 	<LinearLayout
@@ -49,7 +54,7 @@
 			android:layout_centerHorizontal="true"
 	>
 		<TextView
-				android:text="密码:"
+				android:text="验证码:"
 				android:textSize="20sp"
 				android:textColor="#000000"
 				android:layout_width="wrap_content"
@@ -57,19 +62,28 @@
 				android:layout_marginRight="20dp"
 		/>
 		<EditText
-				android:hint="请输入用户名"
+				android:hint="请输入验证码"
 				android:textSize="20sp"
-				android:id="@+id/note_login_password"
-				android:layout_width="match_parent" android:layout_height="wrap_content"
+				android:id="@+id/note_verification_code"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:layout_height="wrap_content"
 				android:paddingLeft="20dp"
+				android:inputType="number"
 		/>
+		<net.micode.notes.ui.NoteVerificationButton
+				android:id="@+id/button_get_verification_code"
+				android:text="获取验证码"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
 	</LinearLayout>
 	<RelativeLayout
 			android:id="@+id/btn_login_area"
 			android:background="@color/cutePink"
 			android:layout_alignParentBottom="true"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+	>
 		<net.micode.notes.ui.NbButton
 				android:id="@+id/btn_login"
 				android:layout_centerHorizontal="true"
@@ -79,8 +93,6 @@
 				android:text="登陆"
 				android:layout_width="220dp"
 				android:layout_height="50dp" />
-
-
 	</RelativeLayout>
 
 </RelativeLayout>

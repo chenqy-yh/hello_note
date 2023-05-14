@@ -6,20 +6,39 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import net.micode.notes.R;
+import net.micode.notes.callback.NoteCallback;
+import net.micode.notes.tool.NoteHttpServer;
+import net.micode.notes.tool.NoteRemoteConfig;
+import net.micode.notes.tool.UIUtils;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class NoteLoginActivity extends Activity {
 
+    //tag
+    private static final String TAG = "chenqy";
+    private NoteHttpServer server;
     private NbButton btn_login;
+    private Button btn_verification;
+    private EditText note_login_phone_num;
+    private EditText note_verification_code;
     private RelativeLayout rlContent;
     private Handler handler;
     private Animator animator;
     private long lastClickTime = 0;
+    private static final String VERIFICATION_CODE_URL = "/verify/verifycode";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,27 +49,82 @@ public class NoteLoginActivity extends Activity {
     }
 
 
-    private void bindViews(){
+    private void bindViews() {
         btn_login = (NbButton) findViewById(R.id.btn_login);
+        note_verification_code = (EditText) findViewById(R.id.note_verification_code);
+        note_login_phone_num = (EditText) findViewById(R.id.note_login_phone_num);
         rlContent = (RelativeLayout) findViewById(R.id.btn_login_area);
-
         rlContent.getBackground().setAlpha(0);
-        handler=new Handler();
+        handler = new Handler();
+
+
     }
 
-    private void initResources(){
+    private void initResources() {
+        server = new NoteHttpServer();
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_login.startAnim();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                //check verifycode是否合法 合法就跳转
+                try {
+                    checkVerifyCode();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 
-                        //跳转
-                        gotoNew();
+    private void checkVerifyCode() throws IOException, JSONException {
+        HttpUrl url = HttpUrl.parse(NoteRemoteConfig.generateUrl(VERIFICATION_CODE_URL));
+        String phone_num = note_login_phone_num.getText().toString();
+        String verify_code = note_verification_code.getText().toString();
+        Log.e(TAG, "checkVerifyCode: " + phone_num + " " + verify_code);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("phone", phone_num);
+        jsonObject.put("verifycode", verify_code);
+        String status = "";
+        server.sendAsyncPostRequest(url, jsonObject.toString(), NoteHttpServer.BodyType.FORM_DATA, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                UIUtils.runInUI(NoteLoginActivity.this, new NoteCallback() {
+                    @Override
+                    public void execute() {
+                        Toast.makeText(getApplicationContext(), "网络错误", Toast.LENGTH_SHORT).show();
                     }
-                },500);
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                JSONObject responseJson = null;
+                try {
+                    responseJson = new JSONObject(response.body().string());
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                int code = -1;
+                try {
+                    code = responseJson.getInt("code");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                if(code == NoteRemoteConfig.RESPONSE_SUCCESS){
+                    UIUtils.runInUI(NoteLoginActivity.this, () -> {
+                        btn_login.startAnim();
+                        handler.postDelayed(() -> {
+                            //跳转
+                            gotoNew();
+                        }, 500);
+                    });
+                }else{
+                    UIUtils.runInUI(NoteLoginActivity.this, () -> {
+                        Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
+                    });
+                }
+
 
             }
         });
@@ -58,12 +132,12 @@ public class NoteLoginActivity extends Activity {
 
     private void gotoNew() {
         btn_login.gotoNew();
-        int xc=(btn_login.getLeft()+btn_login.getRight())/2;
-        int yc=(btn_login.getTop()+btn_login.getBottom())/2;
+        int xc = (btn_login.getLeft() + btn_login.getRight()) / 2;
+        int yc = (btn_login.getTop() + btn_login.getBottom()) / 2;
         float startRadius = 0;
         float endRadus = 1111;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            animator= ViewAnimationUtils.createCircularReveal(rlContent,xc,yc,0,1111);
+            animator = ViewAnimationUtils.createCircularReveal(rlContent, xc, yc, 0, 1111);
         }
         animator.setDuration(300);
         animator.addListener(new Animator.AnimatorListener() {
@@ -74,10 +148,10 @@ public class NoteLoginActivity extends Activity {
                     public void run() {
 //                        startActivity(intent);
                         finish();
-                        overridePendingTransition(R.anim.anim_in,R.anim.anim_out);
+                        overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
 
                     }
-                },200);
+                }, 200);
             }
 
             @Override

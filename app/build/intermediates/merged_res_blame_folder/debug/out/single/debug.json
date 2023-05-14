@@ -44,6 +44,10 @@
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-pngs-0:\\drawable-anydpi-v21\\baseline_add_box_24.xml"
     },
     {
+        "merged": "net.micode.notes.app-merged_res-5:/layout_note_login.xml.flat",
+        "source": "net.micode.notes.app-main-7:/layout/note_login.xml"
+    },
+    {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\layout_folder_list_item.xml.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\layout\\folder_list_item.xml"
     },
@@ -234,10 +238,6 @@
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_list_blue_middle.9.png.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\drawable-hdpi\\list_blue_middle.9.png"
-    },
-    {
-        "merged": "net.micode.notes.app-merged_res-5:/layout_note_pop_menu.xml.flat",
-        "source": "net.micode.notes.app-main-7:/layout/note_pop_menu.xml"
     },
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_edit_green.9.png.flat",

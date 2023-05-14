@@ -1,5 +1,7 @@
 package net.micode.notes.ui;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -21,6 +23,7 @@ public class NoteMenuButton extends Button implements View.OnClickListener {
     //TODO 定制menu
     private PopupWindow popupWindow;
     private Context context;
+    private boolean isClickable = true;
 
     public NoteMenuButton(Context context) {
         super(context);
@@ -47,11 +50,23 @@ public class NoteMenuButton extends Button implements View.OnClickListener {
         setOnClickListener(this);
     }
 
+//    @Override
+//    public void onClick(View v) {
+//        if(!isClickable) return;
+//        Log.e(TAG, "onClick");
+//        initPopMenu(v);
+//    }
+
     @Override
     public void onClick(View v) {
+        if (!isClickable) return;
         Log.e(TAG, "onClick");
         initPopMenu(v);
+        // 添加渐变动画效果
+        addStartAnimation();
     }
+
+
 
     private void initPopMenu(View v) {
         //这一步是为了获取屏幕的宽高，便于用来设置PopupWindow的大小
@@ -79,10 +94,63 @@ public class NoteMenuButton extends Button implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
+                addEndAnimation();
             }
         });
 
+
         popupWindow.showAtLocation(((Activity)context).getWindow().getDecorView(), Gravity.CENTER,0,0);
+        isClickable = false;
+    }
+
+    public void addStartAnimation(){
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1f, 0.8f);
+        valueAnimator.setDuration(300);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float scale = (float) animation.getAnimatedValue();
+                NoteMenuButton.this.setScaleX(scale);
+                NoteMenuButton.this.setScaleY(scale);
+            }
+        });
+        valueAnimator.start();
+    }
+
+    public void addEndAnimation(){
+        // 添加渐变动画效果
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0.8f, 1f);
+        valueAnimator.setDuration(300);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float scale = (float) animation.getAnimatedValue();
+                NoteMenuButton.this.setScaleX(scale);
+                NoteMenuButton.this.setScaleY(scale);
+            }
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                isClickable = true;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        valueAnimator.start();
     }
 
 }
