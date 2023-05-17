@@ -324,16 +324,16 @@
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\layout\\note_backup_item.xml"
     },
     {
+        "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable_backup_note_checked.png.flat",
+        "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\drawable\\backup_note_checked.png"
+    },
+    {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-xhdpi_note_menu_bg.png.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-pngs-0:\\drawable-xhdpi\\note_menu_bg.png"
     },
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_menu_delete.png.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\drawable-hdpi\\menu_delete.png"
-    },
-    {
-        "merged": "net.micode.notes.app-merged_res-5:/layout_note_backup_item.xml.flat",
-        "source": "net.micode.notes.app-main-7:/layout/note_backup_item.xml"
     },
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_bg_btn_set_color.png.flat",
@@ -422,6 +422,10 @@
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_list_green_up.9.png.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\drawable-hdpi\\list_green_up.9.png"
+    },
+    {
+        "merged": "net.micode.notes.app-merged_res-5:/layout_note_pop_menu_list.xml.flat",
+        "source": "net.micode.notes.app-main-7:/layout/note_pop_menu_list.xml"
     },
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_widget_4x_red.png.flat",

@@ -6,6 +6,8 @@
 		android:paddingRight="20dp"
 		android:paddingLeft="20dp"
 >
+
+
 	<TextView
 			android:id="@+id/note_pop_menu_list_title"
 			android:text="请选择需要备份的便签"
@@ -15,15 +17,17 @@
 			android:layout_height="wrap_content"
 			android:layout_centerHorizontal="true"
 	/>
+
 	<ListView
 			android:id="@+id/note_pop_menu_lv"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="match_parent"
 			android:layout_below="@id/note_pop_menu_list_title"
 	/>
 
 
 	<RelativeLayout
+					android:id="@+id/note_pop_menu_list_tab"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_alignParentBottom="true"
@@ -81,6 +85,18 @@
 
 
 	</RelativeLayout>
+
+	<Switch
+		android:id="@+id/note_pop_menu_list_switch"
+			android:textOn="全选"
+			android:textOff="全选`"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignTop="@+id/note_pop_menu_list_tab"
+			android:layout_alignParentEnd="true"
+			android:layout_marginRight="20dp"
+			android:layout_marginTop="-40dp"
+	/>
 
 
 </RelativeLayout>

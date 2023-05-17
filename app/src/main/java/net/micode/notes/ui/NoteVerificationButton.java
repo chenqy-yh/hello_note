@@ -64,8 +64,6 @@ public class NoteVerificationButton extends Button implements View.OnClickListen
     }
 
 
-
-
     @Override
     public void onClick(View v) {
         Log.e(TAG, "onClick: ");
@@ -74,7 +72,7 @@ public class NoteVerificationButton extends Button implements View.OnClickListen
             String phone = note_login_phone_num.getText().toString();
             //验证手机号是否合法
             if (!Validator.isPhoneNum(phone)) {
-                UIUtils.runInUI((Activity) getContext(),() -> Toast.makeText(getContext(), "手机号不合法", Toast.LENGTH_SHORT).show());
+                UIUtils.sendMsg((Activity) getContext(), "手机号不合法");
                 return;
             }
             disableButton(); // disable the button and start the countdown timer
@@ -137,13 +135,6 @@ public class NoteVerificationButton extends Button implements View.OnClickListen
     private void enableButton() {
         isClickable = true;
         countDownTimer.cancel(); // cancel the countdown timer if it's still running
-        UIUtils.runInUI((Activity) getContext(), new NoteCallback() {
-            @Override
-            public void execute() {
-                setText("获取验证码"); // set the button text back to its original text
-            }
-        });
+        UIUtils.sendMsg((Activity) getContext(), "获取验证码");
     }
-
-
 }

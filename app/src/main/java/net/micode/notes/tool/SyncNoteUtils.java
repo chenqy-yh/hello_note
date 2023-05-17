@@ -31,12 +31,12 @@ public class SyncNoteUtils {
         getServerIns().sendAsyncPostRequest(url, body.toString(), NoteHttpServer.BodyType.JSON, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                UIUtils.runInUI((Activity) context, () -> Toast.makeText(context, "同步失败", Toast.LENGTH_SHORT).show());
+                UIUtils.sendMsg((Activity) context, "同步失败");
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                UIUtils.runInUI((Activity) context, () -> Toast.makeText(context, "同步成功", Toast.LENGTH_SHORT).show());
+                UIUtils.sendMsg((Activity) context, "同步成功");
             }
         });
     }

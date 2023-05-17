@@ -47,13 +47,13 @@ public class Auth {
         editor.remove(token_key);
     }
 
-    public static String getAuthToken(Context context){
+    public static String getAuthToken(Context context, String token_key){
         SharedPreferences sharedPreferences = context.getSharedPreferences(AUTH_SHARED_NAME, Context.MODE_PRIVATE);
-        return  sharedPreferences.getString(AUTH_TOKEN_KEY, null);
+        return  sharedPreferences.getString(token_key, null);
     }
 
     public static void checkAuthToken(Context context, Callback callback) throws IOException, JSONException {
-        String auth_token = getAuthToken(context);
+        String auth_token = getAuthToken(context, AUTH_TOKEN_KEY);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("token", auth_token);
         HttpUrl url = HttpUrl.parse(NoteRemoteConfig.generateUrl(END_POINT));

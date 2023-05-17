@@ -18,20 +18,21 @@
 
 		<TextView
 				android:id="@+id/note_backup_item_tv"
-				android:layout_width="0dp"
+				android:layout_width="200dp"
 				android:layout_height="wrap_content"
 				android:singleLine="true"
-				android:layout_weight="1"
 				android:text="this is a text"
 				android:textSize="20sp"
+				android:gravity="left"
 		/>
-		<CheckBox
+		<net.micode.notes.ui.NoteCheckBox
 				android:id="@+id/note_backup_item_cb"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:scaleX="1.5"
-				android:scaleY="1.5"
+				android:button="@null"
+				android:gravity="center_horizontal|right"
 		/>
+
 
 	</LinearLayout>
 

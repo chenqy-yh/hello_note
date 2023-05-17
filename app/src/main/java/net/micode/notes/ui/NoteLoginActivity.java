@@ -142,12 +142,7 @@ public class NoteLoginActivity extends Activity {
         server.sendAsyncPostRequest(url, jsonObject.toString(), NoteHttpServer.BodyType.FORM_DATA, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                UIUtils.runInUI(NoteLoginActivity.this, new NoteCallback() {
-                    @Override
-                    public void execute() {
-                        Toast.makeText(getApplicationContext(), "网络错误", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                UIUtils.sendMsg(NoteLoginActivity.this, "网络错误");
             }
 
             @Override
@@ -185,9 +180,7 @@ public class NoteLoginActivity extends Activity {
                         }, 500);
                     });
                 }else{
-                    UIUtils.runInUI(NoteLoginActivity.this, () -> {
-                        Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
-                    });
+                    UIUtils.sendMsg(NoteLoginActivity.this, "验证码错误");
                 }
             }
         });

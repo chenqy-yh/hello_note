@@ -24,6 +24,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -48,6 +49,7 @@ import net.micode.notes.data.Auth;
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.NoteColumns;
 import net.micode.notes.gtask.remote.GTaskSyncService;
+import net.micode.notes.model.Note;
 import net.micode.notes.model.WorkingNote;
 import net.micode.notes.service.BackupBoundService;
 import net.micode.notes.tool.BackupUtils;
@@ -68,8 +70,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class NotesListActivity extends Activity implements OnClickListener, OnItemLongClickListener {
@@ -174,7 +178,11 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             String action = intent.getAction();
             switch (action) {
                 case BACKUP_ACTION:
-                    startBackup();
+                    try {
+                        startBackup(intent);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 default:
                     break;
@@ -183,16 +191,27 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     };
 
     //执行备份服务
-    public void startBackup() {
+    public void startBackup(Intent it) throws JSONException {
         if (is_bind_backup_service) {
-            String noteData = getNoteData();
+            List<Long> noteData = getNoteData(it);
             backupBoundService.backupNotes(noteData);
         }
     }
 
     //TODO 获取note数据
-    private String getNoteData() {
-        return "note data";
+    private List<Long> getNoteData(Intent intent) {
+        Bundle args = intent.getExtras();
+        long[] long_list = (long[]) args.get(NoteMenuListFragment.SELECTED_ID_LIST_KEY);
+        ArrayList<Long> selected_list;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            selected_list = Arrays.stream(long_list).boxed().collect(Collectors.toCollection(ArrayList::new));
+        } else {
+            selected_list = new ArrayList<>();
+            for (long id : long_list) {
+                selected_list.add(id);
+            }
+        }
+        return selected_list;
     }
 
 
@@ -332,26 +351,12 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private void initCustom() {
         //TODO initCustom
         bindBackupService();
-        List<Long> id_list = new ArrayList<>();
-        List<Long> v_list = new ArrayList<>();
-        Cursor cursor_note = this.getContentResolver().query(Notes.CONTENT_NOTE_URI, new String[]{NoteColumns.ID, NoteColumns.VERSION}, null, null, null);
-        //将Id保存在note_list中
-        if (cursor_note != null) {
-            while (cursor_note.moveToNext()) {
-                long id = (long) cursor_note.getInt(cursor_note.getColumnIndex(NoteColumns.ID));
-                long version = (long) cursor_note.getInt(cursor_note.getColumnIndex(NoteColumns.VERSION));
-                if (id <= 0) continue;
-                id_list.add(id);
-                v_list.add(version);
-            }
-        }
-        cursor_note.close();
 
-        //遍历note_list
-        for (int i = 0; i < id_list.size(); i++) {
-            Log.e(TAG, "note: " + id_list.get(i) + " " + v_list.get(i));
+        //查询所有note_data
+        Cursor c = getContentResolver().query(Notes.CONTENT_DATA_URI, new String[]{Notes.DataColumns.NOTE_ID, Notes.DataColumns.DATA5}, null, null, null);
+        while (c.moveToNext()) {
+            Log.e(TAG, c.getLong(0) + ":" + c.getString(1));
         }
-
 
     }
 
