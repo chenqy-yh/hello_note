@@ -43,168 +43,176 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     private static NotesDatabaseHelper mInstance;
 
     private static final String CREATE_NOTE_TABLE_SQL =
-        "CREATE TABLE " + TABLE.NOTE + "(" +
-            NoteColumns.ID + " INTEGER PRIMARY KEY," +
-            NoteColumns.PARENT_ID + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.ALERTED_DATE + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.BG_COLOR_ID + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.CREATED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
-            NoteColumns.HAS_ATTACHMENT + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.MODIFIED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
-            NoteColumns.NOTES_COUNT + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.SNIPPET + " TEXT NOT NULL DEFAULT ''," +
-            NoteColumns.TYPE + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.WIDGET_ID + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.WIDGET_TYPE + " INTEGER NOT NULL DEFAULT -1," +
-            NoteColumns.SYNC_ID + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.LOCAL_MODIFIED + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.ORIGIN_PARENT_ID + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.GTASK_ID + " TEXT NOT NULL DEFAULT ''," +
-            NoteColumns.VERSION + " INTEGER NOT NULL DEFAULT 0" +
-        ")";
+            "CREATE TABLE " + TABLE.NOTE + "(" +
+                    NoteColumns.ID + " INTEGER PRIMARY KEY," +
+                    NoteColumns.PARENT_ID + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.ALERTED_DATE + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.BG_COLOR_ID + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.CREATED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
+                    NoteColumns.HAS_ATTACHMENT + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.MODIFIED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
+                    NoteColumns.NOTES_COUNT + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.SNIPPET + " TEXT NOT NULL DEFAULT ''," +
+                    NoteColumns.TYPE + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.WIDGET_ID + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.WIDGET_TYPE + " INTEGER NOT NULL DEFAULT -1," +
+                    NoteColumns.SYNC_ID + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.LOCAL_MODIFIED + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.ORIGIN_PARENT_ID + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.GTASK_ID + " TEXT NOT NULL DEFAULT ''," +
+                    NoteColumns.VERSION + " INTEGER NOT NULL DEFAULT 0" +
+                    ")";
+
 
     private static final String CREATE_DATA_TABLE_SQL =
-        "CREATE TABLE " + TABLE.DATA + "(" +
-            DataColumns.ID + " INTEGER PRIMARY KEY," +
-            DataColumns.MIME_TYPE + " TEXT NOT NULL," +
-            DataColumns.NOTE_ID + " INTEGER NOT NULL DEFAULT 0," +
-            NoteColumns.CREATED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
-            NoteColumns.MODIFIED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
-            DataColumns.CONTENT + " TEXT NOT NULL DEFAULT ''," +
-            DataColumns.DATA1 + " INTEGER," +
-            DataColumns.DATA2 + " INTEGER," +
-            DataColumns.DATA3 + " TEXT NOT NULL DEFAULT ''," +
-            DataColumns.DATA4 + " TEXT NOT NULL DEFAULT ''," +
-            DataColumns.DATA5 + " TEXT NOT NULL DEFAULT ''" +
-        ")";
+            "CREATE TABLE " + TABLE.DATA + "(" +
+                    DataColumns.ID + " INTEGER PRIMARY KEY," +
+                    DataColumns.MIME_TYPE + " TEXT NOT NULL," +
+                    DataColumns.NOTE_ID + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.CREATED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
+                    NoteColumns.MODIFIED_DATE + " INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)," +
+                    DataColumns.CONTENT + " TEXT NOT NULL DEFAULT ''," +
+                    DataColumns.DATA1 + " INTEGER," +    // 此列可能包含电话号码、电子邮件地址等。
+                    DataColumns.DATA2 + " INTEGER," +   // 此列可能包含电话类型（家庭、工作等）、电子邮件类型等。
+                    DataColumns.DATA3 + " TEXT NOT NULL DEFAULT ''," +   // 通常情况下，此列的使用与 DATA2 相同。
+                    DataColumns.DATA4 + " TEXT NOT NULL DEFAULT ''," +   // 保留供将来使用。
+                    DataColumns.DATA5 + " TEXT NOT NULL DEFAULT ''" +   //保留供将来使用
+                    ")";
 
     private static final String CREATE_DATA_NOTE_ID_INDEX_SQL =
-        "CREATE INDEX IF NOT EXISTS note_id_index ON " +
-        TABLE.DATA + "(" + DataColumns.NOTE_ID + ");";
+            "CREATE INDEX IF NOT EXISTS note_id_index ON " +
+                    TABLE.DATA + "(" + DataColumns.NOTE_ID + ");";
 
     /**
      * Increase folder's note count when move note to the folder
      */
     private static final String NOTE_INCREASE_FOLDER_COUNT_ON_UPDATE_TRIGGER =
-        "CREATE TRIGGER increase_folder_count_on_update "+
-        " AFTER UPDATE OF " + NoteColumns.PARENT_ID + " ON " + TABLE.NOTE +
-        " BEGIN " +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + " + 1" +
-        "  WHERE " + NoteColumns.ID + "=new." + NoteColumns.PARENT_ID + ";" +
-        " END";
+            "CREATE TRIGGER increase_folder_count_on_update " +
+                    " AFTER UPDATE OF " + NoteColumns.PARENT_ID + " ON " + TABLE.NOTE +
+                    " BEGIN " +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + " + 1" +
+                    "  WHERE " + NoteColumns.ID + "=new." + NoteColumns.PARENT_ID + ";" +
+                    " END";
 
     /**
      * Decrease folder's note count when move note from folder
      */
     private static final String NOTE_DECREASE_FOLDER_COUNT_ON_UPDATE_TRIGGER =
-        "CREATE TRIGGER decrease_folder_count_on_update " +
-        " AFTER UPDATE OF " + NoteColumns.PARENT_ID + " ON " + TABLE.NOTE +
-        " BEGIN " +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + "-1" +
-        "  WHERE " + NoteColumns.ID + "=old." + NoteColumns.PARENT_ID +
-        "  AND " + NoteColumns.NOTES_COUNT + ">0" + ";" +
-        " END";
+            "CREATE TRIGGER decrease_folder_count_on_update " +
+                    " AFTER UPDATE OF " + NoteColumns.PARENT_ID + " ON " + TABLE.NOTE +
+                    " BEGIN " +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + "-1" +
+                    "  WHERE " + NoteColumns.ID + "=old." + NoteColumns.PARENT_ID +
+                    "  AND " + NoteColumns.NOTES_COUNT + ">0" + ";" +
+                    " END";
 
     /**
      * Increase folder's note count when insert new note to the folder
      */
     private static final String NOTE_INCREASE_FOLDER_COUNT_ON_INSERT_TRIGGER =
-        "CREATE TRIGGER increase_folder_count_on_insert " +
-        " AFTER INSERT ON " + TABLE.NOTE +
-        " BEGIN " +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + " + 1" +
-        "  WHERE " + NoteColumns.ID + "=new." + NoteColumns.PARENT_ID + ";" +
-        " END";
+            "CREATE TRIGGER increase_folder_count_on_insert " +
+                    " AFTER INSERT ON " + TABLE.NOTE +
+                    " BEGIN " +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + " + 1" +
+                    "  WHERE " + NoteColumns.ID + "=new." + NoteColumns.PARENT_ID + ";" +
+                    " END";
 
     /**
      * Decrease folder's note count when delete note from the folder
+     * 减少文件夹的笔记数，当从文件夹中删除笔记
      */
     private static final String NOTE_DECREASE_FOLDER_COUNT_ON_DELETE_TRIGGER =
-        "CREATE TRIGGER decrease_folder_count_on_delete " +
-        " AFTER DELETE ON " + TABLE.NOTE +
-        " BEGIN " +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + "-1" +
-        "  WHERE " + NoteColumns.ID + "=old." + NoteColumns.PARENT_ID +
-        "  AND " + NoteColumns.NOTES_COUNT + ">0;" +
-        " END";
+            "CREATE TRIGGER decrease_folder_count_on_delete " +
+                    " AFTER DELETE ON " + TABLE.NOTE +
+                    " BEGIN " +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.NOTES_COUNT + "=" + NoteColumns.NOTES_COUNT + "-1" +
+                    "  WHERE " + NoteColumns.ID + "=old." + NoteColumns.PARENT_ID +
+                    "  AND " + NoteColumns.NOTES_COUNT + ">0;" +
+                    " END";
 
     /**
      * Update note's content when insert data with type {@link DataConstants#NOTE}
+     * 更新笔记的内容，当插入数据类型为{@link DataConstants#NOTE}
      */
     private static final String DATA_UPDATE_NOTE_CONTENT_ON_INSERT_TRIGGER =
-        "CREATE TRIGGER update_note_content_on_insert " +
-        " AFTER INSERT ON " + TABLE.DATA +
-        " WHEN new." + DataColumns.MIME_TYPE + "='" + DataConstants.NOTE + "'" +
-        " BEGIN" +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.SNIPPET + "=new." + DataColumns.CONTENT +
-        "  WHERE " + NoteColumns.ID + "=new." + DataColumns.NOTE_ID + ";" +
-        " END";
+            "CREATE TRIGGER update_note_content_on_insert " +
+                    " AFTER INSERT ON " + TABLE.DATA +
+                    " WHEN new." + DataColumns.MIME_TYPE + "='" + DataConstants.NOTE + "'" +
+                    " BEGIN" +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.SNIPPET + "=new." + DataColumns.CONTENT +
+                    "  WHERE " + NoteColumns.ID + "=new." + DataColumns.NOTE_ID + ";" +
+                    " END";
 
     /**
      * Update note's content when data with {@link DataConstants#NOTE} type has changed
+     * 更新笔记的内容，当数据类型为{@link DataConstants#NOTE}已经改变
      */
     private static final String DATA_UPDATE_NOTE_CONTENT_ON_UPDATE_TRIGGER =
-        "CREATE TRIGGER update_note_content_on_update " +
-        " AFTER UPDATE ON " + TABLE.DATA +
-        " WHEN old." + DataColumns.MIME_TYPE + "='" + DataConstants.NOTE + "'" +
-        " BEGIN" +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.SNIPPET + "=new." + DataColumns.CONTENT +
-        "  WHERE " + NoteColumns.ID + "=new." + DataColumns.NOTE_ID + ";" +
-        " END";
+            "CREATE TRIGGER update_note_content_on_update " +
+                    " AFTER UPDATE ON " + TABLE.DATA +
+                    " WHEN old." + DataColumns.MIME_TYPE + "='" + DataConstants.NOTE + "'" +
+                    " BEGIN" +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.SNIPPET + "=new." + DataColumns.CONTENT +
+                    "  WHERE " + NoteColumns.ID + "=new." + DataColumns.NOTE_ID + ";" +
+                    " END";
 
     /**
      * Update note's content when data with {@link DataConstants#NOTE} type has deleted
+     * 更新笔记的内容，当数据类型为{@link DataConstants#NOTE}已删除
      */
     private static final String DATA_UPDATE_NOTE_CONTENT_ON_DELETE_TRIGGER =
-        "CREATE TRIGGER update_note_content_on_delete " +
-        " AFTER delete ON " + TABLE.DATA +
-        " WHEN old." + DataColumns.MIME_TYPE + "='" + DataConstants.NOTE + "'" +
-        " BEGIN" +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.SNIPPET + "=''" +
-        "  WHERE " + NoteColumns.ID + "=old." + DataColumns.NOTE_ID + ";" +
-        " END";
+            "CREATE TRIGGER update_note_content_on_delete " +
+                    " AFTER delete ON " + TABLE.DATA +
+                    " WHEN old." + DataColumns.MIME_TYPE + "='" + DataConstants.NOTE + "'" +
+                    " BEGIN" +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.SNIPPET + "=''" +
+                    "  WHERE " + NoteColumns.ID + "=old." + DataColumns.NOTE_ID + ";" +
+                    " END";
 
     /**
      * Delete datas belong to note which has been deleted
+     * 删除 data 属于笔记已被删除
      */
     private static final String NOTE_DELETE_DATA_ON_DELETE_TRIGGER =
-        "CREATE TRIGGER delete_data_on_delete " +
-        " AFTER DELETE ON " + TABLE.NOTE +
-        " BEGIN" +
-        "  DELETE FROM " + TABLE.DATA +
-        "   WHERE " + DataColumns.NOTE_ID + "=old." + NoteColumns.ID + ";" +
-        " END";
+            "CREATE TRIGGER delete_data_on_delete " +
+                    " AFTER DELETE ON " + TABLE.NOTE +
+                    " BEGIN" +
+                    "  DELETE FROM " + TABLE.DATA +
+                    "   WHERE " + DataColumns.NOTE_ID + "=old." + NoteColumns.ID + ";" +
+                    " END";
 
     /**
      * Delete notes belong to folder which has been deleted
+     * 删除 note 属于文件夹已被删除
      */
     private static final String FOLDER_DELETE_NOTES_ON_DELETE_TRIGGER =
-        "CREATE TRIGGER folder_delete_notes_on_delete " +
-        " AFTER DELETE ON " + TABLE.NOTE +
-        " BEGIN" +
-        "  DELETE FROM " + TABLE.NOTE +
-        "   WHERE " + NoteColumns.PARENT_ID + "=old." + NoteColumns.ID + ";" +
-        " END";
+            "CREATE TRIGGER folder_delete_notes_on_delete " +
+                    " AFTER DELETE ON " + TABLE.NOTE +
+                    " BEGIN" +
+                    "  DELETE FROM " + TABLE.NOTE +
+                    "   WHERE " + NoteColumns.PARENT_ID + "=old." + NoteColumns.ID + ";" +
+                    " END";
 
     /**
      * Move notes belong to folder which has been moved to trash folder
+     * 移动笔记属于文件夹已被移动到垃圾箱文件夹
      */
     private static final String FOLDER_MOVE_NOTES_ON_TRASH_TRIGGER =
-        "CREATE TRIGGER folder_move_notes_on_trash " +
-        " AFTER UPDATE ON " + TABLE.NOTE +
-        " WHEN new." + NoteColumns.PARENT_ID + "=" + Notes.ID_TRASH_FOLER +
-        " BEGIN" +
-        "  UPDATE " + TABLE.NOTE +
-        "   SET " + NoteColumns.PARENT_ID + "=" + Notes.ID_TRASH_FOLER +
-        "  WHERE " + NoteColumns.PARENT_ID + "=old." + NoteColumns.ID + ";" +
-        " END";
+            "CREATE TRIGGER folder_move_notes_on_trash " +
+                    " AFTER UPDATE ON " + TABLE.NOTE +
+                    " WHEN new." + NoteColumns.PARENT_ID + "=" + Notes.ID_TRASH_FOLER +
+                    " BEGIN" +
+                    "  UPDATE " + TABLE.NOTE +
+                    "   SET " + NoteColumns.PARENT_ID + "=" + Notes.ID_TRASH_FOLER +
+                    "  WHERE " + NoteColumns.PARENT_ID + "=old." + NoteColumns.ID + ";" +
+                    " END";
 
     public NotesDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -240,6 +248,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
 
         /**
          * call record foler for call notes
+         * 通话记录文件夹的通话记录
          */
         values.put(NoteColumns.ID, Notes.ID_CALL_RECORD_FOLDER);
         values.put(NoteColumns.TYPE, Notes.TYPE_SYSTEM);
@@ -247,6 +256,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
 
         /**
          * root folder which is default folder
+         * 根文件夹是默认文件夹
          */
         values.clear();
         values.put(NoteColumns.ID, Notes.ID_ROOT_FOLDER);
@@ -255,6 +265,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
 
         /**
          * temporary folder which is used for moving note
+         * 临时文件夹，用于移动笔记
          */
         values.clear();
         values.put(NoteColumns.ID, Notes.ID_TEMPARAY_FOLDER);
@@ -263,6 +274,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
 
         /**
          * create trash folder
+         * 创建垃圾箱文件夹
          */
         values.clear();
         values.put(NoteColumns.ID, Notes.ID_TRASH_FOLER);
@@ -271,8 +283,11 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void createDataTable(SQLiteDatabase db) {
+        //创建data表
         db.execSQL(CREATE_DATA_TABLE_SQL);
+        //创建触发器
         reCreateDataTableTriggers(db);
+        //创建索引
         db.execSQL(CREATE_DATA_NOTE_ID_INDEX_SQL);
         Log.d(TAG, "data table has been created");
     }

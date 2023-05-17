@@ -48,11 +48,6 @@
             android:theme="@style/NoteTheme"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustPan" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="net.micode.notes.ui.NoteEditActivity"
@@ -102,6 +97,11 @@
             android:label="@string/login_title"
             android:launchMode="singleTop"
             android:theme="@style/NoteTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <provider
@@ -147,6 +147,10 @@
 
         <service
             android:name="net.micode.notes.gtask.remote.GTaskSyncService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name="net.micode.notes.service.BackupBoundService"
             android:exported="false" >
         </service>
 

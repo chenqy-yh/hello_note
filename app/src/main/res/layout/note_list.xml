@@ -55,37 +55,23 @@
         android:layout_height="wrap_content"
         android:focusable="false"
         android:layout_gravity="bottom"
-        android:visibility="gone"
+        android:visibility="visible"
     />
 
-    <!--  menu btn  -->
-<!--    <FrameLayout-->
-<!--            android:id="@+id/btn_container"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--    >-->
+    <RelativeLayout
+            android:id="@+id/xxxxxss"
+            android:layout_width="300dp"
+            android:layout_height="500dp"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:visibility="gone"
+    >
+        <FrameLayout
+                android:id="@+id/ffffkkkkkk"
+                android:layout_width="match_parent" android:layout_height="match_parent"/>
 
-<!--        &lt;!&ndash; Mask &ndash;&gt;-->
-<!--        <View-->
-<!--                android:id="@+id/btn_mask"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:background="@drawable/circle_btn_bg"-->
-<!--                android:elevation="20dp"-->
-<!--                android:visibility="gone"-->
-<!--                android:layout_gravity="right|bottom"-->
-<!--        />-->
 
-<!--        &lt;!&ndash; Button &ndash;&gt;-->
-<!--        <net.micode.notes.ui.NoteLoginButton-->
-<!--                android:id="@+id/my_button"-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:background="@drawable/circle_btn_bg_trans"-->
-<!--                android:elevation="10dp"-->
-<!--                android:layout_gravity="right|bottom"-->
-<!--        />-->
-<!--    </FrameLayout>-->
+    </RelativeLayout>
 
     <net.micode.notes.ui.NoteMenuButton
             android:id="@+id/menu_button"

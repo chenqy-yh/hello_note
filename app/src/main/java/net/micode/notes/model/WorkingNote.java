@@ -70,6 +70,7 @@ public class WorkingNote {
             DataColumns.DATA2,             // 表示数据行的附加数据
             DataColumns.DATA3,             // 表示数据行的附加数据
             DataColumns.DATA4,             // 表示数据行的附加数据
+            DataColumns.DATA5,             // 表示是否为同步数据
     };
     public static final String[] NOTE_PROJECTION = new String[] {
             NoteColumns.PARENT_ID,      // 表示笔记的父笔记 ID
@@ -605,25 +606,28 @@ public class WorkingNote {
 
     public interface NoteSettingChangedListener {
         /**
-         * Called when the background color of current note has just changed
+         * 当前笔记的背景颜色刚刚更改时调用
          */
         void onBackgroundColorChanged();
 
         /**
-         * Called when user set clock
+         * 用户设置闹钟时调用
+         * @param date 闹钟日期时间
+         * @param set 是否开启闹钟
          */
         void onClockAlertChanged(long date, boolean set);
 
         /**
-         * Call when user create note from widget
+         * 从小部件创建笔记时调用
          */
         void onWidgetChanged();
 
         /**
-         * Call when switch between check list mode and normal mode
-         * @param oldMode is previous mode before change
-         * @param newMode is new mode
+         * 在勾选列表模式和正常模式之间切换时调用
+         * @param oldMode 切换前的模式
+         * @param newMode 新模式
          */
         void onCheckListModeChanged(int oldMode, int newMode);
     }
+
 }

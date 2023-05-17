@@ -15,16 +15,11 @@
  */
 
 package net.micode.notes.model;
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.OperationApplicationException;
+
+import android.content.*;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.util.Log;
-
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.CallNote;
 import net.micode.notes.data.Notes.DataColumns;
@@ -211,6 +206,7 @@ public class Note {
             return true;
         }
 
+
         // 使用ContentResolver对象将mNoteDiffValues中保存的数值更新到NoteColumns.LOCAL_MODIFIED和NoteColumns.MODIFIED_DATE字段上
         if (context.getContentResolver().update(
                 ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, noteId), mNoteDiffValues, null,
@@ -236,15 +232,16 @@ public class Note {
 
 
     private class NoteData {
-        private long mTextDataId;
 
-        private ContentValues mTextDataValues;
-
-        private long mCallDataId;
-
-        private ContentValues mCallDataValues;
 
         private static final String TAG = "NoteData";
+        private long mTextDataId;
+        private long mCallDataId;
+
+
+        private ContentValues mTextDataValues;
+        private ContentValues mCallDataValues;
+
 
         /**
          * 构造函数

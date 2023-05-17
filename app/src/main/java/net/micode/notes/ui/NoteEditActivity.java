@@ -85,6 +85,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     }
 
     private static final Map<Integer, Integer> sBgSelectorBtnsMap = new HashMap<Integer, Integer>();
+
     static {
         sBgSelectorBtnsMap.put(R.id.iv_bg_yellow, ResourceParser.YELLOW);
         sBgSelectorBtnsMap.put(R.id.iv_bg_red, ResourceParser.RED);
@@ -94,6 +95,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     }
 
     private static final Map<Integer, Integer> sBgSelectorSelectionMap = new HashMap<Integer, Integer>();
+
     static {
         sBgSelectorSelectionMap.put(ResourceParser.YELLOW, R.id.iv_bg_yellow_select);
         sBgSelectorSelectionMap.put(ResourceParser.RED, R.id.iv_bg_red_select);
@@ -103,6 +105,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     }
 
     private static final Map<Integer, Integer> sFontSizeBtnsMap = new HashMap<Integer, Integer>();
+
     static {
         sFontSizeBtnsMap.put(R.id.ll_font_large, ResourceParser.TEXT_LARGE);
         sFontSizeBtnsMap.put(R.id.ll_font_small, ResourceParser.TEXT_SMALL);
@@ -111,6 +114,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     }
 
     private static final Map<Integer, Integer> sFontSelectorSelectionMap = new HashMap<Integer, Integer>();
+
     static {
         sFontSelectorSelectionMap.put(ResourceParser.TEXT_LARGE, R.id.iv_large_select);
         sFontSelectorSelectionMap.put(ResourceParser.TEXT_SMALL, R.id.iv_small_select);
@@ -179,31 +183,30 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         }
     }
 
+    // 初始化 Activity 状态
     private boolean initActivityState(Intent intent) {
-        /**
-         * If the user specified the {@link Intent#ACTION_VIEW} but not provided with id,
-         * then jump to the NotesListActivity
-         */
+        // 先设置当前正在编辑的笔记为空
         mWorkingNote = null;
-        if (TextUtils.equals(Intent.ACTION_VIEW, intent.getAction())) {
-            long noteId = intent.getLongExtra(Intent.EXTRA_UID, 0);
-            mUserQuery = "";
 
-            /**
-             * Starting from the searched result
-             */
+        // 如果用户请求查看某个笔记（ACTION_VIEW），则执行以下操作
+        if (TextUtils.equals(Intent.ACTION_VIEW, intent.getAction())) {
+            long noteId = intent.getLongExtra(Intent.EXTRA_UID, 0); // 获取要查看笔记的 ID
+            mUserQuery = ""; // 重置用户搜索关键字
+
+            // 如果这个笔记是从搜索结果页面跳转而来，则获取额外信息
             if (intent.hasExtra(SearchManager.EXTRA_DATA_KEY)) {
                 noteId = Long.parseLong(intent.getStringExtra(SearchManager.EXTRA_DATA_KEY));
                 mUserQuery = intent.getStringExtra(SearchManager.USER_QUERY);
             }
 
+            // 如果该笔记已经被删除，则提示用户并跳转到笔记列表页
             if (!DataUtils.visibleInNoteDatabase(getContentResolver(), noteId, Notes.TYPE_NOTE)) {
                 Intent jump = new Intent(this, NotesListActivity.class);
                 startActivity(jump);
                 showToast(R.string.error_note_not_exist);
                 finish();
                 return false;
-            } else {
+            } else { // 否则加载该笔记
                 mWorkingNote = WorkingNote.load(this, noteId);
                 if (mWorkingNote == null) {
                     Log.e(TAG, "load note failed with note id" + noteId);
@@ -211,11 +214,21 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                     return false;
                 }
             }
+
+            /**
+             *
+             * 这段代码是用于隐藏软键盘并且调整页面布局的。在 Android 应用开发中，当软键盘弹出时，
+             * 如果不加处理，可能会遮挡住输入框或者其他重要的视图组件。因此，我们可以通过设置 getWindow()
+             * setSoftInputMode() 来控制软键盘的行为。
+             *
+             * */
             getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
                             | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        } else if(TextUtils.equals(Intent.ACTION_INSERT_OR_EDIT, intent.getAction())) {
-            // New note
+        }
+        // 如果是新建或编辑笔记的请求（ACTION_INSERT_OR_EDIT）
+        else if (TextUtils.equals(Intent.ACTION_INSERT_OR_EDIT, intent.getAction())) {
+            // 获取额外信息
             long folderId = intent.getLongExtra(Notes.INTENT_EXTRA_FOLDER_ID, 0);
             int widgetId = intent.getIntExtra(Notes.INTENT_EXTRA_WIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -224,28 +237,28 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             int bgResId = intent.getIntExtra(Notes.INTENT_EXTRA_BACKGROUND_ID,
                     ResourceParser.getDefaultBgId(this));
 
-            // Parse call-record note
+            // 如果是来自通话记录的笔记，则创建或加载该笔记
             String phoneNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
             long callDate = intent.getLongExtra(Notes.INTENT_EXTRA_CALL_DATE, 0);
             if (callDate != 0 && phoneNumber != null) {
-                if (TextUtils.isEmpty(phoneNumber)) {
+                if (TextUtils.isEmpty(phoneNumber)) { // 如果电话号码为空则打印警告日志
                     Log.w(TAG, "The call record number is null");
                 }
                 long noteId = 0;
                 if ((noteId = DataUtils.getNoteIdByPhoneNumberAndCallDate(getContentResolver(),
-                        phoneNumber, callDate)) > 0) {
+                        phoneNumber, callDate)) > 0) { // 如果存在该笔记，则加载该笔记
                     mWorkingNote = WorkingNote.load(this, noteId);
                     if (mWorkingNote == null) {
                         Log.e(TAG, "load call note failed with note id" + noteId);
                         finish();
                         return false;
                     }
-                } else {
+                } else { // 否则创建一个新的通话记录笔记
                     mWorkingNote = WorkingNote.createEmptyNote(this, folderId, widgetId,
                             widgetType, bgResId);
                     mWorkingNote.convertToCallNote(phoneNumber, callDate);
                 }
-            } else {
+            } else { // 否则创建一个普通笔记
                 mWorkingNote = WorkingNote.createEmptyNote(this, folderId, widgetId, widgetType,
                         bgResId);
             }
@@ -253,14 +266,21 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
                             | WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        } else {
+        }
+        // 如果请求不属于上述两种情况，则提示错误并关闭页面
+        else {
             Log.e(TAG, "Intent not specified action, should not support");
             finish();
             return false;
         }
+
+        // 设置笔记属性变化的监听器
         mWorkingNote.setOnSettingStatusChangedListener(this);
+
+        // 返回 true 表示初始化成功
         return true;
     }
+
 
     @Override
     protected void onResume() {
@@ -309,7 +329,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         } else {
             mNoteHeaderHolder.tvAlertDate.setVisibility(View.GONE);
             mNoteHeaderHolder.ivAlertIcon.setVisibility(View.GONE);
-        };
+        }
+        ;
     }
 
     @Override
@@ -350,7 +371,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     }
 
     private boolean inRangeOfView(View view, MotionEvent ev) {
-        int []location = new int[2];
+        int[] location = new int[2];
         view.getLocationOnScreen(location);
         int x = location[0];
         int y = location[1];
@@ -358,8 +379,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
                 || ev.getX() > (x + view.getWidth())
                 || ev.getY() < y
                 || ev.getY() > (y + view.getHeight())) {
-                    return false;
-                }
+            return false;
+        }
         return true;
     }
 
@@ -383,7 +404,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         for (int id : sFontSizeBtnsMap.keySet()) {
             View view = findViewById(id);
             view.setOnClickListener(this);
-        };
+        }
+        ;
         mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mFontSizeId = mSharedPrefs.getInt(PREFERENCE_FONT_SIZE, ResourceParser.BG_DEFAULT_FONT_SIZE);
         /**
@@ -391,7 +413,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
          * The id may larger than the length of resources, in this case,
          * return the {@link ResourceParser#BG_DEFAULT_FONT_SIZE}
          */
-        if(mFontSizeId >= TextAppearanceResources.getResourcesSize()) {
+        if (mFontSizeId >= TextAppearanceResources.getResourcesSize()) {
             mFontSizeId = ResourceParser.BG_DEFAULT_FONT_SIZE;
         }
         mEditTextList = (LinearLayout) findViewById(R.id.note_edit_list);
@@ -400,7 +422,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     @Override
     protected void onPause() {
         super.onPause();
-        if(saveNote()) {
+        if (saveNote()) {
             Log.d(TAG, "Note data was saved with length:" + mWorkingNote.getContent().length());
         }
         clearSettingState();
@@ -417,8 +439,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             return;
         }
 
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {
-            mWorkingNote.getWidgetId()
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{
+                mWorkingNote.getWidgetId()
         });
 
         sendBroadcast(intent);
@@ -430,7 +452,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         if (id == R.id.btn_set_bg_color) {
             mNoteBgColorSelector.setVisibility(View.VISIBLE);
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
-                                        View.VISIBLE);
+                    View.VISIBLE);
         } else if (sBgSelectorBtnsMap.containsKey(id)) {
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
                     View.GONE);
@@ -454,7 +476,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     @Override
     public void onBackPressed() {
-        if(clearSettingState()) {
+        if (clearSettingState()) {
             return;
         }
 
@@ -557,7 +579,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         DateTimePickerDialog d = new DateTimePickerDialog(this, System.currentTimeMillis());
         d.setOnDateTimeSetListener(new OnDateTimeSetListener() {
             public void OnDateTimeSet(AlertDialog dialog, long date) {
-                mWorkingNote.setAlertDate(date	, true);
+                mWorkingNote.setAlertDate(date, true);
             }
         });
         d.show();
@@ -626,7 +648,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
             AlarmManager alarmManager = ((AlarmManager) getSystemService(ALARM_SERVICE));
             showAlertHeader();
-            if(!set) {
+            if (!set) {
                 alarmManager.cancel(pendingIntent);
             } else {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, date, pendingIntent);
@@ -659,7 +681,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
         mEditTextList.removeViewAt(index);
         NoteEditText edit = null;
-        if(index == 0) {
+        if (index == 0) {
             edit = (NoteEditText) mEditTextList.getChildAt(0).findViewById(
                     R.id.et_edit_text);
         } else {
@@ -676,7 +698,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         /**
          * Should not happen, check for debug
          */
-        if(index > mEditTextList.getChildCount()) {
+        if (index > mEditTextList.getChildCount()) {
             Log.e(TAG, "Index out of mEditTextList boundrary, should not happen");
         }
 
@@ -696,7 +718,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         String[] items = text.split("\n");
         int index = 0;
         for (String item : items) {
-            if(!TextUtils.isEmpty(item)) {
+            if (!TextUtils.isEmpty(item)) {
                 mEditTextList.addView(getListItem(item, index));
                 index++;
             }
@@ -761,7 +783,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             Log.e(TAG, "Wrong index, should not happen");
             return;
         }
-        if(hasText) {
+        if (hasText) {
             mEditTextList.getChildAt(index).findViewById(R.id.cb_edit_item).setVisibility(View.VISIBLE);
         } else {
             mEditTextList.getChildAt(index).findViewById(R.id.cb_edit_item).setVisibility(View.GONE);

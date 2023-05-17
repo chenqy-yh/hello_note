@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/white"
+>
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_above="@+id/btn_close"
+			android:layout_marginBottom="194dp"
+			android:gravity="center_horizontal"
+	>
+		<Button
+				android:id="@+id/btn_note_backup"
+				android:text="备份便签数据"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+		/>
+		<Button
+				android:id="@+id/btn_note_restore"
+				android:text="恢复便签数据"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/btn_note_backup"
+				android:layout_marginTop="40dp"
+		/>
+
+	</RelativeLayout>
+	<Button
+			android:id="@+id/btn_close"
+			android:text="close"
+			android:textSize="20sp"
+			android:textStyle="bold"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="50dp"
+	/>
+</RelativeLayout>

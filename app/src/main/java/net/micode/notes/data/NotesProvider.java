@@ -87,31 +87,42 @@ public class NotesProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
+                        String sortOrder) {
+        // 初始化游标为空
         Cursor c = null;
+        // 获取可读的数据库实例
         SQLiteDatabase db = mHelper.getReadableDatabase();
+        // 初始化id为null
         String id = null;
+        // 根据Uri进行分支处理
         switch (mMatcher.match(uri)) {
             case URI_NOTE:
+                // 如果Uri匹配到笔记列表，则执行笔记表的查询操作
                 c = db.query(TABLE.NOTE, projection, selection, selectionArgs, null, null,
                         sortOrder);
                 break;
             case URI_NOTE_ITEM:
+                // 如果Uri匹配到单个笔记，则获取该笔记的ID
                 id = uri.getPathSegments().get(1);
+                // 执行笔记表的查询操作，并加入限制条件
                 c = db.query(TABLE.NOTE, projection, NoteColumns.ID + "=" + id
                         + parseSelection(selection), selectionArgs, null, null, sortOrder);
                 break;
             case URI_DATA:
+                // 如果Uri匹配到数据列表，则执行数据表的查询操作
                 c = db.query(TABLE.DATA, projection, selection, selectionArgs, null, null,
                         sortOrder);
                 break;
             case URI_DATA_ITEM:
+                // 如果Uri匹配到单个数据，则获取该数据的ID
                 id = uri.getPathSegments().get(1);
+                // 执行数据表的查询操作，并加入限制条件
                 c = db.query(TABLE.DATA, projection, DataColumns.ID + "=" + id
                         + parseSelection(selection), selectionArgs, null, null, sortOrder);
                 break;
             case URI_SEARCH:
             case URI_SEARCH_SUGGEST:
+                // 如果Uri匹配到搜索操作，则进一步判断是普通搜索还是建议搜索
                 if (sortOrder != null || projection != null) {
                     throw new IllegalArgumentException(
                             "do not specify sortOrder, selection, selectionArgs, or projection" + "with this query");
@@ -119,10 +130,12 @@ public class NotesProvider extends ContentProvider {
 
                 String searchString = null;
                 if (mMatcher.match(uri) == URI_SEARCH_SUGGEST) {
+                    // 如果是建议搜索，则获取搜索关键词
                     if (uri.getPathSegments().size() > 1) {
                         searchString = uri.getPathSegments().get(1);
                     }
                 } else {
+                    // 如果是普通搜索，则获取查询参数中的搜索关键词
                     searchString = uri.getQueryParameter("pattern");
                 }
 
@@ -131,6 +144,7 @@ public class NotesProvider extends ContentProvider {
                 }
 
                 try {
+                    // 格式化搜索关键词，加上通配符，执行笔记表的全文搜索操作
                     searchString = String.format("%%%s%%", searchString);
                     c = db.rawQuery(NOTES_SNIPPET_SEARCH_QUERY,
                             new String[] { searchString });
@@ -139,13 +153,17 @@ public class NotesProvider extends ContentProvider {
                 }
                 break;
             default:
+                // 如果Uri无法匹配任何情况，则抛出异常
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
+        // 设置游标的观察者，以便在数据变化时能够及时更新UI
         if (c != null) {
             c.setNotificationUri(getContext().getContentResolver(), uri);
         }
+        // 返回游标
         return c;
     }
+
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -163,6 +181,7 @@ public class NotesProvider extends ContentProvider {
                 }
                 insertedId = dataId = db.insert(TABLE.DATA, null, values);
                 break;
+
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }

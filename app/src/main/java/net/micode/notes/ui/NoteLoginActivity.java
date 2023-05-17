@@ -2,6 +2,7 @@ package net.micode.notes.ui;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import net.micode.notes.R;
 import net.micode.notes.callback.NoteCallback;
+import net.micode.notes.data.Auth;
 import net.micode.notes.tool.NoteHttpServer;
 import net.micode.notes.tool.NoteRemoteConfig;
 import net.micode.notes.tool.UIUtils;
@@ -37,15 +39,24 @@ public class NoteLoginActivity extends Activity {
     private RelativeLayout rlContent;
     private Handler handler;
     private Animator animator;
-    private long lastClickTime = 0;
+    private Context context;
+    private long mExitTime = 0;
     private static final String VERIFICATION_CODE_URL = "/verify/verifycode";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.note_login);
         bindViews();
         initResources();
+        try {
+            checkLogin();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -57,11 +68,12 @@ public class NoteLoginActivity extends Activity {
         rlContent.getBackground().setAlpha(0);
         handler = new Handler();
 
-
     }
 
     private void initResources() {
+        context = this;
         server = new NoteHttpServer();
+
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +88,47 @@ public class NoteLoginActivity extends Activity {
             }
         });
     }
+
+    //checkIsLogin
+    private void checkLogin() throws JSONException, IOException {
+        //TODO  通过验证本地存储的token与服务器进行匹配判断是否登陆
+        Auth.checkAuthToken(this, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                //删除本地token
+                Auth.removeToken(NoteLoginActivity.this,Auth.AUTH_TOKEN_KEY);
+                //删除本地用户信息
+                Auth.removeToken(NoteLoginActivity.this,Auth.AUTH_PHONE_KEY);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String resStr = response.body().string();
+                JSONObject resJson = null;
+                try {
+                    resJson = new JSONObject(resStr);
+                } catch (JSONException e) {
+                    Log.e(TAG, "NoteListActivity checkLogin JSONObject转化失败");
+                    return;
+                }
+                int code = 0;
+                try {
+                    code = resJson.getInt("code");
+                } catch (JSONException e) {
+                    Log.e(TAG, "NoteListActivity checkLogin JSONObject 提取code失败");
+                    return;
+                }
+
+                if(code != 200){
+                    Log.e(TAG, "NoteListActivity checkLogin JSONObject code != 200");
+                }else{
+                    //登陆成功
+                    goNoteList();
+                }
+            }
+        });
+    }
+
 
     private void checkVerifyCode() throws IOException, JSONException {
         HttpUrl url = HttpUrl.parse(NoteRemoteConfig.generateUrl(VERIFICATION_CODE_URL));
@@ -112,6 +165,18 @@ public class NoteLoginActivity extends Activity {
                     throw new RuntimeException(e);
                 }
                 if(code == NoteRemoteConfig.RESPONSE_SUCCESS){
+                    String token = null;
+                    try {
+                        token = responseJson.getString("data");
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    //保存token
+                    Auth.syncToken(context,Auth.AUTH_TOKEN_KEY,token);
+                    //保存验证的手机号
+                    Auth.syncToken(context,Auth.AUTH_PHONE_KEY,phone_num);
+
                     UIUtils.runInUI(NoteLoginActivity.this, () -> {
                         btn_login.startAnim();
                         handler.postDelayed(() -> {
@@ -124,21 +189,18 @@ public class NoteLoginActivity extends Activity {
                         Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
                     });
                 }
-
-
             }
         });
     }
 
     private void gotoNew() {
         btn_login.gotoNew();
-        int xc = (btn_login.getLeft() + btn_login.getRight()) / 2;
-        int yc = (btn_login.getTop() + btn_login.getBottom()) / 2;
-        float startRadius = 0;
-        float endRadus = 1111;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int xc = (btn_login.getLeft() + btn_login.getRight()) / 2;
+            int yc = (btn_login.getTop() + btn_login.getBottom()) / 2;
             animator = ViewAnimationUtils.createCircularReveal(rlContent, xc, yc, 0, 1111);
         }
+
         animator.setDuration(300);
         animator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -146,13 +208,13 @@ public class NoteLoginActivity extends Activity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        startActivity(intent);
-                        finish();
+                        goNoteList();
                         overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
 
                     }
                 }, 200);
             }
+
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -173,25 +235,33 @@ public class NoteLoginActivity extends Activity {
         rlContent.getBackground().setAlpha(255);
     }
 
+    private void goNoteList(){
+        Intent it = new Intent(NoteLoginActivity.this, NotesListActivity.class);
+        it.setAction(Intent.ACTION_VIEW);
+        startActivity(it);
+        finish();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
-        animator.cancel();
+        if(animator != null)animator.cancel();
         rlContent.getBackground().setAlpha(0);
         btn_login.regainBackground();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        if(System.currentTimeMillis() - lastClickTime < 2000){
-//            finish();
-//        }else{
-//            lastClickTime = System.currentTimeMillis();
-//            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        super.onBackPressed();
-//    }
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - mExitTime > 2000) {
+            Toast.makeText(this, R.string.press_again_exit, Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+            return;
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
 }
 
 

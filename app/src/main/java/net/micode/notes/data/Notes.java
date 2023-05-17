@@ -239,6 +239,7 @@ public class Notes {
          * <P> Type: TEXT </P>
          */
         public static final String DATA5 = "data5";
+
     }
 
     public static final class TextNote implements DataColumns {

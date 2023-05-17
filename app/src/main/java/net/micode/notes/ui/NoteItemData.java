@@ -27,33 +27,33 @@ import net.micode.notes.tool.DataUtils;
 
 
 public class NoteItemData {
-    static final String [] PROJECTION = new String [] {
-        NoteColumns.ID,
-        NoteColumns.ALERTED_DATE,
-        NoteColumns.BG_COLOR_ID,
-        NoteColumns.CREATED_DATE,
-        NoteColumns.HAS_ATTACHMENT,
-        NoteColumns.MODIFIED_DATE,
-        NoteColumns.NOTES_COUNT,
-        NoteColumns.PARENT_ID,
-        NoteColumns.SNIPPET,
-        NoteColumns.TYPE,
-        NoteColumns.WIDGET_ID,
-        NoteColumns.WIDGET_TYPE,
+    static final String[] PROJECTION = new String[]{
+            NoteColumns.ID,
+            NoteColumns.ALERTED_DATE,
+            NoteColumns.BG_COLOR_ID,
+            NoteColumns.CREATED_DATE,
+            NoteColumns.HAS_ATTACHMENT,
+            NoteColumns.MODIFIED_DATE,
+            NoteColumns.NOTES_COUNT,
+            NoteColumns.PARENT_ID,
+            NoteColumns.SNIPPET,
+            NoteColumns.TYPE,
+            NoteColumns.WIDGET_ID,
+            NoteColumns.WIDGET_TYPE,
     };
 
-    private static final int ID_COLUMN                    = 0;
-    private static final int ALERTED_DATE_COLUMN          = 1;
-    private static final int BG_COLOR_ID_COLUMN           = 2;
-    private static final int CREATED_DATE_COLUMN          = 3;
-    private static final int HAS_ATTACHMENT_COLUMN        = 4;
-    private static final int MODIFIED_DATE_COLUMN         = 5;
-    private static final int NOTES_COUNT_COLUMN           = 6;
-    private static final int PARENT_ID_COLUMN             = 7;
-    private static final int SNIPPET_COLUMN               = 8;
-    private static final int TYPE_COLUMN                  = 9;
-    private static final int WIDGET_ID_COLUMN             = 10;
-    private static final int WIDGET_TYPE_COLUMN           = 11;
+    private static final int ID_COLUMN = 0;
+    private static final int ALERTED_DATE_COLUMN = 1;
+    private static final int BG_COLOR_ID_COLUMN = 2;
+    private static final int CREATED_DATE_COLUMN = 3;
+    private static final int HAS_ATTACHMENT_COLUMN = 4;
+    private static final int MODIFIED_DATE_COLUMN = 5;
+    private static final int NOTES_COUNT_COLUMN = 6;
+    private static final int PARENT_ID_COLUMN = 7;
+    private static final int SNIPPET_COLUMN = 8;
+    private static final int TYPE_COLUMN = 9;
+    private static final int WIDGET_ID_COLUMN = 10;
+    private static final int WIDGET_TYPE_COLUMN = 11;
 
     private long mId;
     private long mAlertDate;
@@ -76,7 +76,14 @@ public class NoteItemData {
     private boolean mIsOneNoteFollowingFolder;
     private boolean mIsMultiNotesFollowingFolder;
 
+    /**
+     * 从cursor和context构造一个NoteItemData对象
+     *
+     * @param context 应用程序的上下文
+     * @param cursor  包含NoteItemData对象数据的游标
+     */
     public NoteItemData(Context context, Cursor cursor) {
+        // 根据游标中的值设置实例变量
         mId = cursor.getLong(ID_COLUMN);
         mAlertDate = cursor.getLong(ALERTED_DATE_COLUMN);
         mBgColorId = cursor.getInt(BG_COLOR_ID_COLUMN);
@@ -92,6 +99,7 @@ public class NoteItemData {
         mWidgetId = cursor.getInt(WIDGET_ID_COLUMN);
         mWidgetType = cursor.getInt(WIDGET_TYPE_COLUMN);
 
+        // 如果笔记在通话记录文件夹中，则设置电话号码和名称字段
         mPhoneNumber = "";
         if (mParentId == Notes.ID_CALL_RECORD_FOLDER) {
             mPhoneNumber = DataUtils.getCallNumberByNoteId(context.getContentResolver(), mId);
@@ -103,9 +111,12 @@ public class NoteItemData {
             }
         }
 
+        // 如果上面没有设置名称字段，则将其设置为空字符串
         if (mName == null) {
             mName = "";
         }
+
+        // 检查游标的位置
         checkPostion(cursor);
     }
 
@@ -190,7 +201,7 @@ public class NoteItemData {
         return mNotesCount;
     }
 
-    public long getFolderId () {
+    public long getFolderId() {
         return mParentId;
     }
 
