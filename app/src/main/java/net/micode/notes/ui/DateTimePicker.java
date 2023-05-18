@@ -50,9 +50,9 @@ public class DateTimePicker extends FrameLayout {
     private final NumberPicker mHourSpinner;
     private final NumberPicker mMinuteSpinner;
     private final NumberPicker mAmPmSpinner;
-    private Calendar mDate;
+    private final Calendar mDate;
 
-    private String[] mDateDisplayValues = new String[DAYS_IN_ALL_WEEK];
+    private final String[] mDateDisplayValues = new String[DAYS_IN_ALL_WEEK];
 
     private boolean mIsAm;
 
@@ -160,7 +160,7 @@ public class DateTimePicker extends FrameLayout {
 
     public interface OnDateTimeChangedListener {
         void onDateTimeChanged(DateTimePicker view, int year, int month,
-                int dayOfMonth, int hourOfDay, int minute);
+                               int dayOfMonth, int hourOfDay, int minute);
     }
 
     public DateTimePicker(Context context) {
@@ -178,21 +178,21 @@ public class DateTimePicker extends FrameLayout {
         mIsAm = getCurrentHourOfDay() >= HOURS_IN_HALF_DAY;
         inflate(context, R.layout.datetime_picker, this);
 
-        mDateSpinner = (NumberPicker) findViewById(R.id.date);
+        mDateSpinner = findViewById(R.id.date);
         mDateSpinner.setMinValue(DATE_SPINNER_MIN_VAL);
         mDateSpinner.setMaxValue(DATE_SPINNER_MAX_VAL);
         mDateSpinner.setOnValueChangedListener(mOnDateChangedListener);
 
-        mHourSpinner = (NumberPicker) findViewById(R.id.hour);
+        mHourSpinner = findViewById(R.id.hour);
         mHourSpinner.setOnValueChangedListener(mOnHourChangedListener);
-        mMinuteSpinner =  (NumberPicker) findViewById(R.id.minute);
+        mMinuteSpinner = findViewById(R.id.minute);
         mMinuteSpinner.setMinValue(MINUT_SPINNER_MIN_VAL);
         mMinuteSpinner.setMaxValue(MINUT_SPINNER_MAX_VAL);
         mMinuteSpinner.setOnLongPressUpdateInterval(100);
         mMinuteSpinner.setOnValueChangedListener(mOnMinuteChangedListener);
 
         String[] stringsForAmPm = new DateFormatSymbols().getAmPmStrings();
-        mAmPmSpinner = (NumberPicker) findViewById(R.id.amPm);
+        mAmPmSpinner = findViewById(R.id.amPm);
         mAmPmSpinner.setMinValue(AMPM_SPINNER_MIN_VAL);
         mAmPmSpinner.setMaxValue(AMPM_SPINNER_MAX_VAL);
         mAmPmSpinner.setDisplayedValues(stringsForAmPm);
@@ -256,14 +256,14 @@ public class DateTimePicker extends FrameLayout {
     /**
      * Set the current date
      *
-     * @param year The current year
-     * @param month The current month
+     * @param year       The current year
+     * @param month      The current month
      * @param dayOfMonth The current dayOfMonth
-     * @param hourOfDay The current hourOfDay
-     * @param minute The current minute
+     * @param hourOfDay  The current hourOfDay
+     * @param minute     The current minute
      */
     public void setCurrentDate(int year, int month,
-            int dayOfMonth, int hourOfDay, int minute) {
+                               int dayOfMonth, int hourOfDay, int minute) {
         setCurrentYear(year);
         setCurrentMonth(month);
         setCurrentDay(dayOfMonth);
@@ -342,6 +342,7 @@ public class DateTimePicker extends FrameLayout {
 
     /**
      * Get current hour in 24 hour mode, in the range (0~23)
+     *
      * @return The current hour in 24 hour mode
      */
     public int getCurrentHourOfDay() {
@@ -349,7 +350,7 @@ public class DateTimePicker extends FrameLayout {
     }
 
     private int getCurrentHour() {
-        if (mIs24HourView){
+        if (mIs24HourView) {
             return getCurrentHourOfDay();
         } else {
             int hour = getCurrentHourOfDay();
@@ -363,7 +364,6 @@ public class DateTimePicker extends FrameLayout {
 
     /**
      * Set current hour in 24 hour mode, in the range (0~23)
-     *
      * @param hourOfDay
      */
     public void setCurrentHour(int hourOfDay) {
@@ -413,7 +413,7 @@ public class DateTimePicker extends FrameLayout {
     /**
      * @return true if this is in 24 hour view else false.
      */
-    public boolean is24HourView () {
+    public boolean is24HourView() {
         return mIs24HourView;
     }
 
@@ -470,6 +470,7 @@ public class DateTimePicker extends FrameLayout {
 
     /**
      * Set the callback that indicates the 'Set' button has been pressed.
+     *
      * @param callback the callback, if null will do nothing
      */
     public void setOnDateTimeChangedListener(OnDateTimeChangedListener callback) {

@@ -15,12 +15,14 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import net.micode.notes.R;
-import net.micode.notes.callback.NoteCallback;
 import net.micode.notes.data.Auth;
 import net.micode.notes.tool.NoteHttpServer;
 import net.micode.notes.tool.NoteRemoteConfig;
 import net.micode.notes.tool.UIUtils;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +35,6 @@ public class NoteLoginActivity extends Activity {
     private static final String TAG = "chenqy";
     private NoteHttpServer server;
     private NbButton btn_login;
-    private Button btn_verification;
     private EditText note_login_phone_num;
     private EditText note_verification_code;
     private RelativeLayout rlContent;
@@ -52,19 +53,17 @@ public class NoteLoginActivity extends Activity {
         initResources();
         try {
             checkLogin();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     private void bindViews() {
-        btn_login = (NbButton) findViewById(R.id.btn_login);
-        note_verification_code = (EditText) findViewById(R.id.note_verification_code);
-        note_login_phone_num = (EditText) findViewById(R.id.note_login_phone_num);
-        rlContent = (RelativeLayout) findViewById(R.id.btn_login_area);
+        btn_login = findViewById(R.id.btn_login);
+        note_verification_code = findViewById(R.id.note_verification_code);
+        note_login_phone_num = findViewById(R.id.note_login_phone_num);
+        rlContent = findViewById(R.id.btn_login_area);
         rlContent.getBackground().setAlpha(0);
         handler = new Handler();
 
@@ -74,17 +73,12 @@ public class NoteLoginActivity extends Activity {
         context = this;
         server = new NoteHttpServer();
 
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //check verifycode是否合法 合法就跳转
-                try {
-                    checkVerifyCode();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+        btn_login.setOnClickListener(v -> {
+            //check verifycode是否合法 合法就跳转
+            try {
+                checkVerifyCode();
+            } catch (IOException | JSONException e) {
+                throw new RuntimeException(e);
             }
         });
     }
@@ -104,14 +98,14 @@ public class NoteLoginActivity extends Activity {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String resStr = response.body().string();
-                JSONObject resJson = null;
+                JSONObject resJson;
                 try {
                     resJson = new JSONObject(resStr);
                 } catch (JSONException e) {
                     Log.e(TAG, "NoteListActivity checkLogin JSONObject转化失败");
                     return;
                 }
-                int code = 0;
+                int code;
                 try {
                     code = resJson.getInt("code");
                 } catch (JSONException e) {
@@ -138,7 +132,6 @@ public class NoteLoginActivity extends Activity {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("phone", phone_num);
         jsonObject.put("verifycode", verify_code);
-        String status = "";
         server.sendAsyncPostRequest(url, jsonObject.toString(), NoteHttpServer.BodyType.FORM_DATA, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -147,20 +140,20 @@ public class NoteLoginActivity extends Activity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                JSONObject responseJson = null;
+                JSONObject responseJson;
                 try {
                     responseJson = new JSONObject(response.body().string());
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                int code = -1;
+                int code;
                 try {
                     code = responseJson.getInt("code");
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
                 if (code == NoteRemoteConfig.RESPONSE_SUCCESS) {
-                    String token = null;
+                    String token;
                     try {
                         token = responseJson.getString("data");
                     } catch (JSONException e) {
@@ -188,23 +181,18 @@ public class NoteLoginActivity extends Activity {
 
     private void gotoNew() {
         btn_login.gotoNew();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int xc = (btn_login.getLeft() + btn_login.getRight()) / 2;
-            int yc = (btn_login.getTop() + btn_login.getBottom()) / 2;
-            animator = ViewAnimationUtils.createCircularReveal(rlContent, xc, yc, 0, 1111);
-        }
+        int xc = (btn_login.getLeft() + btn_login.getRight()) / 2;
+        int yc = (btn_login.getTop() + btn_login.getBottom()) / 2;
+        animator = ViewAnimationUtils.createCircularReveal(rlContent, xc, yc, 0, 1111);
 
         animator.setDuration(300);
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        goNoteList();
-                        overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
+                handler.postDelayed(() -> {
+                    goNoteList();
+                    overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
 
-                    }
                 }, 200);
             }
 
@@ -248,7 +236,6 @@ public class NoteLoginActivity extends Activity {
         if (System.currentTimeMillis() - mExitTime > 2000) {
             Toast.makeText(this, R.string.press_again_exit, Toast.LENGTH_SHORT).show();
             mExitTime = System.currentTimeMillis();
-            return;
         } else {
             super.onBackPressed();
         }

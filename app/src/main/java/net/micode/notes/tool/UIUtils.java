@@ -1,20 +1,13 @@
 package net.micode.notes.tool;
 
 import android.app.Activity;
-import android.content.Context;
 import android.widget.Toast;
 import net.micode.notes.callback.NoteCallback;
-import okhttp3.Callback;
 
 public class UIUtils {
 
     public static void runInUI(Activity activity, NoteCallback callback) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                callback.execute();
-            }
-        });
+        activity.runOnUiThread(callback::execute);
     }
 
     public static void sendMsg(Activity activity, String msg) {

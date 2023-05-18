@@ -63,13 +63,13 @@ public class FoldersListAdapter extends CursorAdapter {
                 .getString(R.string.menu_move_parent_folder) : cursor.getString(NAME_COLUMN);
     }
 
-    private class FolderListItem extends LinearLayout {
-        private TextView mName;
+    private static class FolderListItem extends LinearLayout {
+        private final TextView mName;
 
         public FolderListItem(Context context) {
             super(context);
             inflate(context, R.layout.folder_list_item, this);
-            mName = (TextView) findViewById(R.id.tv_folder_name);
+            mName =  findViewById(R.id.tv_folder_name);
         }
 
         public void bind(String name) {

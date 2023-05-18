@@ -31,7 +31,6 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -43,13 +42,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-
 import net.micode.notes.R;
-import net.micode.notes.data.Auth;
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.NoteColumns;
 import net.micode.notes.gtask.remote.GTaskSyncService;
-import net.micode.notes.model.Note;
 import net.micode.notes.model.WorkingNote;
 import net.micode.notes.service.BackupBoundService;
 import net.micode.notes.tool.BackupUtils;
@@ -58,12 +54,7 @@ import net.micode.notes.tool.ResourceParser;
 import net.micode.notes.ui.NotesListAdapter.AppWidgetAttribute;
 import net.micode.notes.widget.NoteWidgetProvider_2x;
 import net.micode.notes.widget.NoteWidgetProvider_4x;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -93,8 +84,6 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         NOTE_LIST, SUB_FOLDER, CALL_RECORD_FOLDER
     }
 
-    ;
-
     private ListEditState mState;
 
     private BackgroundQueryHandler mBackgroundQueryHandler;
@@ -121,8 +110,6 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     private static final String TAG = "chenqy";
 
-    public static final int NOTES_LISTVIEW_SCROLL_RATE = 30;
-
     private NoteItemData mFocusNoteDataItem;
 
     private static final String NORMAL_SELECTION = NoteColumns.PARENT_ID + "=?";
@@ -139,14 +126,12 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     //Customized by chenqy
 
     //弹出菜单
-    private PopupWindow mPopupWindow;
     private long mExitTime = 0;
     //注册广播
     public static final String BACKUP_ACTION = "net.micode.notes.backup";
-    public static final String MENU_DISMISS = "shutdown_pop_menu";
 
 
-//    -------------------------------------   C Q Y   ---------------------------------------------------------
+    //    -------------------------------------   C Q Y   ---------------------------------------------------------
     //绑定状态
     private boolean is_bind_backup_service = false;
     //服务对象
@@ -173,20 +158,16 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switch (action) {
-                case BACKUP_ACTION:
-                    try {
-                        startBackup(intent);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                default:
-                    break;
+            if (action.equals(BACKUP_ACTION)) {
+                try {
+                    startBackup(intent);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     };
@@ -204,14 +185,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         Bundle args = intent.getExtras();
         long[] long_list = (long[]) args.get(NoteMenuListFragment.SELECTED_ID_LIST_KEY);
         ArrayList<Long> selected_list;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            selected_list = Arrays.stream(long_list).boxed().collect(Collectors.toCollection(ArrayList::new));
-        } else {
-            selected_list = new ArrayList<>();
-            for (long id : long_list) {
-                selected_list.add(id);
-            }
-        }
+        selected_list = Arrays.stream(long_list).boxed().collect(Collectors.toCollection(ArrayList::new));
         return selected_list;
     }
 
@@ -224,11 +198,8 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         setContentView(R.layout.note_list);
         initResources();
         initCustom();
-        /**
-         * Insert an introduction when user firstly use this application
-         */
+        //Insert an introduction when user firstly use this application
         setAppInfoFromRawRes();
-//        SqliteStudio
     }
 
 
@@ -290,11 +261,10 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
             // 如果保存笔记成功，则将添加介绍信息的标志设置为 true
             if (note.saveNote()) {
-                sp.edit().putBoolean(PREFERENCE_ADD_INTRODUCTION, true).commit();
+                sp.edit().putBoolean(PREFERENCE_ADD_INTRODUCTION, true).apply();
             } else {
                 // 如果保存笔记失败，则记录日志并退出方法
                 Log.e(TAG, "Save introduction note error");
-                return;
             }
         }
     }
@@ -333,20 +303,20 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         mContentResolver = this.getContentResolver();
         mBackgroundQueryHandler = new BackgroundQueryHandler(this.getContentResolver());
         mCurrentFolderId = Notes.ID_ROOT_FOLDER;
-        mNotesListView = (ListView) findViewById(R.id.notes_list);
+        mNotesListView = findViewById(R.id.notes_list);
         mNotesListView.addFooterView(LayoutInflater.from(this).inflate(R.layout.note_list_footer, null),
                 null, false);
         mNotesListView.setOnItemClickListener(new OnListItemClickListener());
         mNotesListView.setOnItemLongClickListener(this);
         mNotesListAdapter = new NotesListAdapter(this);
         mNotesListView.setAdapter(mNotesListAdapter);
-        mAddNewNote = (Button) findViewById(R.id.btn_new_note);
+        mAddNewNote = findViewById(R.id.btn_new_note);
         mAddNewNote.setOnClickListener(this);
         mAddNewNote.setOnTouchListener(new NewNoteOnTouchListener());
         mDispatch = false;
         mDispatchY = 0;
         mOriginY = 0;
-        mTitleBar = (TextView) findViewById(R.id.tv_title_bar);
+        mTitleBar = findViewById(R.id.tv_title_bar);
         mState = ListEditState.NOTE_LIST;
         mModeCallBack = new ModeCallback();
     }
@@ -360,12 +330,11 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private class ModeCallback implements ListView.MultiChoiceModeListener, OnMenuItemClickListener {
         private DropdownMenu mDropDownMenu;
         private ActionMode mActionMode;
-        private MenuItem mMoveMenu;
 
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             getMenuInflater().inflate(R.menu.note_list_options, menu);
             menu.findItem(R.id.delete).setOnMenuItemClickListener(this);
-            mMoveMenu = menu.findItem(R.id.move);
+            MenuItem mMoveMenu = menu.findItem(R.id.move);
             if (mFocusNoteDataItem.getParentId() == Notes.ID_CALL_RECORD_FOLDER
                     || DataUtils.getUserFolderCount(mContentResolver) == 0) {
                 mMoveMenu.setVisible(false);
@@ -382,15 +351,12 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                     R.layout.note_list_dropdown_menu, null);
             mode.setCustomView(customView);
             mDropDownMenu = new DropdownMenu(NotesListActivity.this,
-                    (Button) customView.findViewById(R.id.selection_menu),
+                    customView.findViewById(R.id.selection_menu),
                     R.menu.note_list_dropdown);
-            mDropDownMenu.setOnDropdownMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    mNotesListAdapter.selectAll(!mNotesListAdapter.isAllSelected());
-                    updateMenu();
-                    return true;
-                }
-
+            mDropDownMenu.setOnDropdownMenuItemClickListener(item -> {
+                mNotesListAdapter.selectAll(!mNotesListAdapter.isAllSelected());
+                updateMenu();
+                return true;
             });
             return true;
         }
@@ -477,9 +443,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                     int newNoteViewHeight = mAddNewNote.getHeight();
                     int start = screenHeight - newNoteViewHeight;
                     int eventY = start + (int) event.getY();
-                    /**
-                     * Minus TitleBar's height
-                     */
+                    //Minus TitleBar's height
                     if (mState == ListEditState.SUB_FOLDER) {
                         eventY -= mTitleBar.getHeight();
                         start -= mTitleBar.getHeight();
@@ -529,7 +493,6 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     }
 
-    ;
 
     private void startAsyncNotesListQuery() {
         String selection = (mCurrentFolderId == Notes.ID_ROOT_FOLDER) ? ROOT_FOLDER_SELECTION
@@ -559,7 +522,6 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                     }
                     break;
                 default:
-                    return;
             }
         }
     }
@@ -568,19 +530,16 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         AlertDialog.Builder builder = new AlertDialog.Builder(NotesListActivity.this);
         builder.setTitle(R.string.menu_title_select_folder);
         final FoldersListAdapter adapter = new FoldersListAdapter(this, cursor);
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int which) {
-                DataUtils.batchMoveToFolder(mContentResolver,
-                        mNotesListAdapter.getSelectedItemIds(), adapter.getItemId(which));
-                Toast.makeText(
-                        NotesListActivity.this,
-                        getString(R.string.format_move_notes_to_folder,
-                                mNotesListAdapter.getSelectedCount(),
-                                adapter.getFolderName(NotesListActivity.this, which)),
-                        Toast.LENGTH_SHORT).show();
-                mModeCallBack.finishActionMode();
-            }
+        builder.setAdapter(adapter, (dialog, which) -> {
+            DataUtils.batchMoveToFolder(mContentResolver,
+                    mNotesListAdapter.getSelectedItemIds(), adapter.getItemId(which));
+            Toast.makeText(
+                    NotesListActivity.this,
+                    getString(R.string.format_move_notes_to_folder,
+                            mNotesListAdapter.getSelectedCount(),
+                            adapter.getFolderName(NotesListActivity.this, which)),
+                    Toast.LENGTH_SHORT).show();
+            mModeCallBack.finishActionMode();
         });
         builder.show();
     }
@@ -645,7 +604,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             return;
         }
 
-        HashSet<Long> ids = new HashSet<Long>();
+        HashSet<Long> ids = new HashSet<>();
         ids.add(folderId);
         HashSet<AppWidgetAttribute> widgets = DataUtils.getFolderNoteWidget(mContentResolver,
                 folderId);
@@ -691,12 +650,8 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_new_note:
-                createNewNote();
-                break;
-            default:
-                break;
+        if (v.getId() == R.id.btn_new_note) {
+            createNewNote();
         }
     }
 
@@ -715,7 +670,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private void showCreateOrModifyFolderDialog(final boolean create) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_edit_text, null);
-        final EditText etName = (EditText) view.findViewById(R.id.et_foler_name);
+        final EditText etName = view.findViewById(R.id.et_foler_name);
         showSoftInput();
         if (!create) {
             if (mFocusNoteDataItem != null) {
@@ -731,51 +686,43 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         }
 
         builder.setPositiveButton(android.R.string.ok, null);
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                hideSoftInput(etName);
-            }
-        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> hideSoftInput(etName));
 
         final Dialog dialog = builder.setView(view).show();
-        final Button positive = (Button) dialog.findViewById(android.R.id.button1);
-        positive.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                hideSoftInput(etName);
-                String name = etName.getText().toString();
-                if (DataUtils.checkVisibleFolderName(mContentResolver, name)) {
-                    Toast.makeText(NotesListActivity.this, getString(R.string.folder_exist, name),
-                            Toast.LENGTH_LONG).show();
-                    etName.setSelection(0, etName.length());
-                    return;
-                }
-                if (!create) {
-                    if (!TextUtils.isEmpty(name)) {
-                        ContentValues values = new ContentValues();
-                        values.put(NoteColumns.SNIPPET, name);
-                        values.put(NoteColumns.TYPE, Notes.TYPE_FOLDER);
-                        values.put(NoteColumns.LOCAL_MODIFIED, 1);
-                        mContentResolver.update(Notes.CONTENT_NOTE_URI, values, NoteColumns.ID
-                                + "=?", new String[]{
-                                String.valueOf(mFocusNoteDataItem.getId())
-                        });
-                    }
-                } else if (!TextUtils.isEmpty(name)) {
+        final Button positive = dialog.findViewById(android.R.id.button1);
+        positive.setOnClickListener(v -> {
+            hideSoftInput(etName);
+            String name = etName.getText().toString();
+            if (DataUtils.checkVisibleFolderName(mContentResolver, name)) {
+                Toast.makeText(NotesListActivity.this, getString(R.string.folder_exist, name),
+                        Toast.LENGTH_LONG).show();
+                etName.setSelection(0, etName.length());
+                return;
+            }
+            if (!create) {
+                if (!TextUtils.isEmpty(name)) {
                     ContentValues values = new ContentValues();
                     values.put(NoteColumns.SNIPPET, name);
                     values.put(NoteColumns.TYPE, Notes.TYPE_FOLDER);
-                    mContentResolver.insert(Notes.CONTENT_NOTE_URI, values);
+                    values.put(NoteColumns.LOCAL_MODIFIED, 1);
+                    mContentResolver.update(Notes.CONTENT_NOTE_URI, values, NoteColumns.ID
+                            + "=?", new String[]{
+                            String.valueOf(mFocusNoteDataItem.getId())
+                    });
                 }
-                dialog.dismiss();
+            } else if (!TextUtils.isEmpty(name)) {
+                ContentValues values = new ContentValues();
+                values.put(NoteColumns.SNIPPET, name);
+                values.put(NoteColumns.TYPE, Notes.TYPE_FOLDER);
+                mContentResolver.insert(Notes.CONTENT_NOTE_URI, values);
             }
+            dialog.dismiss();
         });
 
         if (TextUtils.isEmpty(etName.getText())) {
             positive.setEnabled(false);
         }
-        /**
-         * When the name edit text is null, disable the positive button
-         */
+        //When the name edit text is null, disable the positive button
         etName.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // TODO Auto-generated method stub
@@ -783,11 +730,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (TextUtils.isEmpty(etName.getText())) {
-                    positive.setEnabled(false);
-                } else {
-                    positive.setEnabled(true);
-                }
+                positive.setEnabled(!TextUtils.isEmpty(etName.getText()));
             }
 
             public void afterTextChanged(Editable s) {
@@ -881,11 +824,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.setMessage(getString(R.string.alert_message_delete_folder));
                 builder.setPositiveButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                deleteFolder(mFocusNoteDataItem.getId());
-                            }
-                        });
+                        (dialog, which) -> deleteFolder(mFocusNoteDataItem.getId()));
                 builder.setNegativeButton(android.R.string.cancel, null);
                 builder.show();
                 break;
@@ -963,6 +902,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         return true;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void exportNoteToText() {
         final BackupUtils backup = BackupUtils.getInstance(NotesListActivity.this);
         new AsyncTask<Void, Void, Integer>() {

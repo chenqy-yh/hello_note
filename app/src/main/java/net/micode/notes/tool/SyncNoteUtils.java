@@ -2,11 +2,7 @@ package net.micode.notes.tool;
 
 import android.app.Activity;
 import android.content.Context;
-import android.nfc.Tag;
-import android.util.Log;
-import android.widget.Toast;
 import com.google.gson.Gson;
-import net.micode.notes.callback.NoteCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -41,7 +37,7 @@ public class SyncNoteUtils {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 UIUtils.sendMsg((Activity) context, "同步成功");
             }
         });

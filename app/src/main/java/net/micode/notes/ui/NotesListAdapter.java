@@ -40,17 +40,16 @@ public class NotesListAdapter extends CursorAdapter {
 
     public NotesListAdapter(Context context, Cursor c) {
         super(context, c);
-        this.mContext = mContext;
     }
 
     public static class AppWidgetAttribute {
         public int widgetId;
         public int widgetType;
-    };
+    }
 
     public NotesListAdapter(Context context) {
         super(context, null);
-        mSelectedIndex = new HashMap<Integer, Boolean>();
+        mSelectedIndex = new HashMap<>();
         mContext = context;
         mNotesCount = 0;
     }
@@ -169,11 +168,11 @@ public class NotesListAdapter extends CursorAdapter {
      * @return 返回一个包含已选项目 ID 的 HashSet。
      */
     public HashSet<Long> getSelectedItemIds() {
-        HashSet<Long> itemSet = new HashSet<Long>();
+        HashSet<Long> itemSet = new HashSet<>();
         // 遍历已选项目列表，并将所有已选项目的 ID 添加到 HashSet 中
         for (Integer position : mSelectedIndex.keySet()) {
-            if (mSelectedIndex.get(position) == true) {
-                Long id = getItemId(position);
+            if (Boolean.TRUE.equals(mSelectedIndex.get(position))) {
+                long id = getItemId(position);
                 if (id == Notes.ID_ROOT_FOLDER) {
                     Log.d(TAG, "Wrong item id, should not happen");
                 } else {
@@ -191,10 +190,10 @@ public class NotesListAdapter extends CursorAdapter {
      * @return 返回一个包含已选项目小部件信息的 HashSet。
      */
     public HashSet<AppWidgetAttribute> getSelectedWidget() {
-        HashSet<AppWidgetAttribute> itemSet = new HashSet<AppWidgetAttribute>();
+        HashSet<AppWidgetAttribute> itemSet = new HashSet<>();
         // 遍历已选项目列表，并将所有已选项目的小部件信息添加到 HashSet 中
         for (Integer position : mSelectedIndex.keySet()) {
-            if (mSelectedIndex.get(position) == true) {
+            if (Boolean.TRUE.equals(mSelectedIndex.get(position))) {
                 Cursor c = (Cursor) getItem(position);
                 if (c != null) {
                     AppWidgetAttribute widget = new AppWidgetAttribute();
@@ -219,13 +218,10 @@ public class NotesListAdapter extends CursorAdapter {
      */
     public int getSelectedCount() {
         Collection<Boolean> values = mSelectedIndex.values();
-        if (null == values) {
-            return 0;
-        }
         Iterator<Boolean> iter = values.iterator();
         int count = 0;
         while (iter.hasNext()) {
-            if (true == iter.next()) {
+            if (iter.next()) {
                 count++;
             }
         }
@@ -252,7 +248,7 @@ public class NotesListAdapter extends CursorAdapter {
         if (null == mSelectedIndex.get(position)) {
             return false;
         }
-        return mSelectedIndex.get(position);
+        return Boolean.TRUE.equals(mSelectedIndex.get(position));
     }
 
 

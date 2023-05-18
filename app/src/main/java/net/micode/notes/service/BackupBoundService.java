@@ -29,39 +29,35 @@ import java.util.List;
 
 public class BackupBoundService extends Service {
 
-    //tag
     private static final String TAG = "chenqy";
     public static final String SERVICE_NAME = "BackupIntentService";
     public static final String BACKUP_NOTE_ACTION = "net.micode.notes.BACKUP_NOTE";
 
     private final IBinder binder = new LocalBinder();
 
-    private final static String[] PROJECTION_NOTE = new String[]{
-            Notes.NoteColumns.VERSION,
+    private final String[] PROJECTION_NOTE = new String[]{
+            Notes.NoteColumns.VERSION
     };
-    private final static String[] PROJECTION_DATA = new String[]{
+    private final String[] PROJECTION_DATA = new String[]{
             Notes.DataColumns.CONTENT,
-            Notes.DataColumns.DATA5,
+            Notes.DataColumns.DATA5
     };
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()){
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 1){
+            if (msg.what == 1) {
                 String text = (String) msg.obj;
-                Toast.makeText(BackupBoundService.this,text,Toast.LENGTH_SHORT).show();
+                Toast.makeText(BackupBoundService.this, text, Toast.LENGTH_SHORT).show();
             }
         }
     };
-
-
 
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
     }
-
 
     public void backupNotes(List<Long> noteData) throws JSONException {
         NoteHttpServer noteHttpServer = new NoteHttpServer();
@@ -70,8 +66,8 @@ public class BackupBoundService extends Service {
 
         for (Long noteId : noteData) {
             JSONObject body = new JSONObject();
-            body.put("user_id",phone);
-            // Get version number from Notes.CONTENT_NOTE_URI
+            body.put("user_id", phone);
+
             Cursor cursorNote = getContentResolver().query(
                     Notes.CONTENT_NOTE_URI,
                     PROJECTION_NOTE,
@@ -85,7 +81,6 @@ public class BackupBoundService extends Service {
                 body.put("version", version);
             }
 
-            // Get content and note token from Notes.CONTENT_DATA_URI
             Cursor cursorData = getContentResolver().query(
                     Notes.CONTENT_DATA_URI,
                     PROJECTION_DATA,
@@ -101,12 +96,11 @@ public class BackupBoundService extends Service {
                 body.put("note_token", noteToken);
             }
 
-            // Send data to server
             noteHttpServer.sendAsyncPostRequest(url, body.toString(), NoteHttpServer.BodyType.JSON, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.e(TAG, "Backup failed: " + e.getMessage());
-                    mHandler.obtainMessage(1,"Backup failed: " + e.getMessage()).sendToTarget();
+                    mHandler.obtainMessage(1, "Backup failed: " + e.getMessage()).sendToTarget();
                 }
 
                 @Override
@@ -116,13 +110,12 @@ public class BackupBoundService extends Service {
 
                     try {
                         JSONObject result = new JSONObject(resStr);
-                        String noteToken = (String) result.get("data");
+                        String noteToken = result.optString("data");
 
                         if (noteToken == null) {
                             Log.e(TAG, "Backup failed");
                             mHandler.obtainMessage(1, "Backup failed").sendToTarget();
                         } else {
-                            // Update note_token in local database
                             ContentValues values = new ContentValues();
                             values.put(Notes.DataColumns.DATA5, noteToken);
                             getContentResolver().update(
@@ -140,8 +133,6 @@ public class BackupBoundService extends Service {
             });
         }
     }
-
-
 
     public class LocalBinder extends Binder {
         public BackupBoundService getService() {

@@ -21,7 +21,7 @@ public class SyncListAdapter extends BaseAdapter {
     public SyncListAdapter(List<SyncNoteUtils.SyncNoteItemData> data, Context context) {
         mData = data;
         mContext = context;
-        mSelectedList= new ArrayList<>();
+        mSelectedList = new ArrayList<>();
     }
 
     @Override
@@ -41,9 +41,9 @@ public class SyncListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder vh = null;
+        ViewHolder vh;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.test_list_item, null, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.test_list_item, parent, false);
             vh = new ViewHolder();
             vh.tv_note_id = convertView.findViewById(R.id.numberTextView);
             vh.tv_note_snippet = convertView.findViewById(R.id.textTextView);
@@ -52,19 +52,22 @@ public class SyncListAdapter extends BaseAdapter {
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-        vh.tv_note_id.setText(String.valueOf(position+1)+".");
-        vh.tv_note_snippet.setText((CharSequence) mData.get(position).getContent());
-        vh.checkBox.setTag( mData.get(position));
-        ViewHolder finalVh = vh;
+
+        SyncNoteUtils.SyncNoteItemData item = mData.get(position);
+        vh.tv_note_id.setText(String.valueOf(position + 1) + ".");
+        vh.tv_note_snippet.setText(item.getContent());
+        vh.checkBox.setTag(item);
+
         convertView.setOnClickListener(v -> {
-            if (finalVh.checkBox.isChecked()) {
-                finalVh.checkBox.setChecked(false);
-                mSelectedList.remove(mData.get(position));
+            if (vh.checkBox.isChecked()) {
+                vh.checkBox.setChecked(false);
+                mSelectedList.remove(item);
             } else {
-                finalVh.checkBox.setChecked(true);
-                mSelectedList.add(mData.get(position));
+                vh.checkBox.setChecked(true);
+                mSelectedList.add(item);
             }
         });
+
         return convertView;
     }
 
@@ -73,12 +76,8 @@ public class SyncListAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        //TODO
         private TextView tv_note_id;
         private TextView tv_note_snippet;
         private CheckBox checkBox;
-
     }
-
-
 }

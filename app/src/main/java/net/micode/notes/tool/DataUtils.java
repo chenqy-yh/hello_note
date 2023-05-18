@@ -57,7 +57,7 @@ public class DataUtils {
         }
 
         // 创建操作列表
-        ArrayList<ContentProviderOperation> operationList = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> operationList = new ArrayList<>();
         for (long id : ids) {
             // 不包括系统文件夹根节点
             if(id == Notes.ID_ROOT_FOLDER) {
@@ -73,15 +73,13 @@ public class DataUtils {
             // 通过ContentResolver的applyBatch()方法将所有操作提交给ContentProvider执行
             ContentProviderResult[] results = resolver.applyBatch(Notes.AUTHORITY, operationList);
             if (results == null || results.length == 0 || results[0] == null) {
-                Log.d(TAG, "delete notes failed, ids:" + ids.toString());
+                Log.d(TAG, "delete notes failed, ids:" + ids);
                 return false;
             }
             // 如果成功则返回true
             return true;
-        } catch (RemoteException e) {
-            Log.e(TAG, String.format("%s: %s", e.toString(), e.getMessage()));
-        } catch (OperationApplicationException e) {
-            Log.e(TAG, String.format("%s: %s", e.toString(), e.getMessage()));
+        } catch (RemoteException | OperationApplicationException e) {
+            Log.e(TAG, String.format("%s: %s", e, e.getMessage()));
         }
         // 失败则返回false
         return false;
@@ -127,7 +125,7 @@ public class DataUtils {
         }
 
         // 创建操作列表
-        ArrayList<ContentProviderOperation> operationList = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> operationList = new ArrayList<>();
         for (long id : ids) {
             // 创建ContentProviderOperation.Builder对象来构建更新该id的操作，并将其添加到operationList中
             ContentProviderOperation.Builder builder = ContentProviderOperation
@@ -143,15 +141,13 @@ public class DataUtils {
             // 通过ContentResolver的applyBatch()方法将所有操作提交给ContentProvider执行
             ContentProviderResult[] results = resolver.applyBatch(Notes.AUTHORITY, operationList);
             if (results == null || results.length == 0 || results[0] == null) {
-                Log.d(TAG, "move notes failed, ids:" + ids.toString());
+                Log.d(TAG, "move notes failed, ids:" + ids);
                 return false;
             }
             // 如果成功则返回true
             return true;
-        } catch (RemoteException e) {
-            Log.e(TAG, String.format("%s: %s", e.toString(), e.getMessage()));
-        } catch (OperationApplicationException e) {
-            Log.e(TAG, String.format("%s: %s", e.toString(), e.getMessage()));
+        } catch (RemoteException | OperationApplicationException e) {
+            Log.e(TAG, String.format("%s: %s", e, e.getMessage()));
         }
         // 失败则返回false
         return false;
@@ -182,7 +178,7 @@ public class DataUtils {
                     // 从Cursor对象中获取查询结果中count字段的值
                     count = cursor.getInt(0);
                 } catch (IndexOutOfBoundsException e) {
-                    Log.e(TAG, "get folder count failed:" + e.toString());
+                    Log.e(TAG, "get folder count failed:" + e);
                 } finally {
                     // 关闭游标
                     cursor.close();
@@ -314,7 +310,7 @@ public class DataUtils {
         HashSet<AppWidgetAttribute> set = null;
         if (c != null) {
             if (c.moveToFirst()) {
-                set = new HashSet<AppWidgetAttribute>();
+                set = new HashSet<>();
                 do {
                     try {
                         // 从Cursor对象中获取查询结果中Widget的id和类型，并将其封装到AppWidgetAttribute对象中
@@ -354,7 +350,7 @@ public class DataUtils {
             try {
                 return cursor.getString(0);
             } catch (IndexOutOfBoundsException e) {
-                Log.e(TAG, "Get call number fails " + e.toString());
+                Log.e(TAG, "Get call number fails " + e);
             } finally {
                 // 关闭游标
                 cursor.close();
@@ -386,7 +382,7 @@ public class DataUtils {
                 try {
                     return cursor.getLong(0);
                 } catch (IndexOutOfBoundsException e) {
-                    Log.e(TAG, "Get call note id fails " + e.toString());
+                    Log.e(TAG, "Get call note id fails " + e);
                 }
             }
             // 关闭游标

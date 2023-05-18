@@ -52,13 +52,13 @@ public class Note {
         // 向数据库中插入新笔记数据，并获取包含新建笔记Uri的对象uri
         Uri uri = context.getContentResolver().insert(Notes.CONTENT_NOTE_URI, values);
 
-        long noteId = 0;
+        long noteId;
         try {
             // 从uri中获得新建笔记的id，即路径segments的第二个元素，并将其转换为long类型返回
-            noteId = Long.valueOf(uri.getPathSegments().get(1));
+            noteId = Long.parseLong(uri.getPathSegments().get(1));
         } catch (NumberFormatException e) {
             // 如果获取不到这个id或者它等于-1，则会抛出相应的异常
-            Log.e(TAG, "Get note id error :" + e.toString());
+            Log.e(TAG, "Get note id error :" + e);
             noteId = 0;
         }
         if (noteId == -1) {
@@ -220,14 +220,11 @@ public class Note {
         mNoteDiffValues.clear();
 
         // 将mNoteData中的数据保存到本地数据库中
-        if (mNoteData.isLocalModified()
-                && (mNoteData.pushIntoContentResolver(context, noteId) == null)) {
-            // 如果保存失败，则返回false
-            return false;
-        }
+        // 如果保存失败，则返回false
+        return !mNoteData.isLocalModified()
+                || (mNoteData.pushIntoContentResolver(context, noteId) != null);
 
         // 如果保存成功，则返回true
-        return true;
     }
 
 
@@ -369,8 +366,8 @@ public class Note {
             }
 
             // 初始化operationList列表和builder对象
-            ArrayList<ContentProviderOperation> operationList = new ArrayList<ContentProviderOperation>();
-            ContentProviderOperation.Builder builder = null;
+            ArrayList<ContentProviderOperation> operationList = new ArrayList<>();
+            ContentProviderOperation.Builder builder;
 
             // 如果mTextDataValues对象不为空，则将其中的数据保存到ContentResolver中
             if(mTextDataValues.size() > 0) {
@@ -384,7 +381,7 @@ public class Note {
                             mTextDataValues);
                     try {
                         // 解析Uri中的id值，并将其设置为mTextDataId
-                        setTextDataId(Long.valueOf(uri.getPathSegments().get(1)));
+                        setTextDataId(Long.parseLong(uri.getPathSegments().get(1)));
                     } catch (NumberFormatException e) {
                         Log.e(TAG, "Insert new text data fail with noteId" + noteId);
                         // 插入失败，清空mTextDataValues，并返回null
@@ -414,7 +411,7 @@ public class Note {
                             mCallDataValues);
                     try {
                         // 解析Uri中的id值，并将其设置为mCallDataId
-                        setCallDataId(Long.valueOf(uri.getPathSegments().get(1)));
+                        setCallDataId(Long.parseLong(uri.getPathSegments().get(1)));
                     } catch (NumberFormatException e) {
                         Log.e(TAG, "Insert new call data fail with noteId" + noteId);
                         // 插入失败，清空mCallDataValues，并返回null
@@ -440,10 +437,10 @@ public class Note {
                     return (results == null || results.length == 0 || results[0] == null) ? null
                             : ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, noteId);
                 } catch (RemoteException e) { // 捕获 RemoteException 异常
-                    Log.e(TAG, String.format("%s: %s", e.toString(), e.getMessage())); // 记录异常信息到日志
+                    Log.e(TAG, String.format("%s: %s", e, e.getMessage())); // 记录异常信息到日志
                     return null; // 返回 null
                 } catch (OperationApplicationException e) { // 捕获 OperationApplicationException 异常
-                    Log.e(TAG, String.format("%s: %s", e.toString(), e.getMessage())); // 记录异常信息到日志
+                    Log.e(TAG, String.format("%s: %s", e, e.getMessage())); // 记录异常信息到日志
                     return null; // 返回 null
                 }
             }

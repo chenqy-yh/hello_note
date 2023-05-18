@@ -6,13 +6,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import net.micode.notes.R;
 
 public class NoteCheckBox extends androidx.appcompat.widget.AppCompatCheckBox implements CompoundButton.OnCheckedChangeListener {
 
-    //tag
     private static final String TAG = "chenqy";
     private long note_id;
 
@@ -34,7 +32,6 @@ public class NoteCheckBox extends androidx.appcompat.widget.AppCompatCheckBox im
     @Override
     protected void onAttachedToWindow() {
         init();
-//        setEnabled(false);
         super.onAttachedToWindow();
     }
 
@@ -57,10 +54,10 @@ public class NoteCheckBox extends androidx.appcompat.widget.AppCompatCheckBox im
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Log.e(TAG, "onCheckedChanged ");
         if (isChecked) {
-            Log.e(TAG, "onCheckedChanged: " + isChecked);
+            Log.e(TAG, "onCheckedChanged: " + true);
             this.setCompoundDrawablesWithIntrinsicBounds(null, null, bitmapDrawable, null);
         } else {
-            Log.e(TAG, "onCheckedChanged: " + isChecked);
+            Log.e(TAG, "onCheckedChanged: " + false);
             this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
     }

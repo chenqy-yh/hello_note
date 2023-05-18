@@ -81,7 +81,7 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
         // 获取 intent 中传递的笔记 ID，并根据 ID 获取笔记摘录
         Intent intent = getIntent();
         try {
-            mNoteId = Long.valueOf(intent.getData().getPathSegments().get(1));
+            mNoteId = Long.parseLong(intent.getData().getPathSegments().get(1));
             mSnippet = DataUtils.getSnippetById(this.getContentResolver(), mNoteId);
 
             // 将笔记摘录截取到预设的最大长度，并添加省略号
@@ -139,13 +139,7 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
             mPlayer.prepare();
             mPlayer.setLooping(true);
             mPlayer.start();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -177,16 +171,11 @@ public class AlarmAlertActivity extends Activity implements OnClickListener, OnD
      */
     public void onClick(DialogInterface dialog, int which) {
         // 根据不同的按钮类型执行不同的操作
-        switch (which) {
-            case DialogInterface.BUTTON_NEGATIVE:
-                // 如果点击了“进入”按钮，则打开笔记编辑界面并查看当前笔记
-                Intent intent = new Intent(this, NoteEditActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.putExtra(Intent.EXTRA_UID, mNoteId);
-                startActivity(intent);
-                break;
-            default:
-                break;
+        if (which == DialogInterface.BUTTON_NEGATIVE) {// 如果点击了“进入”按钮，则打开笔记编辑界面并查看当前笔记
+            Intent intent = new Intent(this, NoteEditActivity.class);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.putExtra(Intent.EXTRA_UID, mNoteId);
+            startActivity(intent);
         }
     }
 

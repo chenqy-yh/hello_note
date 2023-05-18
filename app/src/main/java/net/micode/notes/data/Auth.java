@@ -1,30 +1,19 @@
 package net.micode.notes.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
-import android.webkit.HttpAuthHandler;
-import net.micode.notes.callback.NoteCallback;
 import net.micode.notes.tool.NoteHttpServer;
 import net.micode.notes.tool.NoteRemoteConfig;
-import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.logging.Handler;
 
 public class Auth {
 
-
-    //tag
     private static final String TAG = "chenqy";
     public static final String AUTHORITY = "micode_notes";
     public static final Uri CONTENT_NOTE_URI = Uri.parse("content://" + AUTHORITY + "/auth");
@@ -52,7 +41,7 @@ public class Auth {
         return  sharedPreferences.getString(token_key, null);
     }
 
-    public static void checkAuthToken(Context context, Callback callback) throws IOException, JSONException {
+    public static void checkAuthToken(Context context, Callback callback) throws JSONException {
         String auth_token = getAuthToken(context, AUTH_TOKEN_KEY);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("token", auth_token);

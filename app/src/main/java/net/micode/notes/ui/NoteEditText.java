@@ -30,8 +30,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.MotionEvent;
-import android.widget.EditText;
-
 import net.micode.notes.R;
 
 import java.util.HashMap;
@@ -46,7 +44,7 @@ public class NoteEditText extends androidx.appcompat.widget.AppCompatEditText {
     private static final String SCHEME_HTTP = "http:" ;
     private static final String SCHEME_EMAIL = "mailto:" ;
 
-    private static final Map<String, Integer> sSchemaActionResMap = new HashMap<String, Integer>();
+    private static final Map<String, Integer> sSchemaActionResMap = new HashMap<>();
     static {
         sSchemaActionResMap.put(SCHEME_TEL, R.string.note_link_tel);
         sSchemaActionResMap.put(SCHEME_HTTP, R.string.note_link_web);
@@ -101,21 +99,18 @@ public class NoteEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            x -= getTotalPaddingLeft();
+            y -= getTotalPaddingTop();
+            x += getScrollX();
+            y += getScrollY();
 
-                int x = (int) event.getX();
-                int y = (int) event.getY();
-                x -= getTotalPaddingLeft();
-                y -= getTotalPaddingTop();
-                x += getScrollX();
-                y += getScrollY();
-
-                Layout layout = getLayout();
-                int line = layout.getLineForVertical(y);
-                int off = layout.getOffsetForHorizontal(line, x);
-                Selection.setSelection(getText(), off);
-                break;
+            Layout layout = getLayout();
+            int line = layout.getLineForVertical(y);
+            int off = layout.getOffsetForHorizontal(line, x);
+            Selection.setSelection(getText(), off);
         }
 
         return super.onTouchEvent(event);
@@ -170,29 +165,25 @@ public class NoteEditText extends androidx.appcompat.widget.AppCompatEditText {
     @Override
     protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
         if (mOnTextViewChangeListener != null) {
-            if (!focused && TextUtils.isEmpty(getText())) {
-                mOnTextViewChangeListener.onTextChange(mIndex, false);
-            } else {
-                mOnTextViewChangeListener.onTextChange(mIndex, true);
-            }
+            mOnTextViewChangeListener.onTextChange(mIndex, focused || !TextUtils.isEmpty(getText()));
         }
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
     }
 
     @Override
     protected void onCreateContextMenu(ContextMenu menu) {
-        if (getText() instanceof Spanned) {
+        if (getText() != null) {
             int selStart = getSelectionStart();
             int selEnd = getSelectionEnd();
 
             int min = Math.min(selStart, selEnd);
             int max = Math.max(selStart, selEnd);
 
-            final URLSpan[] urls = ((Spanned) getText()).getSpans(min, max, URLSpan.class);
+            final URLSpan[] urls = getText().getSpans(min, max, URLSpan.class);
             if (urls.length == 1) {
                 int defaultResId = 0;
                 for(String schema: sSchemaActionResMap.keySet()) {
-                    if(urls[0].getURL().indexOf(schema) >= 0) {
+                    if(urls[0].getURL().contains(schema)) {
                         defaultResId = sSchemaActionResMap.get(schema);
                         break;
                     }
@@ -203,12 +194,10 @@ public class NoteEditText extends androidx.appcompat.widget.AppCompatEditText {
                 }
 
                 menu.add(0, 0, 0, defaultResId).setOnMenuItemClickListener(
-                        new OnMenuItemClickListener() {
-                            public boolean onMenuItemClick(MenuItem item) {
-                                // goto a new intent
-                                urls[0].onClick(NoteEditText.this);
-                                return true;
-                            }
+                        item -> {
+                            // goto a new intent
+                            urls[0].onClick(NoteEditText.this);
+                            return true;
                         });
             }
         }

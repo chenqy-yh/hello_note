@@ -16,18 +16,15 @@
 
 package net.micode.notes.ui;
 
-import java.util.Calendar;
-
-import net.micode.notes.R;
-import net.micode.notes.ui.DateTimePicker;
-import net.micode.notes.ui.DateTimePicker.OnDateTimeChangedListener;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
+import net.micode.notes.R;
+
+import java.util.Calendar;
 
 public class DateTimePickerDialog extends AlertDialog implements OnClickListener {
 
@@ -44,22 +41,19 @@ public class DateTimePickerDialog extends AlertDialog implements OnClickListener
         super(context);
         mDateTimePicker = new DateTimePicker(context);
         setView(mDateTimePicker);
-        mDateTimePicker.setOnDateTimeChangedListener(new OnDateTimeChangedListener() {
-            public void onDateTimeChanged(DateTimePicker view, int year, int month,
-                    int dayOfMonth, int hourOfDay, int minute) {
-                mDate.set(Calendar.YEAR, year);
-                mDate.set(Calendar.MONTH, month);
-                mDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                mDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                mDate.set(Calendar.MINUTE, minute);
-                updateTitle(mDate.getTimeInMillis());
-            }
+        mDateTimePicker.setOnDateTimeChangedListener((view, year, month, dayOfMonth, hourOfDay, minute) -> {
+            mDate.set(Calendar.YEAR, year);
+            mDate.set(Calendar.MONTH, month);
+            mDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            mDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            mDate.set(Calendar.MINUTE, minute);
+            updateTitle(mDate.getTimeInMillis());
         });
         mDate.setTimeInMillis(date);
         mDate.set(Calendar.SECOND, 0);
         mDateTimePicker.setCurrentDate(mDate.getTimeInMillis());
         setButton(context.getString(R.string.datetime_dialog_ok), this);
-        setButton2(context.getString(R.string.datetime_dialog_cancel), (OnClickListener)null);
+        setButton(context.getString(R.string.datetime_dialog_cancel), (OnClickListener) null);
         set24HourView(DateFormat.is24HourFormat(this.getContext()));
         updateTitle(mDate.getTimeInMillis());
     }
@@ -77,7 +71,7 @@ public class DateTimePickerDialog extends AlertDialog implements OnClickListener
             DateUtils.FORMAT_SHOW_YEAR |
             DateUtils.FORMAT_SHOW_DATE |
             DateUtils.FORMAT_SHOW_TIME;
-        flag |= mIs24HourView ? DateUtils.FORMAT_24HOUR : DateUtils.FORMAT_24HOUR;
+        flag |= DateUtils.FORMAT_24HOUR;
         setTitle(DateUtils.formatDateTime(this.getContext(), date, flag));
     }
 

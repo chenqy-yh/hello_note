@@ -302,7 +302,7 @@ public class BackupUtils {
                 if (folderCursor.moveToFirst()) {
                     do {
                         // 打印文件夹名称
-                        String folderName = "";
+                        String folderName;
                         if (folderCursor.getLong(NOTE_COLUMN_ID) == Notes.ID_CALL_RECORD_FOLDER) {
                             folderName = mContext.getString(R.string.call_record_folder_name);
                         } else {
@@ -325,7 +325,7 @@ public class BackupUtils {
             Cursor noteCursor = mContext.getContentResolver().query(
                     Notes.CONTENT_NOTE_URI, // 查询的 URI
                     NOTE_PROJECTION, // 要查询的列名
-                    NoteColumns.TYPE + "=" + +Notes.TYPE_NOTE + " AND " + NoteColumns.PARENT_ID + "=0", // WHERE 子句
+                    NoteColumns.TYPE + "=" + Notes.TYPE_NOTE + " AND " + NoteColumns.PARENT_ID + "=0", // WHERE 子句
                     null, // WHERE 子句中占位符的值
                     null // 排序方式
             );
@@ -334,9 +334,9 @@ public class BackupUtils {
                 if (noteCursor.moveToFirst()) {
                     do {
                         // 打印笔记的最后修改时间
-                        ps.println(String.format(getFormat(FORMAT_NOTE_DATE), DateFormat.format(
+                        ps.printf((getFormat(FORMAT_NOTE_DATE)) + "%n", DateFormat.format(
                                 mContext.getString(R.string.format_datetime_mdhm),
-                                noteCursor.getLong(NOTE_COLUMN_MODIFIED_DATE))));
+                                noteCursor.getLong(NOTE_COLUMN_MODIFIED_DATE)));
                         // 导出当前笔记的内容
                         String noteId = noteCursor.getString(NOTE_COLUMN_ID);
                         exportNoteToText(noteId, ps);
@@ -353,8 +353,7 @@ public class BackupUtils {
         }
         /**
          * Get a print stream pointed to the file {@generateExportedTextFile}
-         */
-        /**
+         *
          * 生成用于将数据输出到文本文件中的PrintStream对象。
          *
          * @return 用于将数据输出到文本文件中的PrintStream对象。
@@ -372,7 +371,7 @@ public class BackupUtils {
             mFileName = file.getName();
             // 将文件目录路径保存在成员变量中。
             mFileDirectory = mContext.getString(R.string.file_path);
-            PrintStream ps = null;
+            PrintStream ps;
             try {
                 // 创建一个新的FileOutputStream对象，并将其包装在PrintStream对象中。
                 FileOutputStream fos = new FileOutputStream(file);

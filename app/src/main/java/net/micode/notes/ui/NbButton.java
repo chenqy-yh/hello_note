@@ -11,12 +11,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import net.micode.notes.R;
-
-/**
- * Created by tong.zhang on 2017/12/1.
- */
 
 public class NbButton extends androidx.appcompat.widget.AppCompatButton {
 
@@ -34,29 +29,27 @@ public class NbButton extends androidx.appcompat.widget.AppCompatButton {
 
     public NbButton(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public NbButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
     public NbButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init();
     }
 
-    private void init(Context context) {
+    private void init() {
         isMorphing=false;
 
         backDrawable=new GradientDrawable();
-        int colorDrawable=getResources().getColor(R.color.cutePink);
+        int colorDrawable= getResources().getColor(R.color.cutePink);
         backDrawable.setColor(colorDrawable);
         backDrawable.setCornerRadius(120);
         setBackgroundDrawable(backDrawable);
-
-//        setText("登陆");
 
         paint=new Paint();
         paint.setColor(getResources().getColor(R.color.white));
@@ -88,24 +81,19 @@ public class NbButton extends androidx.appcompat.widget.AppCompatButton {
         setText("");
         ValueAnimator valueAnimator=ValueAnimator.ofInt(width,heigh);
 
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int value= (int) animation.getAnimatedValue();
-                int leftOffset=(width-value)/2;
-                int rightOffset=width-leftOffset;
+        valueAnimator.addUpdateListener(animation -> {
+            int value= (int) animation.getAnimatedValue();
+            int leftOffset=(width-value)/2;
+            int rightOffset=width-leftOffset;
 
-                backDrawable.setBounds(leftOffset,0,rightOffset,heigh);
-            }
+            backDrawable.setBounds(leftOffset,0,rightOffset,heigh);
         });
-        ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(backDrawable,"cornerRadius",120,heigh/2);
+        ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(backDrawable,"cornerRadius",120, (float) heigh /2);
 
         AnimatorSet animatorSet=new AnimatorSet();
         animatorSet.setDuration(500);
         animatorSet.playTogether(valueAnimator,objectAnimator);
         animatorSet.start();
-
-        //画中间的白色圆圈
 
         showArc();
     }
@@ -121,19 +109,14 @@ public class NbButton extends androidx.appcompat.widget.AppCompatButton {
         backDrawable.setBounds(0,0,width,heigh);
         backDrawable.setCornerRadius(24);
         setBackgroundDrawable(backDrawable);
-//        setBackground(backDrawable);
-//        setText("登陆");
         isMorphing=false;
     }
 
     private void showArc() {
         arcValueAnimator=ValueAnimator.ofInt(0,1080);
-        arcValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                startAngle= (int) animation.getAnimatedValue();
-                invalidate();
-            }
+        arcValueAnimator.addUpdateListener(animation -> {
+            startAngle= (int) animation.getAnimatedValue();
+            invalidate();
         });
         arcValueAnimator.setInterpolator(new LinearInterpolator());
         arcValueAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -147,8 +130,8 @@ public class NbButton extends androidx.appcompat.widget.AppCompatButton {
     protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
 
-       if (isMorphing==true){
-           final RectF rectF=new RectF(getWidth()*5/12,getHeight()/7,getWidth()*7/12,getHeight()-getHeight()/7);
+       if (isMorphing){
+           final RectF rectF=new RectF((float) (getWidth() * 5) /12, (float) getHeight() /7, (float) (getWidth() * 7) /12,getHeight()-getHeight()/7);
            canvas.drawArc(rectF,startAngle,270,false,paint);
        }
     }

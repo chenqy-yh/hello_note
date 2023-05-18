@@ -16,14 +16,13 @@ import java.util.ArrayList;
 
 public class BackupListAdapter extends CursorAdapter {
 
-    //tag
     private static final String TAG = "chenqy";
-    private ArrayList<Long> mSelectedIndex;
+    private ArrayList<Long> mSelectedList;
     private OnAllCheckedListener mCallback;
 
     public BackupListAdapter(Context context, Cursor c, OnAllCheckedListener callback) {
         super(context, c, 0);
-        mSelectedIndex = new ArrayList<>();
+        mSelectedList = new ArrayList<>();
         this.mCallback = callback;
     }
 
@@ -40,51 +39,48 @@ public class BackupListAdapter extends CursorAdapter {
     @SuppressLint("Range")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tv = (TextView) view.findViewById(R.id.note_menu_list_item_tv);
+        TextView tv = view.findViewById(R.id.note_menu_list_item_tv);
         tv.setText(cursor.getString(cursor.getColumnIndex(Notes.NoteColumns.SNIPPET)));
-        NoteCheckBox cb = (NoteCheckBox) view.findViewById(R.id.note_menu_list_item_cb);
+        NoteCheckBox cb = view.findViewById(R.id.note_menu_list_item_cb);
         cb.setNoteId(cursor.getLong(cursor.getColumnIndex(Notes.NoteColumns.ID)));
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "getCount" + getCount());
-                if (cb.isChecked()) {
-                    mSelectedIndex.remove(cb.getNoteId());
-                    cb.setChecked(false);
-                } else {
-                    mSelectedIndex.add(cb.getNoteId());
-                    cb.setChecked(true);
-                }
-                if (mSelectedIndex.size() == getCount()) {
-                    mCallback.onAllChecked(true);
-                }else{
-                    mCallback.onAllChecked(false);
-                }
-
+        view.setOnClickListener(v -> {
+            Log.e(TAG, "getCount" + getCount());
+            if (cb.isChecked()) {
+                mSelectedList.remove(cb.getNoteId());
+                cb.setChecked(false);
+            } else {
+                mSelectedList.add(cb.getNoteId());
+                cb.setChecked(true);
             }
+            if (mSelectedList.size() == getCount()) {
+                mCallback.onAllChecked(true);
+            }else{
+                mCallback.onAllChecked(false);
+            }
+
         });
-        cb.setChecked(mSelectedIndex.contains(cb.getNoteId()));
+        cb.setChecked(mSelectedList.contains(cb.getNoteId()));
     }
 
     public ArrayList<Long> getmSelectedIndex() {
-        return mSelectedIndex;
+        return mSelectedList;
     }
 
     @SuppressLint("Range")
     public void changeAll(boolean isChecked) {
         Log.e(TAG, "changeAll");
-        mSelectedIndex.clear();
+        mSelectedList.clear();
         if (isChecked) {
             Cursor cursor = getCursor();
             if (cursor != null) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    mSelectedIndex.add(cursor.getLong(cursor.getColumnIndex(Notes.NoteColumns.ID)));
+                    mSelectedList.add(cursor.getLong(cursor.getColumnIndex(Notes.NoteColumns.ID)));
                     cursor.moveToNext();
                 }
             }
         }
-        Log.e(TAG, "mselectedList" + mSelectedIndex.toString());
+        Log.e(TAG, "selectedList" + mSelectedList.toString());
         notifyDataSetChanged();
     }
 

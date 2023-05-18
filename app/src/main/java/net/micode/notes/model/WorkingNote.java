@@ -35,7 +35,7 @@ import net.micode.notes.tool.ResourceParser.NoteBgResources;
 public class WorkingNote {
     // Note for the working note
     private Note mNote;
-    // Note Id
+    // Note id
     private long mNoteId;
     // Note content
     private String mContent;
@@ -317,14 +317,10 @@ public class WorkingNote {
      * @return  如果笔记值得被保存到数据库中，则返回true；否则返回false
      */
     private boolean isWorthSaving() {
-        if (mIsDeleted || (!existInDatabase() && TextUtils.isEmpty(mContent))
-                || (existInDatabase() && !mNote.isLocalModified())) {
-            // 如果该笔记已经被标记为“已删除”，或者它既没有保存到数据库中，也没有任何数据，或者它已经存在于
-            // 数据库中但没有被修改过，则认为该笔记不需要被保存。
-            return false;
-        } else {
-            return true;
-        }
+        // 如果该笔记已经被标记为“已删除”，或者它既没有保存到数据库中，也没有任何数据，或者它已经存在于
+        // 数据库中但没有被修改过，则认为该笔记不需要被保存。
+        return !mIsDeleted && (existInDatabase() || !TextUtils.isEmpty(mContent))
+                && (!existInDatabase() || mNote.isLocalModified());
     }
 
 
@@ -499,7 +495,7 @@ public class WorkingNote {
      * @return  如果笔记设置了提醒，则返回true；否则返回false
      */
     public boolean hasClockAlert() {
-        return (mAlertDate > 0 ? true : false);
+        return (mAlertDate > 0);
     }
 
     /**

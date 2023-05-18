@@ -16,6 +16,7 @@
 
 package net.micode.notes.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -31,21 +32,21 @@ import net.micode.notes.tool.ResourceParser.NoteItemBgResources;
 
 
 public class NotesListItem extends LinearLayout {
-    private ImageView mAlert;
-    private TextView mTitle;
-    private TextView mTime;
-    private TextView mCallName;
+    private final ImageView mAlert;
+    private final TextView mTitle;
+    private final TextView mTime;
+    private final TextView mCallName;
     private NoteItemData mItemData;
-    private CheckBox mCheckBox;
+    private final CheckBox mCheckBox;
 
     public NotesListItem(Context context) {
         super(context);
         inflate(context, R.layout.note_item, this);
-        mAlert = (ImageView) findViewById(R.id.iv_alert_icon);
-        mTitle = (TextView) findViewById(R.id.tv_title);
-        mTime = (TextView) findViewById(R.id.tv_time);
-        mCallName = (TextView) findViewById(R.id.tv_name);
-        mCheckBox = (CheckBox) findViewById(android.R.id.checkbox);
+        mAlert = findViewById(R.id.iv_alert_icon);
+        mTitle = findViewById(R.id.tv_title);
+        mTime = findViewById(R.id.tv_time);
+        mCallName = findViewById(R.id.tv_name);
+        mCheckBox = findViewById(android.R.id.checkbox);
     }
 
 
@@ -72,8 +73,7 @@ public class NotesListItem extends LinearLayout {
             mCallName.setVisibility(View.GONE); // 隐藏通话名称TextView。
             mAlert.setVisibility(View.VISIBLE); // 显示警报图标。
             mTitle.setTextAppearance(context, R.style.TextAppearancePrimaryItem); // 将标题样式设置为主要项样式。
-            mTitle.setText(context.getString(R.string.call_record_folder_name) // 设置标题文本为通话记录文件夹名称和文件夹中文件数量。
-                    + context.getString(R.string.format_folder_files_count, data.getNotesCount()));
+            mTitle.setText(context.getString(R.string.call_record_folder_name) + context.getString(R.string.format_folder_files_count, data.getNotesCount()));
             mAlert.setImageResource(R.drawable.call_record); // 将警报图标设置为电话记录图标。
         } else if (data.getParentId() == Notes.ID_CALL_RECORD_FOLDER) { // 如果笔记项是通话记录文件夹的子项，
             mCallName.setVisibility(View.VISIBLE); // 显示通话名称TextView。
@@ -105,9 +105,9 @@ public class NotesListItem extends LinearLayout {
                 }
             }
         }
-    // 设置时间文本为笔记项修改日期的相对时间跨度。
+        // 设置时间文本为笔记项修改日期的相对时间跨度。
         mTime.setText(DateUtils.getRelativeTimeSpanString(data.getModifiedDate()));
-    // 根据笔记项类型设置ViewHolder的背景色。
+        // 根据笔记项类型设置ViewHolder的背景色。
         setBackground(data);
     }
 
