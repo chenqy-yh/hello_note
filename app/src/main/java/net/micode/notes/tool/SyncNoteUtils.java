@@ -5,19 +5,25 @@ import android.content.Context;
 import android.nfc.Tag;
 import android.util.Log;
 import android.widget.Toast;
+import com.google.gson.Gson;
 import net.micode.notes.callback.NoteCallback;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class SyncNoteUtils {
 
+
+    private static Gson gson = new Gson();
     //tag
     private static final String TAG = "chenqy";
     private static NoteHttpServer noteHttpServer;
@@ -48,20 +54,52 @@ public class SyncNoteUtils {
         return noteHttpServer;
     }
 
+
+    public static List<SyncNoteUtils.SyncNoteItemData> extractNoteData(String jsonString) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonString);
+        JSONArray dataArray = jsonObject.getJSONArray("data");
+        SyncNoteUtils.SyncNoteItemData[] noteDtos = gson.fromJson(dataArray.toString(), SyncNoteUtils.SyncNoteItemData[].class);
+        return Arrays.asList(noteDtos);
+    }
+
+
+
+
     public static class SyncNoteItemData{
         private long note_id;
-        private long version;
+        private String user_id;//phone
         private String content;
+        private long version;
         private String note_token;
+        private String created_at;
+        private String updated_at;
 
         //cons
-        public SyncNoteItemData(long note_id, long version, String content, String note_token) {
+        public SyncNoteItemData(int note_id, String user_id, String content, int version, String note_token, String created_at, String updated_at) {
             this.note_id = note_id;
-            this.version = version;
+            this.user_id = user_id;
             this.content = content;
+            this.version = version;
             this.note_token = note_token;
+            this.created_at = created_at;
+            this.updated_at = updated_at;
         }
 
+        // get content
+        public String getContent() {
+            return content;
+        }
+        public long getNote_id() {
+            return note_id;
+        }
+        //get token
+        public String getNote_token() {
+            return note_token;
+        }
+        //get version
+        public long getVersion() {
+            return version;
+        }
     }
 
 

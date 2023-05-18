@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:app="http://schemas.android.com/apk/res-auto"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:paddingTop="10dp"
+				android:paddingRight="20dp"
+				android:paddingLeft="20dp">
+
+	<TextView
+			android:id="@+id/note_pop_menu_list_title"
+			android:text="选择同步到本地的便签"
+			android:textSize="20sp"
+			android:textColor="@color/black"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="20dp"
+			android:textStyle="bold"
+	/>
+
+	<ListView
+			android:id="@+id/note_pop_menu_lv"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@id/note_pop_menu_list_title"
+	/>
+
+	<RelativeLayout
+			android:id="@+id/note_pop_menu_list_tab"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+	>
+		<View
+				android:id="@+id/note_pop_menu_list_header"
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="#cccccc"/>
+
+		<RelativeLayout
+				android:id="@+id/note_pop_menu_list_btn_group"
+				android:layout_width="match_parent"
+				android:layout_height="60dp"
+				android:layout_below="@id/note_pop_menu_list_header"
+				android:elevation="10dp"
+				android:gravity="center"
+				android:background="@color/white"
+				android:orientation="horizontal">
+
+			<com.google.android.material.button.MaterialButton
+					android:id="@+id/note_pop_menu_list_btn_back"
+					android:text="返回"
+					android:layout_width="80dp"
+					android:layout_height="wrap_content"
+			/>
+
+			<com.google.android.material.button.MaterialButton
+					android:id="@+id/note_pop_menu_list_btn_sync"
+					android:text="同步"
+					android:layout_width="80dp"
+					android:layout_height="wrap_content"
+					android:singleLine="true"
+					android:layout_toRightOf="@id/note_pop_menu_list_btn_back"
+					android:layout_marginLeft="10dp"
+					android:layout_marginRight="10dp"
+			/>
+
+			<com.google.android.material.button.MaterialButton
+					android:id="@+id/note_pop_menu_list_btn_close"
+					android:text="退出"
+					android:layout_width="80dp"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@id/note_pop_menu_list_btn_sync"
+			/>
+
+		</RelativeLayout>
+	</RelativeLayout>
+</RelativeLayout>

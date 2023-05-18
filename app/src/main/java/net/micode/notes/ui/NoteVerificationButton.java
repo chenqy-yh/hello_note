@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 
-public class NoteVerificationButton extends Button implements View.OnClickListener {
+public class NoteVerificationButton extends androidx.appcompat.widget.AppCompatButton implements View.OnClickListener {
     private static final String TAG = "chenqy";
     private NoteHttpServer server;
     private EditText note_login_phone_num;
@@ -105,7 +105,7 @@ public class NoteVerificationButton extends Button implements View.OnClickListen
                 ((Activity) getContext()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getContext(), "发生成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "发送成功", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

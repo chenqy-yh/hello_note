@@ -18,7 +18,7 @@ import net.micode.notes.R;
  * Created by tong.zhang on 2017/12/1.
  */
 
-public class NbButton extends Button {
+public class NbButton extends androidx.appcompat.widget.AppCompatButton {
 
     private int width;
     private int heigh;

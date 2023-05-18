@@ -59,7 +59,7 @@
     />
 
     <RelativeLayout
-            android:id="@+id/xxxxxss"
+            android:id="@+id/note_menu"
             android:layout_width="300dp"
             android:layout_height="500dp"
             android:background="@color/white"
@@ -67,7 +67,7 @@
             android:visibility="gone"
     >
         <FrameLayout
-                android:id="@+id/ffffkkkkkk"
+                android:id="@+id/note_menu_container"
                 android:layout_width="match_parent" android:layout_height="match_parent"/>
 
 

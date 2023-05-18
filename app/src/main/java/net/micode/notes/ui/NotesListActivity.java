@@ -146,6 +146,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     public static final String MENU_DISMISS = "shutdown_pop_menu";
 
 
+//    -------------------------------------   C Q Y   ---------------------------------------------------------
     //绑定状态
     private boolean is_bind_backup_service = false;
     //服务对象
@@ -213,6 +214,8 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         }
         return selected_list;
     }
+
+//    --------------------------------------  C Q Y   ---------------------------------------------------------
 
 
     @Override
@@ -351,13 +354,6 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private void initCustom() {
         //TODO initCustom
         bindBackupService();
-
-        //查询所有note_data
-        Cursor c = getContentResolver().query(Notes.CONTENT_DATA_URI, new String[]{Notes.DataColumns.NOTE_ID, Notes.DataColumns.DATA5}, null, null, null);
-        while (c.moveToNext()) {
-            Log.e(TAG, c.getLong(0) + ":" + c.getString(1));
-        }
-
     }
 
 

@@ -1,5 +1,6 @@
 package net.micode.notes.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -12,8 +13,6 @@ import net.micode.notes.R;
 import net.micode.notes.data.Notes;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 public class BackupListAdapter extends CursorAdapter {
 
@@ -35,16 +34,17 @@ public class BackupListAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.note_backup_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.note_menu_list_item, parent, false);
     }
 
+    @SuppressLint("Range")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tv = (TextView) view.findViewById(R.id.note_backup_item_tv);
+        TextView tv = (TextView) view.findViewById(R.id.note_menu_list_item_tv);
         tv.setText(cursor.getString(cursor.getColumnIndex(Notes.NoteColumns.SNIPPET)));
-        NoteCheckBox cb = (NoteCheckBox) view.findViewById(R.id.note_backup_item_cb);
+        NoteCheckBox cb = (NoteCheckBox) view.findViewById(R.id.note_menu_list_item_cb);
         cb.setNoteId(cursor.getLong(cursor.getColumnIndex(Notes.NoteColumns.ID)));
-        tv.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "getCount" + getCount());
@@ -70,6 +70,7 @@ public class BackupListAdapter extends CursorAdapter {
         return mSelectedIndex;
     }
 
+    @SuppressLint("Range")
     public void changeAll(boolean isChecked) {
         Log.e(TAG, "changeAll");
         mSelectedIndex.clear();

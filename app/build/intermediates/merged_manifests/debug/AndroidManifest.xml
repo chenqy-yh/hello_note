@@ -20,10 +20,9 @@
     android:versionName="0.1" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="29" />
+        android:minSdkVersion="24"
+        android:targetSdkVersion="33" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -35,25 +34,40 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
+        android:extractNativeLibs="false"
         android:icon="@drawable/icon_app"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:testOnly="true" >
         <activity
+            android:name="net.micode.notes.ui.NoteLoginActivity"
+            android:exported="true"
+            android:label="@string/login_title"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.MaterialComponents.Light" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="net.micode.notes.ui.NotesListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
+            android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@style/NoteTheme"
+            android:theme="@style/Theme.MaterialComponents.Light"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustPan" >
         </activity>
         <activity
             android:name="net.micode.notes.ui.NoteEditActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/NoteTheme" >
+            android:theme="@style/Theme.MaterialComponents.Light" >
             <intent-filter android:scheme="http" >
                 <action android:name="android.intent.action.VIEW" />
 
@@ -82,35 +96,27 @@
         </activity>
         <activity
             android:name="net.micode.notes.ui.AlarmAlertActivity"
-            android:label="@string/app_name"
+            android:exported="false"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" >
         </activity>
         <activity
             android:name="net.micode.notes.ui.NotesPreferenceActivity"
+            android:exported="false"
             android:label="@string/preferences_title"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Holo.Light" >
-        </activity>
-        <activity
-            android:name="net.micode.notes.ui.NoteLoginActivity"
-            android:label="@string/login_title"
-            android:launchMode="singleTop"
-            android:theme="@style/NoteTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <provider
             android:name="net.micode.notes.data.NotesProvider"
             android:authorities="micode_notes"
+            android:exported="false"
             android:multiprocess="true" />
 
         <receiver
             android:name="net.micode.notes.widget.NoteWidgetProvider_2x"
+            android:exported="false"
             android:label="@string/app_widget2x2" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -124,6 +130,7 @@
         </receiver>
         <receiver
             android:name="net.micode.notes.widget.NoteWidgetProvider_4x"
+            android:exported="false"
             android:label="@string/app_widget4x4" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -135,13 +142,16 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_4x_info" />
         </receiver>
-        <receiver android:name="net.micode.notes.ui.AlarmInitReceiver" >
+        <receiver
+            android:name="net.micode.notes.ui.AlarmInitReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
             android:name="net.micode.notes.ui.AlarmReceiver"
+            android:exported="false"
             android:process=":remote" >
         </receiver>
 

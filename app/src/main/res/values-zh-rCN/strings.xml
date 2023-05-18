@@ -123,8 +123,8 @@
         <item quantity="other"><xliff:g id="NUMBER">%1$s</xliff:g> 条符合“<xliff:g id="SEARCH">%2$s</xliff:g>”的搜索结果</item>
     </plurals>
     <!--  custom  -->
-	<string name="login_title">登陆</string>
-    <string name="press_again_exit">再按一次退出</string>
+	<string name="press_again_exit">再按一次退出</string>
+    <string name="login_title">新の便签</string>
 
 
 </resources>

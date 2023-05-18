@@ -16,13 +16,13 @@
 	>
 		<Button
 				android:id="@+id/btn_note_backup"
-				android:text="备份便签数据"
+				android:text="备份便签"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 		/>
 		<Button
-				android:id="@+id/btn_note_restore"
-				android:text="恢复便签数据"
+				android:id="@+id/btn_note_sync"
+				android:text="同步便签"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/btn_note_backup"

@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import net.micode.notes.R;
 
-public class NoteCheckBox extends CheckBox implements CompoundButton.OnCheckedChangeListener {
+public class NoteCheckBox extends androidx.appcompat.widget.AppCompatCheckBox implements CompoundButton.OnCheckedChangeListener {
 
     //tag
     private static final String TAG = "chenqy";

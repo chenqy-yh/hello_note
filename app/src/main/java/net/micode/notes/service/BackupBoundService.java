@@ -6,8 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.Binder;
-import android.os.IBinder;
+import android.os.*;
 import android.util.Log;
 import android.widget.Toast;
 import net.micode.notes.callback.NoteCallback;
@@ -45,6 +44,19 @@ public class BackupBoundService extends Service {
             Notes.DataColumns.DATA5,
     };
 
+    private Handler mHandler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1){
+                String text = (String) msg.obj;
+                Toast.makeText(BackupBoundService.this,text,Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+
+
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -58,7 +70,7 @@ public class BackupBoundService extends Service {
 
         for (Long noteId : noteData) {
             JSONObject body = new JSONObject();
-
+            body.put("user_id",phone);
             // Get version number from Notes.CONTENT_NOTE_URI
             Cursor cursorNote = getContentResolver().query(
                     Notes.CONTENT_NOTE_URI,
@@ -94,6 +106,7 @@ public class BackupBoundService extends Service {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.e(TAG, "Backup failed: " + e.getMessage());
+                    mHandler.obtainMessage(1,"Backup failed: " + e.getMessage()).sendToTarget();
                 }
 
                 @Override
@@ -107,6 +120,7 @@ public class BackupBoundService extends Service {
 
                         if (noteToken == null) {
                             Log.e(TAG, "Backup failed");
+                            mHandler.obtainMessage(1, "Backup failed").sendToTarget();
                         } else {
                             // Update note_token in local database
                             ContentValues values = new ContentValues();
@@ -117,10 +131,10 @@ public class BackupBoundService extends Service {
                                     Notes.DataColumns.NOTE_ID + " = ?",
                                     new String[]{noteId.toString()}
                             );
-                            Log.e(TAG, "Backup successful");
+                            mHandler.obtainMessage(1, "Backup successful").sendToTarget();
                         }
                     } catch (JSONException e) {
-                        Log.e(TAG, "Backup failed: " + e.getMessage());
+                        mHandler.obtainMessage(1, "Backup failed: " + e.getMessage()).sendToTarget();
                     }
                 }
             });

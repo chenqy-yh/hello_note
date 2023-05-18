@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -17,7 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import net.micode.notes.R;
 
-public class NoteMenuButton extends Button implements View.OnClickListener {
+public class NoteMenuButton extends androidx.appcompat.widget.AppCompatButton implements View.OnClickListener {
 
 
     //tag
@@ -28,6 +29,8 @@ public class NoteMenuButton extends Button implements View.OnClickListener {
     private boolean isClickable = true;
     private RelativeLayout note_menu;
     private FragmentManager fm ;
+
+
 
 
 
@@ -54,7 +57,7 @@ public class NoteMenuButton extends Button implements View.OnClickListener {
 
     private void init(){
         fm = ((Activity)context).getFragmentManager();
-        note_menu = ((Activity)context).findViewById(R.id.xxxxxss);
+        note_menu = ((Activity)context).findViewById(R.id.note_menu);
         setOnClickListener(this);
     }
 
@@ -68,15 +71,19 @@ public class NoteMenuButton extends Button implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (!isClickable) return;
+        isClickable = false;
         Log.e(TAG, "onClick");
-//        initPopMenu(v);
-//        noteMenu.show(context);
         AlphaAnimation anim =  new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(200);
         note_menu.startAnimation(anim);
         note_menu.setVisibility(View.VISIBLE);
-        View container = note_menu.findViewById(R.id.ffffkkkkkk);
-        fm.beginTransaction().replace(R.id.ffffkkkkkk, new NoteMenuMainFragment()).commit();
+        View container = note_menu.findViewById(R.id.note_menu_container);
+        NoteMenuMainFragment noteMenuMainFragment = new NoteMenuMainFragment();
+        noteMenuMainFragment.setCloseListener(() -> {
+            isClickable = true;
+            addEndAnimation();
+        });
+        fm.beginTransaction().replace(R.id.note_menu_container, new NoteMenuMainFragment()).commit();
         // 添加渐变动画效果
         addStartAnimation();
     }

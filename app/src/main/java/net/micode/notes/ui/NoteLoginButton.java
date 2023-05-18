@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import net.micode.notes.R;
 
-public class NoteLoginButton extends Button implements View.OnClickListener {
+public class NoteLoginButton extends androidx.appcompat.widget.AppCompatButton implements View.OnClickListener {
 
 
     //tag

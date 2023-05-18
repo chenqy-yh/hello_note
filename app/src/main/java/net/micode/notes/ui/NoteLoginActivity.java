@@ -96,9 +96,9 @@ public class NoteLoginActivity extends Activity {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 //删除本地token
-                Auth.removeToken(NoteLoginActivity.this,Auth.AUTH_TOKEN_KEY);
+                Auth.removeToken(NoteLoginActivity.this, Auth.AUTH_TOKEN_KEY);
                 //删除本地用户信息
-                Auth.removeToken(NoteLoginActivity.this,Auth.AUTH_PHONE_KEY);
+                Auth.removeToken(NoteLoginActivity.this, Auth.AUTH_PHONE_KEY);
             }
 
             @Override
@@ -119,9 +119,9 @@ public class NoteLoginActivity extends Activity {
                     return;
                 }
 
-                if(code != 200){
+                if (code != 200) {
                     Log.e(TAG, "NoteListActivity checkLogin JSONObject code != 200");
-                }else{
+                } else {
                     //登陆成功
                     goNoteList();
                 }
@@ -159,7 +159,7 @@ public class NoteLoginActivity extends Activity {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                if(code == NoteRemoteConfig.RESPONSE_SUCCESS){
+                if (code == NoteRemoteConfig.RESPONSE_SUCCESS) {
                     String token = null;
                     try {
                         token = responseJson.getString("data");
@@ -168,9 +168,9 @@ public class NoteLoginActivity extends Activity {
                     }
 
                     //保存token
-                    Auth.syncToken(context,Auth.AUTH_TOKEN_KEY,token);
+                    Auth.syncToken(context, Auth.AUTH_TOKEN_KEY, token);
                     //保存验证的手机号
-                    Auth.syncToken(context,Auth.AUTH_PHONE_KEY,phone_num);
+                    Auth.syncToken(context, Auth.AUTH_PHONE_KEY, phone_num);
 
                     UIUtils.runInUI(NoteLoginActivity.this, () -> {
                         btn_login.startAnim();
@@ -179,7 +179,7 @@ public class NoteLoginActivity extends Activity {
                             gotoNew();
                         }, 500);
                     });
-                }else{
+                } else {
                     UIUtils.sendMsg(NoteLoginActivity.this, "验证码错误");
                 }
             }
@@ -228,7 +228,7 @@ public class NoteLoginActivity extends Activity {
         rlContent.getBackground().setAlpha(255);
     }
 
-    private void goNoteList(){
+    private void goNoteList() {
         Intent it = new Intent(NoteLoginActivity.this, NotesListActivity.class);
         it.setAction(Intent.ACTION_VIEW);
         startActivity(it);
@@ -238,7 +238,7 @@ public class NoteLoginActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(animator != null)animator.cancel();
+        if (animator != null) animator.cancel();
         rlContent.getBackground().setAlpha(0);
         btn_login.regainBackground();
     }

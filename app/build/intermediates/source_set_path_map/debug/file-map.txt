@@ -6,3 +6,13 @@ net.micode.notes.app-mergeDebugResources-4 E:\andriodProj\my_note\gitProject\app
 net.micode.notes.app-merged_res-5 E:\andriodProj\my_note\gitProject\app\build\intermediates\merged_res\debug
 net.micode.notes.app-debug-6 E:\andriodProj\my_note\gitProject\app\src\debug\res
 net.micode.notes.app-main-7 E:\andriodProj\my_note\gitProject\app\src\main\res
+net.micode.notes.app-jetified-viewpager2-1.0.0-8 E:\gradle_rep\caches\transforms-3\0ee68bfbd682d7e290626937651372ad\transformed\jetified-viewpager2-1.0.0\res
+net.micode.notes.app-cardview-1.0.0-9 E:\gradle_rep\caches\transforms-3\1f624a3ec658e1a90eb17b72d8f4e5aa\transformed\cardview-1.0.0\res
+net.micode.notes.app-appcompat-1.2.0-10 E:\gradle_rep\caches\transforms-3\30891a14132f501b0723920f18972b1c\transformed\appcompat-1.2.0\res
+net.micode.notes.app-material-1.4.0-11 E:\gradle_rep\caches\transforms-3\49dd37bf10937f4a5031c2e2032cd3be\transformed\material-1.4.0\res
+net.micode.notes.app-constraintlayout-2.0.1-12 E:\gradle_rep\caches\transforms-3\5d71c09e320f59ac02ee86e96c089f7e\transformed\constraintlayout-2.0.1\res
+net.micode.notes.app-core-1.5.0-13 E:\gradle_rep\caches\transforms-3\6182fe6d65ef8961a040b52a46bdfbf6\transformed\core-1.5.0\res
+net.micode.notes.app-recyclerview-1.1.0-14 E:\gradle_rep\caches\transforms-3\722cfa06d51a32340f337ac9798393bf\transformed\recyclerview-1.1.0\res
+net.micode.notes.app-coordinatorlayout-1.1.0-15 E:\gradle_rep\caches\transforms-3\8255cf8f73e0ec2d884b3aa8102e6cd4\transformed\coordinatorlayout-1.1.0\res
+net.micode.notes.app-jetified-appcompat-resources-1.2.0-16 E:\gradle_rep\caches\transforms-3\9bfe4cd74c7605dc19710fff72651570\transformed\jetified-appcompat-resources-1.2.0\res
+net.micode.notes.app-transition-1.2.0-17 E:\gradle_rep\caches\transforms-3\cf7ed2c7db25c1ed83dad3026c9a2688\transformed\transition-1.2.0\res

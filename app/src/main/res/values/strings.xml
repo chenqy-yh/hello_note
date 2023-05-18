@@ -130,7 +130,7 @@
 
 
     <!--  Custom Name  -->
-    <string name="login_title">Login</string>
+    <string name="login_title">New Note</string>
 
 
     <plurals name="search_results_title">

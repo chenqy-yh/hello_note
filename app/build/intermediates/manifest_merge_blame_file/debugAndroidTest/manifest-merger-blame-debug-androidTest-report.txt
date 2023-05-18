@@ -3,30 +3,32 @@
 3    package="net.micode.notes.test" >
 4
 5    <uses-sdk
-5-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:5:5-74
-6        android:minSdkVersion="14"
-6-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:5:15-41
-7        android:targetSdkVersion="29" />
-7-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:5:42-71
+5-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:5:5-74
+6        android:minSdkVersion="24"
+6-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:5:15-41
+7        android:targetSdkVersion="33" />
+7-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:5:42-71
 8
 9    <instrumentation
-9-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:11:5-15:66
+9-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:11:5-15:66
 10        android:name="android.test.InstrumentationTestRunner"
-10-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:11:22-75
+10-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:11:22-75
 11        android:functionalTest="false"
-11-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:14:22-52
+11-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:14:22-52
 12        android:handleProfiling="false"
-12-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:13:22-53
+12-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:13:22-53
 13        android:label="Tests for net.micode.notes"
-13-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:15:22-64
+13-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:15:22-64
 14        android:targetPackage="net.micode.notes" />
-14-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:12:22-62
+14-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:12:22-62
 15
-16    <application android:debuggable="true" >
-16-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:7:5-9:19
-17        <uses-library android:name="android.test.runner" />
-17-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:8:9-60
-17-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest15167683097218886286.xml:8:23-57
-18    </application>
-19
-20</manifest>
+16    <application
+16-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:7:5-9:19
+17        android:debuggable="true"
+18        android:extractNativeLibs="false" >
+19        <uses-library android:name="android.test.runner" />
+19-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:8:9-60
+19-->E:\andriodProj\my_note\gitProject\app\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest6207600445204546159.xml:8:23-57
+20    </application>
+21
+22</manifest>

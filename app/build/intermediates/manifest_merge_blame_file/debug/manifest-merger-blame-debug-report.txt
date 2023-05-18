@@ -20,277 +20,293 @@
 20    android:versionName="0.1" >
 21
 22    <uses-sdk
-22-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:24:5-44
-23        android:minSdkVersion="14"
-23-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:24:15-41
-24        android:targetSdkVersion="29" />
-24-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:24:5-44
+23        android:minSdkVersion="24"
+23-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml
+24        android:targetSdkVersion="33" />
+24-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml
 25
-26    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-26-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:26:5-81
-26-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:26:22-78
-27    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-27-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:27:5-88
-27-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:27:22-85
-28    <uses-permission android:name="android.permission.INTERNET" />
-28-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:28:5-67
-28-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:28:22-64
-29    <uses-permission android:name="android.permission.READ_CONTACTS" />
-29-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:29:5-72
-29-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:29:22-69
-30    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-30-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:30:5-74
-30-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:30:22-71
-31    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-31-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:31:5-80
-31-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:31:22-77
-32    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-32-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:32:5-71
-32-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:32:22-68
-33    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-33-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:33:5-74
-33-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:33:22-71
-34    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-34-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:34:5-81
-34-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:34:22-78
-35    <uses-permission android:name="android.permission.INTERNET" />
-35-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:28:5-67
-35-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:28:22-64
-36
-37    <application
-37-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:37:5-169:19
+26    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+26-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:25:5-88
+26-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:25:22-85
+27    <uses-permission android:name="android.permission.INTERNET" />
+27-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:26:5-67
+27-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:26:22-64
+28    <uses-permission android:name="android.permission.READ_CONTACTS" />
+28-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:27:5-72
+28-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:27:22-69
+29    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+29-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:28:5-74
+29-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:28:22-71
+30    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+30-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:29:5-80
+30-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:29:22-77
+31    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+31-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:30:5-71
+31-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:30:22-68
+32    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+32-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:31:5-74
+32-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:31:22-71
+33    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+33-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:32:5-81
+33-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:32:22-78
+34    <uses-permission android:name="android.permission.INTERNET" />
+34-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:26:5-67
+34-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:26:22-64
+35
+36    <application
+36-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:35:5-184:19
+37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+37-->[androidx.core:core:1.5.0] E:\gradle_rep\caches\transforms-3\6182fe6d65ef8961a040b52a46bdfbf6\transformed\core-1.5.0\AndroidManifest.xml:24:18-86
 38        android:debuggable="true"
-39        android:icon="@drawable/icon_app"
-39-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:38:9-42
-40        android:label="@string/app_name"
-40-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:39:9-41
-41        android:networkSecurityConfig="@xml/network_security_config"
-41-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:40:9-69
-42        android:testOnly="true" >
-43        <activity
-43-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:42:9-54:20
-44            android:name="net.micode.notes.ui.NotesListActivity"
-44-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:43:13-49
-45            android:configChanges="keyboardHidden|orientation|screenSize"
-45-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:44:13-74
-46            android:label="@string/app_name"
-46-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:45:13-45
-47            android:launchMode="singleTop"
-47-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:46:13-43
-48            android:theme="@style/NoteTheme"
-48-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:47:13-45
-49            android:uiOptions="splitActionBarWhenNarrow"
-49-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:48:13-57
-50            android:windowSoftInputMode="adjustPan" >
-50-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:49:13-52
-51        </activity>
-52        <activity
-52-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:56:9-85:20
-53            android:name="net.micode.notes.ui.NoteEditActivity"
-53-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:57:13-48
-54            android:configChanges="keyboardHidden|orientation|screenSize"
-54-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:58:13-74
-55            android:launchMode="singleTop"
-55-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:59:13-43
-56            android:theme="@style/NoteTheme" >
-56-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:60:13-45
-57            <intent-filter android:scheme="http" >
-57-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:62:13-68:29
-57-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:62:28-49
-58                <action android:name="android.intent.action.VIEW" />
-58-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:64:17-69
-58-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:64:25-66
-59
-60                <category android:name="android.intent.category.DEFAULT" />
-60-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:65:17-76
-60-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:65:27-73
-61
-62                <data android:mimeType="vnd.android.cursor.item/text_note" />
-62-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:17-78
-62-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:23-75
-63                <data android:mimeType="vnd.android.cursor.item/call_note" />
-63-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:17-78
-63-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:23-75
-64            </intent-filter>
-65            <intent-filter>
-65-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:70:13-75:29
-66                <action android:name="android.intent.action.INSERT_OR_EDIT" />
-66-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:71:17-79
-66-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:71:25-76
-67
-68                <category android:name="android.intent.category.DEFAULT" />
-68-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:65:17-76
-68-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:65:27-73
-69
-70                <data android:mimeType="vnd.android.cursor.item/text_note" />
-70-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:17-78
-70-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:23-75
-71                <data android:mimeType="vnd.android.cursor.item/call_note" />
-71-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:17-78
-71-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:66:23-75
-72            </intent-filter>
-73            <intent-filter>
-73-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:77:13-80:29
-74                <action android:name="android.intent.action.SEARCH" />
-74-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:17-71
-74-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:25-68
+39        android:extractNativeLibs="false"
+40        android:icon="@drawable/icon_app"
+40-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:36:9-42
+41        android:label="@string/app_name"
+41-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:37:9-41
+42        android:networkSecurityConfig="@xml/network_security_config"
+42-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:38:9-69
+43        android:testOnly="true" >
+44        <activity
+44-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:41:9-51:20
+45            android:name="net.micode.notes.ui.NoteLoginActivity"
+45-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:41:19-55
+46            android:exported="true"
+46-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:45:19-42
+47            android:label="@string/login_title"
+47-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:42:19-54
+48            android:launchMode="singleTop"
+48-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:43:19-49
+49            android:theme="@style/Theme.MaterialComponents.Light" >
+49-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:44:19-72
+50            <intent-filter>
+50-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:47:13-50:29
+51                <action android:name="android.intent.action.MAIN" />
+51-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:48:17-69
+51-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:48:25-66
+52
+53                <category android:name="android.intent.category.LAUNCHER" />
+53-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:49:17-77
+53-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:49:27-74
+54            </intent-filter>
+55        </activity>
+56        <activity
+56-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:54:9-65:20
+57            android:name="net.micode.notes.ui.NotesListActivity"
+57-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:55:13-49
+58            android:configChanges="keyboardHidden|orientation|screenSize"
+58-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:56:13-74
+59            android:exported="false"
+59-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:61:13-37
+60            android:launchMode="singleTop"
+60-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:57:13-43
+61            android:theme="@style/Theme.MaterialComponents.Light"
+61-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:58:13-66
+62            android:uiOptions="splitActionBarWhenNarrow"
+62-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:59:13-57
+63            android:windowSoftInputMode="adjustPan" >
+63-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:60:13-52
+64        </activity>
+65        <activity
+65-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:67:9-98:20
+66            android:name="net.micode.notes.ui.NoteEditActivity"
+66-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:68:13-48
+67            android:configChanges="keyboardHidden|orientation|screenSize"
+67-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:69:13-74
+68            android:exported="true"
+68-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:72:13-36
+69            android:launchMode="singleTop"
+69-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:70:13-43
+70            android:theme="@style/Theme.MaterialComponents.Light" >
+70-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:71:13-66
+71            <intent-filter android:scheme="http" >
+71-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:75:13-81:29
+71-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:75:28-49
+72                <action android:name="android.intent.action.VIEW" />
+72-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:77:17-69
+72-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:77:25-66
+73
+74                <category android:name="android.intent.category.DEFAULT" />
+74-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:17-76
+74-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:27-73
 75
-76                <category android:name="android.intent.category.DEFAULT" />
-76-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:65:17-76
-76-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:65:27-73
-77            </intent-filter>
-78
-79            <meta-data
-79-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:82:13-84:54
-80                android:name="android.app.searchable"
-80-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:83:17-54
-81                android:resource="@xml/searchable" />
-81-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:84:17-51
-82        </activity>
-83        <activity
-83-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:87:9-92:20
-84            android:name="net.micode.notes.ui.AlarmAlertActivity"
-84-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:88:17-54
-85            android:label="@string/app_name"
-85-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:89:17-49
-86            android:launchMode="singleInstance"
-86-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:90:17-52
-87            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" >
-87-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:91:17-79
-88        </activity>
-89        <activity
-89-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:94:9-99:20
-90            android:name="net.micode.notes.ui.NotesPreferenceActivity"
-90-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:95:17-75
-91            android:label="@string/preferences_title"
-91-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:96:17-58
-92            android:launchMode="singleTop"
-92-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:97:17-47
-93            android:theme="@android:style/Theme.Holo.Light" >
-93-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:98:17-64
-94        </activity>
-95        <activity
-95-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:101:9-110:20
-96            android:name="net.micode.notes.ui.NoteLoginActivity"
-96-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:101:19-55
-97            android:label="@string/login_title"
-97-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:102:13-48
-98            android:launchMode="singleTop"
-98-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:103:13-43
-99            android:theme="@style/NoteTheme" >
-99-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:104:13-45
-100            <intent-filter>
-100-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:106:13-109:29
-101                <action android:name="android.intent.action.MAIN" />
-101-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:107:17-69
-101-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:107:25-66
-102
-103                <category android:name="android.intent.category.LAUNCHER" />
-103-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:108:17-77
-103-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:108:27-74
-104            </intent-filter>
-105        </activity>
-106
-107        <provider
-107-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:112:9-115:43
-108            android:name="net.micode.notes.data.NotesProvider"
-108-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:113:13-63
-109            android:authorities="micode_notes"
-109-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:114:13-47
-110            android:multiprocess="true" />
-110-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:115:13-40
-111
-112        <receiver
-112-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:117:9-129:20
-113            android:name="net.micode.notes.widget.NoteWidgetProvider_2x"
-113-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:118:13-57
-114            android:label="@string/app_widget2x2" >
-114-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:119:13-50
-115            <intent-filter>
-115-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:120:13-124:29
-116                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-116-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:121:17-84
-116-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:121:25-81
-117                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
-117-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:122:17-85
-117-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:122:25-82
-118                <action android:name="android.intent.action.PRIVACY_MODE_CHANGED" />
-118-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:123:17-85
-118-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:123:25-82
-119            </intent-filter>
-120
-121            <meta-data
-121-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:126:13-128:58
-122                android:name="android.appwidget.provider"
-122-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:127:17-58
-123                android:resource="@xml/widget_2x_info" />
-123-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:128:17-55
-124        </receiver>
-125        <receiver
-125-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:130:9-143:20
-126            android:name="net.micode.notes.widget.NoteWidgetProvider_4x"
-126-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:131:13-57
-127            android:label="@string/app_widget4x4" >
-127-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:132:13-50
-128            <intent-filter>
-128-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:120:13-124:29
-129                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-129-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:121:17-84
-129-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:121:25-81
-130                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
-130-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:122:17-85
-130-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:122:25-82
-131                <action android:name="android.intent.action.PRIVACY_MODE_CHANGED" />
-131-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:123:17-85
-131-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:123:25-82
-132            </intent-filter>
-133
-134            <meta-data
-134-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:126:13-128:58
-135                android:name="android.appwidget.provider"
-135-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:127:17-58
-136                android:resource="@xml/widget_4x_info" />
-136-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:128:17-55
-137        </receiver>
-138        <receiver android:name="net.micode.notes.ui.AlarmInitReceiver" >
-138-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:145:9-149:20
-138-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:145:19-55
-139            <intent-filter>
-139-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:146:13-148:29
-140                <action android:name="android.intent.action.BOOT_COMPLETED" />
-140-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:147:17-79
-140-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:147:25-76
-141            </intent-filter>
-142        </receiver>
-143        <receiver
-143-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:151:9-154:20
-144            android:name="net.micode.notes.ui.AlarmReceiver"
-144-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:152:13-61
-145            android:process=":remote" >
-145-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:153:13-38
-146        </receiver>
-147
-148        <service
-148-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:156:9-159:19
-149            android:name="net.micode.notes.gtask.remote.GTaskSyncService"
-149-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:157:13-74
-150            android:exported="false" >
-150-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:158:13-37
-151        </service>
-152        <service
-152-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:161:9-164:19
-153            android:name="net.micode.notes.service.BackupBoundService"
-153-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:161:18-60
-154            android:exported="false" >
-154-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:162:13-37
-155        </service>
-156
-157        <meta-data
-157-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:166:9-168:52
-158            android:name="android.app.default_searchable"
-158-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:167:13-58
-159            android:value=".ui.NoteEditActivity" />
-159-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:168:13-49
-160    </application>
-161
-162</manifest>
+76                <data android:mimeType="vnd.android.cursor.item/text_note" />
+76-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:17-78
+76-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:23-75
+77                <data android:mimeType="vnd.android.cursor.item/call_note" />
+77-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:17-78
+77-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:23-75
+78            </intent-filter>
+79            <intent-filter>
+79-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:83:13-88:29
+80                <action android:name="android.intent.action.INSERT_OR_EDIT" />
+80-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:84:17-79
+80-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:84:25-76
+81
+82                <category android:name="android.intent.category.DEFAULT" />
+82-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:17-76
+82-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:27-73
+83
+84                <data android:mimeType="vnd.android.cursor.item/text_note" />
+84-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:17-78
+84-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:23-75
+85                <data android:mimeType="vnd.android.cursor.item/call_note" />
+85-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:17-78
+85-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:79:23-75
+86            </intent-filter>
+87            <intent-filter>
+87-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:90:13-93:29
+88                <action android:name="android.intent.action.SEARCH" />
+88-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:91:17-71
+88-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:91:25-68
+89
+90                <category android:name="android.intent.category.DEFAULT" />
+90-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:17-76
+90-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:78:27-73
+91            </intent-filter>
+92
+93            <meta-data
+93-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:95:13-97:54
+94                android:name="android.app.searchable"
+94-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:96:17-54
+95                android:resource="@xml/searchable" />
+95-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:97:17-51
+96        </activity>
+97        <activity
+97-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:100:9-106:20
+98            android:name="net.micode.notes.ui.AlarmAlertActivity"
+98-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:101:17-54
+99            android:exported="false"
+99-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:104:17-41
+100            android:launchMode="singleInstance"
+100-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:102:17-52
+101            android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar" >
+101-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:103:17-79
+102        </activity>
+103        <activity
+103-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:108:9-115:20
+104            android:name="net.micode.notes.ui.NotesPreferenceActivity"
+104-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:109:17-75
+105            android:exported="false"
+105-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:113:17-41
+106            android:label="@string/preferences_title"
+106-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:110:17-58
+107            android:launchMode="singleTop"
+107-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:111:17-47
+108            android:theme="@android:style/Theme.Holo.Light" >
+108-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:112:17-64
+109        </activity>
+110
+111        <provider
+111-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:119:9-124:11
+112            android:name="net.micode.notes.data.NotesProvider"
+112-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:120:13-63
+113            android:authorities="micode_notes"
+113-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:121:13-47
+114            android:exported="false"
+114-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:123:13-37
+115            android:multiprocess="true" />
+115-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:122:13-40
+116
+117        <receiver
+117-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:126:9-140:20
+118            android:name="net.micode.notes.widget.NoteWidgetProvider_2x"
+118-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:127:13-57
+119            android:exported="false"
+119-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:129:13-37
+120            android:label="@string/app_widget2x2" >
+120-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:128:13-50
+121            <intent-filter>
+121-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:131:13-135:29
+122                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+122-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:132:17-84
+122-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:132:25-81
+123                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+123-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:133:17-85
+123-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:133:25-82
+124                <action android:name="android.intent.action.PRIVACY_MODE_CHANGED" />
+124-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:134:17-85
+124-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:134:25-82
+125            </intent-filter>
+126
+127            <meta-data
+127-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:137:13-139:58
+128                android:name="android.appwidget.provider"
+128-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:138:17-58
+129                android:resource="@xml/widget_2x_info" />
+129-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:139:17-55
+130        </receiver>
+131        <receiver
+131-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:141:9-156:20
+132            android:name="net.micode.notes.widget.NoteWidgetProvider_4x"
+132-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:142:13-57
+133            android:exported="false"
+133-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:144:13-37
+134            android:label="@string/app_widget4x4" >
+134-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:143:13-50
+135            <intent-filter>
+135-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:131:13-135:29
+136                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+136-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:132:17-84
+136-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:132:25-81
+137                <action android:name="android.appwidget.action.APPWIDGET_DELETED" />
+137-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:133:17-85
+137-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:133:25-82
+138                <action android:name="android.intent.action.PRIVACY_MODE_CHANGED" />
+138-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:134:17-85
+138-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:134:25-82
+139            </intent-filter>
+140
+141            <meta-data
+141-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:137:13-139:58
+142                android:name="android.appwidget.provider"
+142-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:138:17-58
+143                android:resource="@xml/widget_4x_info" />
+143-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:139:17-55
+144        </receiver>
+145        <receiver
+145-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:158:9-162:20
+146            android:name="net.micode.notes.ui.AlarmInitReceiver"
+146-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:158:19-55
+147            android:exported="false" >
+147-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:158:56-80
+148            <intent-filter>
+148-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:159:13-161:29
+149                <action android:name="android.intent.action.BOOT_COMPLETED" />
+149-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:160:17-79
+149-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:160:25-76
+150            </intent-filter>
+151        </receiver>
+152        <receiver
+152-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:164:9-169:20
+153            android:name="net.micode.notes.ui.AlarmReceiver"
+153-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:165:13-61
+154            android:exported="false"
+154-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:167:13-37
+155            android:process=":remote" >
+155-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:166:13-38
+156        </receiver>
+157
+158        <service
+158-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:171:9-174:19
+159            android:name="net.micode.notes.gtask.remote.GTaskSyncService"
+159-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:172:13-74
+160            android:exported="false" >
+160-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:173:13-37
+161        </service>
+162        <service
+162-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:176:9-179:19
+163            android:name="net.micode.notes.service.BackupBoundService"
+163-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:176:18-60
+164            android:exported="false" >
+164-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:177:13-37
+165        </service>
+166
+167        <meta-data
+167-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:181:9-183:52
+168            android:name="android.app.default_searchable"
+168-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:182:13-58
+169            android:value=".ui.NoteEditActivity" />
+169-->E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:183:13-49
+170    </application>
+171
+172</manifest>

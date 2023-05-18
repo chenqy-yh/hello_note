@@ -1,11 +1,13 @@
 package net.micode.notes.tool;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 import net.micode.notes.callback.NoteCallback;
 import okhttp3.Callback;
 
 public class UIUtils {
+
     public static void runInUI(Activity activity, NoteCallback callback) {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -18,7 +20,6 @@ public class UIUtils {
     public static void sendMsg(Activity activity, String msg) {
         runInUI(activity, () -> Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show());
     }
-
 }
 
 

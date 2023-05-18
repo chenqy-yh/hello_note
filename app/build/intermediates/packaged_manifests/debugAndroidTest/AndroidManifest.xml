@@ -3,8 +3,8 @@
     package="net.micode.notes.test" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="29" />
+        android:minSdkVersion="24"
+        android:targetSdkVersion="33" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
@@ -13,7 +13,9 @@
         android:label="Tests for net.micode.notes"
         android:targetPackage="net.micode.notes" />
 
-    <application android:debuggable="true" >
+    <application
+        android:debuggable="true"
+        android:extractNativeLibs="false" >
         <uses-library android:name="android.test.runner" />
     </application>
 
