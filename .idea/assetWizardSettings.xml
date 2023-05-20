@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../androidSDK/icons/material/materialiconssharp/playlist_add/sharp_playlist_add_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../androidSDK/icons/material/materialicons/sports_volleyball/baseline_sports_volleyball_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="sharp_playlist_add_24" />
+                            <entry key="outputName" value="menu_btn_bg" />
                             <entry key="sourceFile" value="E:\andriodProj\my_note\gitProject" />
                           </map>
                         </option>

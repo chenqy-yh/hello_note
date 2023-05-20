@@ -16,6 +16,10 @@
 
 package net.micode.notes.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,8 +27,8 @@ import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.database.Cursor;
+import android.graphics.Path;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -48,6 +52,7 @@ import net.micode.notes.data.Notes.NoteColumns;
 import net.micode.notes.gtask.remote.GTaskSyncService;
 import net.micode.notes.model.WorkingNote;
 import net.micode.notes.service.BackupBoundService;
+import net.micode.notes.tool.AnimUtils;
 import net.micode.notes.tool.BackupUtils;
 import net.micode.notes.tool.DataUtils;
 import net.micode.notes.tool.ResourceParser;
@@ -81,7 +86,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private static final String PREFERENCE_ADD_INTRODUCTION = "net.micode.notes.introduction";
 
     private enum ListEditState {
-        NOTE_LIST, SUB_FOLDER, CALL_RECORD_FOLDER
+        NOTE_LIST, SUB_FOLDER, CALL_RECORD_FOLDER, NOTE_MENU,
     }
 
     private ListEditState mState;
@@ -123,15 +128,19 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private final static int REQUEST_CODE_NEW_NODE = 103;
 
 
+    //    -------------------------------------   C Q Y   ---------------------------------------------------------
     //Customized by chenqy
 
     //弹出菜单
     private long mExitTime = 0;
     //注册广播
     public static final String BACKUP_ACTION = "net.micode.notes.backup";
+    public static final String SIGN_OUT_ACTION = "net.micode.notes.action.SIGN_OUT";
 
+    private Button btn_note_main;
+    private NoteMenuButton btn_menu_btn;
+    private View mask_view;
 
-    //    -------------------------------------   C Q Y   ---------------------------------------------------------
     //绑定状态
     private boolean is_bind_backup_service = false;
     //服务对象
@@ -162,7 +171,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(BACKUP_ACTION)) {
+            if (action.equals(BACKUP_ACTION)) {//TODO 备份
                 try {
                     startBackup(intent);
                 } catch (JSONException e) {
@@ -189,8 +198,8 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         return selected_list;
     }
 
-//    --------------------------------------  C Q Y   ---------------------------------------------------------
 
+//    --------------------------------------  C Q Y   ---------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -323,6 +332,12 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     private void initCustom() {
         //TODO initCustom
+        btn_note_main = findViewById(R.id.btn_note_main);
+        btn_menu_btn = findViewById(R.id.menu_button);
+        mask_view = findViewById(R.id.empty_view);
+        btn_note_main.setOnClickListener(this);
+        mask_view.setOnClickListener(this);
+        btn_menu_btn.setOnClickNoteMenuButton(() -> mState = ListEditState.NOTE_MENU);
         bindBackupService();
     }
 
@@ -650,10 +665,128 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_new_note) {
-            createNewNote();
+        int id = v.getId();
+        ObjectAnimator lfAlphaAnimator;
+        ObjectAnimator lfTranslationAnimator;
+        ObjectAnimator rtTranslationAnimator;
+        AnimatorSet lfSet;
+        AnimatorSet rtSet;
+
+
+        float x = btn_note_main.getX();
+        float y = btn_note_main.getY();
+        float lf_endX = x - convertDpToPx(100);
+        float lf_endY = y - convertDpToPx(30);
+        float rt_endX = x + convertDpToPx(100);
+        float rt_endY = y - convertDpToPx(30);
+        switch (id) {
+            case R.id.btn_note_main:
+                btn_note_main.animate()
+                        .alpha(0f)
+                        .setDuration(200)
+                        .withStartAction(()->{
+                            mask_view.setVisibility(View.VISIBLE);
+                        })
+                        .withEndAction(() -> {
+                            btn_note_main.setVisibility(View.GONE);
+                        })
+                        .start();
+
+                // 左侧按钮可见性和位移动画
+                mAddNewNote.setVisibility(View.VISIBLE);
+                lfAlphaAnimator = ObjectAnimator.ofFloat(mAddNewNote, "alpha", 0f, 1f);
+
+
+                lfTranslationAnimator = createConcaveCurve(mAddNewNote,x, y, lf_endX, lf_endY);
+
+                lfSet = AnimUtils.playAnimations(200, null, lfAlphaAnimator, lfTranslationAnimator);
+
+                // 右侧按钮可见性和位移动画
+                btn_menu_btn.setVisibility(View.VISIBLE);
+                ObjectAnimator rtAlphaAnimator = ObjectAnimator.ofFloat(btn_menu_btn, "alpha", 0f, 1f);
+                rtTranslationAnimator = createConcaveCurve(btn_menu_btn,x, y, rt_endX, rt_endY);
+                rtSet = AnimUtils.playAnimations(200, null, rtAlphaAnimator, rtTranslationAnimator);
+                lfSet.start();
+                rtSet.start();
+                break;
+            case R.id.btn_new_note:
+                ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(mAddNewNote, "rotation", 0f, -90f);
+                AnimatorSet animatorSet = AnimUtils.playAnimations(200,
+                        new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                createNewNote();
+                            }
+                        }
+                        , rotateAnimator);
+                animatorSet.start();
+                break;
+            case R.id.menu_button:
+                mState = ListEditState.NOTE_MENU;
+                break;
+            case R.id.empty_view:
+                btn_note_main.animate()
+                        .alpha(1f)
+                        .setDuration(200)
+                        .withStartAction(() -> {
+                            btn_note_main.setVisibility(View.VISIBLE);
+                        })
+                        .withEndAction(() -> {
+                            mask_view.setVisibility(View.GONE);
+                        })
+                        .start();
+
+
+                lfAlphaAnimator = ObjectAnimator.ofFloat(mAddNewNote, "alpha", 1f, 0f);
+                lfTranslationAnimator = createConvexCurve(mAddNewNote,lf_endX, lf_endY, x, y);
+                lfSet = AnimUtils.playAnimations(200,
+                        new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                mAddNewNote.setVisibility(View.GONE);
+                            }
+                        }
+                        , lfAlphaAnimator, lfTranslationAnimator);
+
+                rtAlphaAnimator = ObjectAnimator.ofFloat(btn_menu_btn, "alpha", 1f, 0f);
+                rtTranslationAnimator = createConvexCurve(btn_menu_btn,rt_endX, rt_endY, x, y);
+                rtSet = AnimUtils.playAnimations(200,
+                        new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                btn_menu_btn.setVisibility(View.GONE);
+                            }
+                        }
+                        , rtAlphaAnimator, rtTranslationAnimator);
+                lfSet.start();
+                rtSet.start();
+                break;
         }
     }
+
+
+    private ObjectAnimator createConvexCurve(Button btn,float sx, float sy,float ex, float ey) {
+        // 创建贝塞尔曲线
+        Path path = new Path();
+        path.moveTo(sx, sy);
+        path.quadTo(sx, ey, ex, ey);
+        return  ObjectAnimator.ofFloat(btn, View.X, View.Y, path);
+    }
+    private ObjectAnimator createConcaveCurve(Button btn,float sx, float sy,float ex, float ey) {
+        // 创建贝塞尔曲线
+        Path path = new Path();
+        path.moveTo(sx, sy);
+        path.quadTo(ex, sy, ex, ey);
+        return  ObjectAnimator.ofFloat(btn, View.X, View.Y, path);
+    }
+
+
+    private float convertDpToPx(float dp) {
+        float scale = getResources().getDisplayMetrics().density;
+        return dp * scale + 0.5f;
+    }
+
 
     private void showSoftInput() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -765,6 +898,9 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                     super.onBackPressed();
                 }
                 break;
+            case NOTE_MENU:
+                mState = ListEditState.NOTE_LIST;
+                btn_menu_btn.hiddenMenu();
             default:
                 break;
         }

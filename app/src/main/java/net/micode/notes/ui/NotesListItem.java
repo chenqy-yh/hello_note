@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +48,14 @@ public class NotesListItem extends LinearLayout {
         mTime = findViewById(R.id.tv_time);
         mCallName = findViewById(R.id.tv_name);
         mCheckBox = findViewById(android.R.id.checkbox);
+
+        // 设置笔记项之间的间隙
+        int marginBottom = getResources().getDimensionPixelSize(R.dimen.note_item_margin_bottom);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, 0, 0, marginBottom);
+        setLayoutParams(layoutParams);
+
     }
 
 

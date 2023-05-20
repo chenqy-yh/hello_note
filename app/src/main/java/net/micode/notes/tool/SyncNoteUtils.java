@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,11 +52,24 @@ public class SyncNoteUtils {
     }
 
 
-    public static List<SyncNoteUtils.SyncNoteItemData> extractNoteData(String jsonString) throws JSONException {
+    public static ArrayList<SyncNoteItemData> extractNoteData(String jsonString) throws JSONException {
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray dataArray = jsonObject.getJSONArray("data");
-        SyncNoteUtils.SyncNoteItemData[] noteDtos = gson.fromJson(dataArray.toString(), SyncNoteUtils.SyncNoteItemData[].class);
-        return Arrays.asList(noteDtos);
+        ArrayList<SyncNoteItemData> noteDtos = new ArrayList<>();
+        for(int i = 0; i < dataArray.length(); i++){
+            JSONObject noteData = dataArray.getJSONObject(i);
+            SyncNoteItemData noteDto = new SyncNoteItemData(
+                    noteData.getInt("note_id"),
+                    noteData.getString("user_id"),
+                    noteData.getString("content"),
+                    noteData.getInt("version"),
+                    noteData.getString("note_token"),
+                    noteData.getString("created_at"),
+                    noteData.getString("updated_at")
+            );
+            noteDtos.add(noteDto);
+        }
+        return noteDtos;
     }
 
 

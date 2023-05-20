@@ -34,6 +34,7 @@ public class Auth {
         SharedPreferences sp = context.getSharedPreferences(AUTH_SHARED_NAME,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(token_key);
+        editor.apply();
     }
 
     public static String getAuthToken(Context context, String token_key){

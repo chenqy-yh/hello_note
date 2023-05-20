@@ -41,7 +41,6 @@ public class NoteMenuListFragment extends Fragment implements View.OnClickListen
     private static final String TAG = "chenqy";
     private ListView lv_note_list;
     private Button btn_back;
-    private Button btn_close;
     private Button btn_backup;
     private Button btn_sync;
     private BackupListAdapter backupListAdapter;
@@ -94,10 +93,8 @@ public class NoteMenuListFragment extends Fragment implements View.OnClickListen
 
         lv_note_list = container.findViewById(R.id.note_pop_menu_lv);
         btn_back = container.findViewById(R.id.note_pop_menu_list_btn_back);
-        btn_close = container.findViewById(R.id.note_pop_menu_list_btn_close);
         fm = getActivity().getFragmentManager();
         btn_back.setOnClickListener(this);
-        btn_close.setOnClickListener(this);
     }
 
     @Override
@@ -127,7 +124,7 @@ public class NoteMenuListFragment extends Fragment implements View.OnClickListen
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         String resStr = response.body().string();
-                        List<SyncNoteUtils.SyncNoteItemData> noteDtos;
+                        ArrayList<SyncNoteUtils.SyncNoteItemData> noteDtos;
                         try {
                             noteDtos = SyncNoteUtils.extractNoteData(resStr);
                         } catch (JSONException e) {
@@ -161,18 +158,15 @@ public class NoteMenuListFragment extends Fragment implements View.OnClickListen
                 ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
                 ft.replace(R.id.note_menu_container, new NoteMenuMainFragment()).commit();
                 break;
-            case R.id.note_pop_menu_list_btn_close:
-                // TODO: Close the current page
-                View note_menu = getActivity().findViewById(R.id.note_menu);
-                AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
-                alphaAnimation.setDuration(200);
-                note_menu.startAnimation(alphaAnimation);
-                note_menu.setVisibility(View.GONE);
-                break;
+
             case R.id.note_pop_menu_list_btn_sync:
                 // TODO: Perform sync
                 UIUtils.sendMsg(getActivity(), "同步中...");
                 List<SyncNoteUtils.SyncNoteItemData> selectedList = syncListAdapter.getSelectedList();
+                if(selectedList.isEmpty()){
+                    UIUtils.sendMsg(getActivity(), "请选择要同步的笔记");
+                    return;
+                }
                 int count = 0;
                 for (SyncNoteUtils.SyncNoteItemData itemData : selectedList) {
                     count++;

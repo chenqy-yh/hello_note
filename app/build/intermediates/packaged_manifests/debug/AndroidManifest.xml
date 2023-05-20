@@ -42,6 +42,16 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:testOnly="true" >
         <activity
+            android:name="net.micode.notes.ui.TestActivity"
+            android:exported="true" >
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+
+        </activity>
+        <activity
             android:name="net.micode.notes.ui.NoteLoginActivity"
             android:exported="true"
             android:label="@string/login_title"
@@ -57,7 +67,7 @@
             android:name="net.micode.notes.ui.NotesListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.MaterialComponents.Light"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustPan" >

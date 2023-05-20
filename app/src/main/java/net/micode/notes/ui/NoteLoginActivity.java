@@ -42,6 +42,8 @@ public class NoteLoginActivity extends Activity {
     private Animator animator;
     private Context context;
     private long mExitTime = 0;
+    private boolean login_btn_isClickable = true;
+
     private static final String VERIFICATION_CODE_URL = "/verify/verifycode";
 
     @Override
@@ -74,13 +76,24 @@ public class NoteLoginActivity extends Activity {
         server = new NoteHttpServer();
 
         btn_login.setOnClickListener(v -> {
+            if (!login_btn_isClickable){
+                return;
+            }
+            login_btn_isClickable = false;
+            new Handler().postDelayed(() -> login_btn_isClickable = true, 2000);
             //check verifycode是否合法 合法就跳转
             try {
                 checkVerifyCode();
             } catch (IOException | JSONException e) {
-                throw new RuntimeException(e);
+                UIUtils.sendMsg(NoteLoginActivity.this, "验证码错误");
             }
         });
+        //如果携带了phone信息
+        Intent intent = getIntent();
+        String phone = intent.getStringExtra("phone");
+        if (phone != null) {
+            note_login_phone_num.setText(phone);
+        }
     }
 
     //checkIsLogin
@@ -144,20 +157,26 @@ public class NoteLoginActivity extends Activity {
                 try {
                     responseJson = new JSONObject(response.body().string());
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    Log.e(TAG, "登陆"+e.getMessage());
+                    UIUtils.sendMsg(NoteLoginActivity.this, "网络异常");
+                    return;
                 }
                 int code;
                 try {
                     code = responseJson.getInt("code");
                 } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    Log.e(TAG, "登陆"+e.getMessage());
+                    UIUtils.sendMsg(NoteLoginActivity.this, "网络异常");
+                    return;
                 }
                 if (code == NoteRemoteConfig.RESPONSE_SUCCESS) {
                     String token;
                     try {
                         token = responseJson.getString("data");
                     } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                        Log.e(TAG, "登陆"+e.getMessage());
+                        UIUtils.sendMsg(NoteLoginActivity.this, "网络异常");
+                        return;
                     }
 
                     //保存token

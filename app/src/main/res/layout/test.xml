@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+	<Button
+			android:id="@+id/btn"
+			android:background="@drawable/note_btn_main"
+			android:layout_width="70dp"
+			android:layout_height="70dp"
+			android:layout_centerInParent="true"
+	/>
+	<Button
+			android:id="@+id/btn_lf"
+			android:background="@drawable/note_btn_lf"
+			android:layout_width="70dp"
+			android:layout_height="70dp"
+			android:layout_centerInParent="true"
+			android:visibility="gone"
+	/>
+	<Button
+			android:id="@+id/btn_rt"
+			android:background="@drawable/note_btn_rt"
+			android:layout_width="70dp"
+			android:layout_height="70dp"
+			android:layout_centerInParent="true"
+			android:visibility="gone"
+	/>
+
+
+</RelativeLayout>

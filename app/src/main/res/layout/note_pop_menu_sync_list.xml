@@ -65,15 +65,6 @@
 					android:layout_marginLeft="10dp"
 					android:layout_marginRight="10dp"
 			/>
-
-			<com.google.android.material.button.MaterialButton
-					android:id="@+id/note_pop_menu_list_btn_close"
-					android:text="退出"
-					android:layout_width="80dp"
-					android:layout_height="wrap_content"
-					android:layout_toRightOf="@id/note_pop_menu_list_btn_sync"
-			/>
-
 		</RelativeLayout>
 	</RelativeLayout>
 </RelativeLayout>

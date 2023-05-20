@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import net.micode.notes.R;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SyncListAdapter extends BaseAdapter {
-    private List<SyncNoteUtils.SyncNoteItemData> mData;
+    private ArrayList<SyncNoteUtils.SyncNoteItemData> mData;
     private Context mContext;
     private List<SyncNoteUtils.SyncNoteItemData> mSelectedList;
 
-    public SyncListAdapter(List<SyncNoteUtils.SyncNoteItemData> data, Context context) {
+    public SyncListAdapter(ArrayList<SyncNoteUtils.SyncNoteItemData> data, Context context) {
         mData = data;
         mContext = context;
         mSelectedList = new ArrayList<>();
@@ -47,6 +48,7 @@ public class SyncListAdapter extends BaseAdapter {
             vh = new ViewHolder();
             vh.tv_note_id = convertView.findViewById(R.id.numberTextView);
             vh.tv_note_snippet = convertView.findViewById(R.id.textTextView);
+            vh.btn_del = convertView.findViewById(R.id.btn_menu_list_item_btn_del);
             vh.checkBox = convertView.findViewById(R.id.checkBox);
             convertView.setTag(vh);
         } else {
@@ -54,21 +56,27 @@ public class SyncListAdapter extends BaseAdapter {
         }
 
         SyncNoteUtils.SyncNoteItemData item = mData.get(position);
-        vh.tv_note_id.setText(String.valueOf(position + 1) + ".");
+        vh.tv_note_id.setText(position + 1 + ".");
         vh.tv_note_snippet.setText(item.getContent());
         vh.checkBox.setTag(item);
+        vh.btn_del.setTag(item);
+        vh.btn_del.setAdapter(this);
 
-        convertView.setOnClickListener(v -> {
+        vh.checkBox.setOnClickListener(v -> {
             if (vh.checkBox.isChecked()) {
-                vh.checkBox.setChecked(false);
-                mSelectedList.remove(item);
-            } else {
-                vh.checkBox.setChecked(true);
                 mSelectedList.add(item);
+            } else {
+                mSelectedList.remove(item);
             }
         });
 
+
         return convertView;
+    }
+
+    public void deleteItem(SyncNoteUtils.SyncNoteItemData item) {
+        mData.remove(item);
+        notifyDataSetChanged();
     }
 
     public List<SyncNoteUtils.SyncNoteItemData> getSelectedList() {
@@ -78,6 +86,7 @@ public class SyncListAdapter extends BaseAdapter {
     static class ViewHolder {
         private TextView tv_note_id;
         private TextView tv_note_snippet;
+        private NoteDelButton btn_del;
         private CheckBox checkBox;
     }
 }

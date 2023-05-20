@@ -13,6 +13,7 @@ anim abc_tooltip_enter
 anim abc_tooltip_exit
 anim anim_in
 anim anim_out
+anim anim_rotate
 anim btn_checkbox_to_checked_box_inner_merged_animation
 anim btn_checkbox_to_checked_box_outer_merged_animation
 anim btn_checkbox_to_checked_icon_null_animation
@@ -1562,6 +1563,7 @@ dimen mtrl_tooltip_minHeight
 dimen mtrl_tooltip_minWidth
 dimen mtrl_tooltip_padding
 dimen mtrl_transition_shared_axis_slide_distance
+dimen note_item_margin_bottom
 dimen notification_action_icon_size
 dimen notification_action_text_size
 dimen notification_big_circle_margin
@@ -1785,6 +1787,9 @@ drawable navigation_empty_icon
 drawable new_note
 drawable new_note_normal
 drawable new_note_pressed
+drawable note_btn_lf
+drawable note_btn_main
+drawable note_btn_rt
 drawable note_edit_color_selector_panel
 drawable note_menu_bg
 drawable notification
@@ -1909,12 +1914,18 @@ id beginning
 id blocking
 id bottom
 id bounce
+id btn
 id btn_close
+id btn_lf
 id btn_login
 id btn_login_area
+id btn_menu_list_item_btn_del
 id btn_new_note
 id btn_note_backup
+id btn_note_main
+id btn_note_signout
 id btn_note_sync
+id btn_rt
 id btn_set_bg_color
 id buttonPanel
 id button_get_verification_code
@@ -1983,6 +1994,7 @@ id easeInOut
 id easeOut
 id edit_query
 id elastic
+id empty_view
 id end
 id endToStart
 id enterAlways
@@ -2060,6 +2072,7 @@ id ll_font_small
 id ll_font_super
 id ll_login
 id ll_password
+id mask_view
 id masked
 id material_clock_display
 id material_clock_face
@@ -2144,6 +2157,7 @@ id note_bg_color_selector
 id note_edit_list
 id note_edit_view
 id note_item
+id note_list_activity
 id note_login_phone_num
 id note_menu
 id note_menu_container
@@ -2151,7 +2165,6 @@ id note_menu_list_item_cb
 id note_menu_list_item_tv
 id note_pop_menu_list_btn_back
 id note_pop_menu_list_btn_backup
-id note_pop_menu_list_btn_close
 id note_pop_menu_list_btn_group
 id note_pop_menu_list_btn_sync
 id note_pop_menu_list_header
@@ -2480,6 +2493,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout settings_header
 layout support_simple_spinner_dropdown_item
+layout test
 layout test_action_chip
 layout test_chip_zero_corner_radius
 layout test_design_checkbox

@@ -11,9 +11,8 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_above="@+id/btn_close"
-			android:layout_marginBottom="194dp"
 			android:gravity="center_horizontal"
-	>
+			android:layout_marginBottom="100dp">
 		<Button
 				android:id="@+id/btn_note_backup"
 				android:text="备份便签"
@@ -28,17 +27,25 @@
 				android:layout_below="@id/btn_note_backup"
 				android:layout_marginTop="40dp"
 		/>
+		<Button
+				android:id="@+id/btn_note_signout"
+				android:text="退出登陆"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/btn_note_sync"
+				android:layout_marginTop="40dp"
+		/>
 
 	</RelativeLayout>
-	<Button
-			android:id="@+id/btn_close"
-			android:text="close"
-			android:textSize="20sp"
-			android:textStyle="bold"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:layout_centerHorizontal="true"
-			android:layout_marginBottom="50dp"
-	/>
+<!--	<Button-->
+<!--			android:id="@+id/btn_close"-->
+<!--			android:text="close"-->
+<!--			android:textSize="20sp"-->
+<!--			android:textStyle="bold"-->
+<!--			android:layout_width="wrap_content"-->
+<!--			android:layout_height="wrap_content"-->
+<!--			android:layout_alignParentBottom="true"-->
+<!--			android:layout_centerHorizontal="true"-->
+<!--			android:layout_marginBottom="50dp"-->
+<!--	/>-->
 </RelativeLayout>
