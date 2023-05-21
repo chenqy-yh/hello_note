@@ -114,15 +114,12 @@ public class NoteDelButton extends androidx.appcompat.widget.AppCompatButton imp
 
                     @Override
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                        try {
-                            JSONObject resJson = new JSONObject(response.body().string());
-                            if (resJson.getInt("code") == NoteRemoteConfig.RESPONSE_SUCCESS) {
-                                UIUtils.sendMsg((Activity) context, "删除成功");
+                        if(response.code() == NoteRemoteConfig.RESPONSE_SUCCESS){
+                            UIUtils.sendMsg((Activity) context, "删除成功");
+                            UIUtils.runInUI((Activity) context,() -> {
                                 adapter.deleteItem(item);
-                            } else {
-                                UIUtils.sendMsg((Activity) context, "删除失败");
-                            }
-                        } catch (JSONException e) {
+                            });
+                        }else{
                             UIUtils.sendMsg((Activity) context, "删除失败");
                         }
                     }

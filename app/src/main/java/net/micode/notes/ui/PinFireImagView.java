@@ -47,14 +47,15 @@ public class PinFireImagView extends androidx.appcompat.widget.AppCompatImageVie
         //find pin
         Cursor c = context.getContentResolver().query(Notes.CONTENT_NOTE_URI, new String[]{Notes.NoteColumns.PIN}, Notes.NoteColumns.ID + " = ?", new String[]{String.valueOf(note_id)}, null);
         if (c != null) {
-            c.moveToFirst();
-            @SuppressLint("Range") int pin = c.getInt(c.getColumnIndex(Notes.NoteColumns.PIN));
-            if (pin == 1) {
-                this.setVisibility(VISIBLE);
-                background.start();
-            } else {
-                background.stop();
-                this.setVisibility(GONE);
+            if(c.moveToFirst()){
+                @SuppressLint("Range") int pin = c.getInt(c.getColumnIndex(Notes.NoteColumns.PIN));
+                if (pin == 1) {
+                    this.setVisibility(VISIBLE);
+                    background.start();
+                } else {
+                    background.stop();
+                    this.setVisibility(GONE);
+                }
             }
             c.close();
         }

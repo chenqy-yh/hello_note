@@ -119,7 +119,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         sFontSelectorSelectionMap.put(ResourceParser.TEXT_SUPER, R.id.iv_super_select);
     }
 
-    private static final String TAG = "NoteEditActivity";
+    private static final String TAG = "chenqy";
 
     private HeadViewHolder mNoteHeaderHolder;
 
@@ -419,7 +419,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         if (mFontSizeId >= TextAppearanceResources.getResourcesSize()) {
             mFontSizeId = ResourceParser.BG_DEFAULT_FONT_SIZE;
         }
-        mEditTextList = (LinearLayout) findViewById(R.id.note_edit_list);
+        mEditTextList = findViewById(R.id.note_edit_list);
 
         //custom
         initPinCheckbox();
@@ -435,12 +435,13 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         pinCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             ContentValues val = new ContentValues();
             val.put(Notes.NoteColumns.PIN, isChecked ? 1 : 0);
-            boolean b = getContentResolver().update(
-                    ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, mWorkingNote.getNoteId()), val, null,
-                    null) == 0;
-            if (b) {
-                Toast.makeText(NoteEditActivity.this, "Pin failed", Toast.LENGTH_SHORT).show();
+            long note_id = mWorkingNote.getNoteId();
+            if(note_id != 0){
+                //新创建的note,不需要更新数据库
+                // 因为在保存的时候会更新,老的note需要更新数据库
+                getContentResolver().update(Notes.CONTENT_NOTE_URI, val, Notes.NoteColumns.ID + "=?", new String[]{String.valueOf(note_id)});
             }
+
         });
     }
 
@@ -774,7 +775,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View getListItem(String item, int index) {
         View view = LayoutInflater.from(this).inflate(R.layout.note_edit_list_item, null);
-        ImageView pin_fire = view.findViewById(R.id.pin_fire);
         final NoteEditText edit = (NoteEditText) view.findViewById(R.id.et_edit_text);
         edit.setTextAppearance(this, TextAppearanceResources.getTexAppearanceResource(mFontSizeId));
         CheckBox cb = ((CheckBox) view.findViewById(R.id.cb_edit_item));
@@ -865,8 +865,25 @@ public class NoteEditActivity extends Activity implements OnClickListener,
              * {@link #RESULT_OK} is used to identify the create/edit state
              */
             setResult(RESULT_OK);
+            saveNotePin();
         }
         return saved;
+    }
+
+    private void saveNotePin(){
+        //update pin
+        if (pinCheckBox.isChecked()){
+            ContentValues values = new ContentValues();
+            values.put(Notes.NoteColumns.PIN, pinCheckBox.isChecked()?1:0);
+            long note_id = mWorkingNote.getNoteId();
+            int update = getContentResolver().update(
+                    Notes.CONTENT_NOTE_URI,
+                    values,
+                    Notes.NoteColumns.ID + " = ?",
+                    new String[]{String.valueOf(note_id)}
+            );
+            Log.e(TAG, "update pin " + update);
+        }
     }
 
     private void sendToDesktop() {

@@ -72,8 +72,6 @@ public class NotesListItem extends LinearLayout {
      * @param checked    表示当前项目在选择模式下是否已选中的布尔值。
      */
     public void bind(Context context, NoteItemData data, boolean choiceMode, boolean checked) {
-        pin_fire.setTag(data.getId());
-        pin_fire.run();
         // 根据RecyclerView是否处于选择模式以及笔记项类型，显示或隐藏复选框。
         if (choiceMode && data.getType() == Notes.TYPE_NOTE) {
             mCheckBox.setVisibility(View.VISIBLE);
@@ -111,6 +109,8 @@ public class NotesListItem extends LinearLayout {
                         + context.getString(R.string.format_folder_files_count, data.getNotesCount()));
                 mAlert.setVisibility(View.GONE); // 隐藏警报图标。
             } else { // 如果笔记项不是文件夹，说明是笔记
+                pin_fire.setTag(data.getId());
+                pin_fire.run();
                 mTitle.setText(DataUtils.getFormattedSnippet(data.getSnippet())); // 将标题文本设置为笔记项的格式化片段。
                 if (data.hasAlert()) { // 如果笔记项有警报，
                     mAlert.setImageResource(R.drawable.clock); // 将警报图标设置为时钟图标。

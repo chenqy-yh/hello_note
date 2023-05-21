@@ -75,7 +75,6 @@ public class NoteLoginActivity extends Activity {
         rlContent = findViewById(R.id.btn_login_area);
         rlContent.getBackground().setAlpha(0);
         handler = new Handler();
-
     }
 
     private void initResources() {
@@ -97,11 +96,17 @@ public class NoteLoginActivity extends Activity {
             }
         });
 
+        //设置phone
         //如果携带了phone信息
         Intent intent = getIntent();
         String phone = intent.getStringExtra("phone");
         if (phone != null) {
             note_login_phone_num.setText(phone);
+        }
+        //有缓存
+        String cachePhone = Auth.getAuthToken(this, Auth.AUTH_PHONE_KEY);
+        if (cachePhone != null){
+            note_login_phone_num.setText(cachePhone);
         }
     }
 

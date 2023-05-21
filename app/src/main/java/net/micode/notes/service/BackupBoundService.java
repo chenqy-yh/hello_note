@@ -64,7 +64,9 @@ public class BackupBoundService extends Service {
         String phone = Auth.getAuthToken(this, Auth.AUTH_PHONE_KEY);
         HttpUrl url = HttpUrl.parse(NoteRemoteConfig.generateUrl("/note/syncnote"));
 
+        int count = 0;
         for (Long noteId : noteData) {
+            count++;
             JSONObject body = new JSONObject();
             body.put("user_id", phone);
 
@@ -96,11 +98,12 @@ public class BackupBoundService extends Service {
                 body.put("note_token", noteToken);
             }
 
+            int finalCount = count;
             noteHttpServer.sendAsyncPostRequest(url, body.toString(), NoteHttpServer.BodyType.JSON, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
                     Log.e(TAG, "Backup failed: " + e.getMessage());
-                    mHandler.obtainMessage(1, "Backup failed: " + e.getMessage()).sendToTarget();
+                    mHandler.obtainMessage(1, "第"+ finalCount +"条便签备份失败: " + e.getMessage()).sendToTarget();
                 }
 
                 @Override
@@ -114,7 +117,7 @@ public class BackupBoundService extends Service {
 
                         if (noteToken == null) {
                             Log.e(TAG, "Backup failed");
-                            mHandler.obtainMessage(1, "Backup failed").sendToTarget();
+                            mHandler.obtainMessage(1, "第"+ finalCount +"条便签备份失败: ").sendToTarget();
                         } else {
                             ContentValues values = new ContentValues();
                             values.put(Notes.DataColumns.DATA5, noteToken);
@@ -124,14 +127,14 @@ public class BackupBoundService extends Service {
                                     Notes.DataColumns.NOTE_ID + " = ?",
                                     new String[]{noteId.toString()}
                             );
-                            mHandler.obtainMessage(1, "Backup successful").sendToTarget();
                         }
                     } catch (JSONException e) {
-                        mHandler.obtainMessage(1, "Backup failed: " + e.getMessage()).sendToTarget();
+                        mHandler.obtainMessage(1, "第"+ finalCount +"条便签备份失败: " + e.getMessage()).sendToTarget();
                     }
                 }
             });
         }
+        mHandler.obtainMessage(1, "备份结束").sendToTarget();
     }
 
     public class LocalBinder extends Binder {
