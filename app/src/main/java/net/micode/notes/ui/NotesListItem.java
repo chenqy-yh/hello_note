@@ -17,6 +17,7 @@
 package net.micode.notes.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -39,6 +40,9 @@ public class NotesListItem extends LinearLayout {
     private final TextView mCallName;
     private NoteItemData mItemData;
     private final CheckBox mCheckBox;
+    private PinFireImagView pin_fire;
+
+
 
     public NotesListItem(Context context) {
         super(context);
@@ -48,7 +52,7 @@ public class NotesListItem extends LinearLayout {
         mTime = findViewById(R.id.tv_time);
         mCallName = findViewById(R.id.tv_name);
         mCheckBox = findViewById(android.R.id.checkbox);
-
+        pin_fire = findViewById(R.id.pin_fire);
         // 设置笔记项之间的间隙
         int marginBottom = getResources().getDimensionPixelSize(R.dimen.note_item_margin_bottom);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -68,6 +72,8 @@ public class NotesListItem extends LinearLayout {
      * @param checked    表示当前项目在选择模式下是否已选中的布尔值。
      */
     public void bind(Context context, NoteItemData data, boolean choiceMode, boolean checked) {
+        pin_fire.setTag(data.getId());
+        pin_fire.run();
         // 根据RecyclerView是否处于选择模式以及笔记项类型，显示或隐藏复选框。
         if (choiceMode && data.getType() == Notes.TYPE_NOTE) {
             mCheckBox.setVisibility(View.VISIBLE);
@@ -104,7 +110,7 @@ public class NotesListItem extends LinearLayout {
                 mTitle.setText(data.getSnippet() // 设置标题文本为文件夹名称和文件夹中文件数量。
                         + context.getString(R.string.format_folder_files_count, data.getNotesCount()));
                 mAlert.setVisibility(View.GONE); // 隐藏警报图标。
-            } else { // 如果笔记项不是文件夹，
+            } else { // 如果笔记项不是文件夹，说明是笔记
                 mTitle.setText(DataUtils.getFormattedSnippet(data.getSnippet())); // 将标题文本设置为笔记项的格式化片段。
                 if (data.hasAlert()) { // 如果笔记项有警报，
                     mAlert.setImageResource(R.drawable.clock); // 将警报图标设置为时钟图标。
@@ -112,11 +118,12 @@ public class NotesListItem extends LinearLayout {
                 } else {
                     mAlert.setVisibility(View.GONE); // 否则隐藏警报图标。
                 }
+
+
             }
         }
         // 设置时间文本为笔记项修改日期的相对时间跨度。
         mTime.setText(DateUtils.getRelativeTimeSpanString(data.getModifiedDate()));
-        // 根据笔记项类型设置ViewHolder的背景色。
         setBackground(data);
     }
 
@@ -140,4 +147,7 @@ public class NotesListItem extends LinearLayout {
     public NoteItemData getItemData() {
         return mItemData;
     }
+
+
+
 }

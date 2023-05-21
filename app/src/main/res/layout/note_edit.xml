@@ -54,7 +54,15 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="2dip"
                 android:layout_marginRight="8dip"
-                android:textAppearance="@style/TextAppearanceSecondaryItem" />
+                android:textAppearance="@style/TextAppearanceSecondaryItem"
+            />
+
+            <net.micode.notes.ui.PinCheckBox
+                    android:id="@+id/cb_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            />
+
 
             <ImageButton
                 android:layout_width="wrap_content"

@@ -86,7 +86,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private static final String PREFERENCE_ADD_INTRODUCTION = "net.micode.notes.introduction";
 
     private enum ListEditState {
-        NOTE_LIST, SUB_FOLDER, CALL_RECORD_FOLDER, NOTE_MENU,
+        NOTE_LIST, SUB_FOLDER, CALL_RECORD_FOLDER, NOTE_MENU, NOTE_BTN_GROUP
     }
 
     private ListEditState mState;
@@ -97,7 +97,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     private ListView mNotesListView;
 
-    private Button mAddNewNote;
+    private Button btn_new_note;
 
     private boolean mDispatch;
 
@@ -319,9 +319,9 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         mNotesListView.setOnItemLongClickListener(this);
         mNotesListAdapter = new NotesListAdapter(this);
         mNotesListView.setAdapter(mNotesListAdapter);
-        mAddNewNote = findViewById(R.id.btn_new_note);
-        mAddNewNote.setOnClickListener(this);
-        mAddNewNote.setOnTouchListener(new NewNoteOnTouchListener());
+        btn_new_note = findViewById(R.id.btn_new_note);
+        btn_new_note.setOnClickListener(this);
+        btn_new_note.setOnTouchListener(new NewNoteOnTouchListener());
         mDispatch = false;
         mDispatchY = 0;
         mOriginY = 0;
@@ -330,6 +330,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         mModeCallBack = new ModeCallback();
     }
 
+
     private void initCustom() {
         //TODO initCustom
         btn_note_main = findViewById(R.id.btn_note_main);
@@ -337,6 +338,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         mask_view = findViewById(R.id.empty_view);
         btn_note_main.setOnClickListener(this);
         mask_view.setOnClickListener(this);
+        mask_view.setAlpha(0f);
         btn_menu_btn.setOnClickNoteMenuButton(() -> mState = ListEditState.NOTE_MENU);
         bindBackupService();
     }
@@ -347,6 +349,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         private ActionMode mActionMode;
 
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            Log.e(TAG, "onCreateActionMode");
             getMenuInflater().inflate(R.menu.note_list_options, menu);
             menu.findItem(R.id.delete).setOnMenuItemClickListener(this);
             MenuItem mMoveMenu = menu.findItem(R.id.move);
@@ -360,7 +363,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             mActionMode = mode;
             mNotesListAdapter.setChoiceMode(true);
             mNotesListView.setLongClickable(false);
-            mAddNewNote.setVisibility(View.GONE);
+            btn_new_note.setVisibility(View.GONE);
 
             View customView = LayoutInflater.from(NotesListActivity.this).inflate(
                     R.layout.note_list_dropdown_menu, null);
@@ -404,9 +407,10 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         }
 
         public void onDestroyActionMode(ActionMode mode) {
+            Log.e(TAG, "onDestroyActionMode");
             mNotesListAdapter.setChoiceMode(false);
             mNotesListView.setLongClickable(true);
-            mAddNewNote.setVisibility(View.VISIBLE);
+//            btn_new_note.setVisibility(View.VISIBLE);
         }
 
         public void finishActionMode() {
@@ -455,7 +459,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 case MotionEvent.ACTION_DOWN: {
                     Display display = getWindowManager().getDefaultDisplay();
                     int screenHeight = display.getHeight();
-                    int newNoteViewHeight = mAddNewNote.getHeight();
+                    int newNoteViewHeight = btn_new_note.getHeight();
                     int start = screenHeight - newNoteViewHeight;
                     int eventY = start + (int) event.getY();
                     //Minus TitleBar's height
@@ -614,6 +618,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
 
     private void deleteFolder(long folderId) {
+        Log.e(TAG, "deleteFolder");
         if (folderId == Notes.ID_ROOT_FOLDER) {
             Log.e(TAG, "Wrong folder id, should not happen " + folderId);
             return;
@@ -641,6 +646,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     private void openNode(NoteItemData data) {
+        Log.e(TAG, "openNode");
         Intent intent = new Intent(this, NoteEditActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(Intent.EXTRA_UID, data.getId());
@@ -648,11 +654,12 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     private void openFolder(NoteItemData data) {
+        Log.e(TAG, "openFolder");
         mCurrentFolderId = data.getId();
         startAsyncNotesListQuery();
         if (data.getId() == Notes.ID_CALL_RECORD_FOLDER) {
             mState = ListEditState.CALL_RECORD_FOLDER;
-            mAddNewNote.setVisibility(View.GONE);
+            btn_new_note.setVisibility(View.GONE);
         } else {
             mState = ListEditState.SUB_FOLDER;
         }
@@ -665,57 +672,68 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     public void onClick(View v) {
+
+
+        Log.e(TAG, "custem onClick" );
         int id = v.getId();
         ObjectAnimator lfAlphaAnimator;
         ObjectAnimator lfTranslationAnimator;
         ObjectAnimator rtTranslationAnimator;
         AnimatorSet lfSet;
         AnimatorSet rtSet;
-
-
         float x = btn_note_main.getX();
         float y = btn_note_main.getY();
-        float lf_endX = x - convertDpToPx(100);
+        float lf_endX = x - convertDpToPx(70);
         float lf_endY = y - convertDpToPx(30);
-        float rt_endX = x + convertDpToPx(100);
+        float rt_endX = x + convertDpToPx(70);
         float rt_endY = y - convertDpToPx(30);
         switch (id) {
             case R.id.btn_note_main:
+                mState = ListEditState.NOTE_BTN_GROUP;
                 btn_note_main.animate()
                         .alpha(0f)
                         .setDuration(200)
-                        .withStartAction(()->{
-                            mask_view.setVisibility(View.VISIBLE);
-                        })
                         .withEndAction(() -> {
                             btn_note_main.setVisibility(View.GONE);
                         })
                         .start();
+                mask_view.animate()
+                        .alpha(1f)
+                        .setDuration(200)
+                        .withStartAction(()->{
+                            mask_view.setVisibility(View.VISIBLE);
+                        })
+                        .start();
 
                 // 左侧按钮可见性和位移动画
-                mAddNewNote.setVisibility(View.VISIBLE);
-                lfAlphaAnimator = ObjectAnimator.ofFloat(mAddNewNote, "alpha", 0f, 1f);
+                btn_new_note.setVisibility(View.VISIBLE);
+                lfAlphaAnimator = ObjectAnimator.ofFloat(btn_new_note, "alpha", 0f, 1f);
 
 
-                lfTranslationAnimator = createConcaveCurve(mAddNewNote,x, y, lf_endX, lf_endY);
+//                lfTranslationAnimator = createConcaveCurve(btn_new_note,x, y, lf_endX, lf_endY);
+                lfTranslationAnimator = createStraghtLine(btn_new_note,x, y, lf_endX, y);
+
 
                 lfSet = AnimUtils.playAnimations(200, null, lfAlphaAnimator, lfTranslationAnimator);
 
                 // 右侧按钮可见性和位移动画
                 btn_menu_btn.setVisibility(View.VISIBLE);
                 ObjectAnimator rtAlphaAnimator = ObjectAnimator.ofFloat(btn_menu_btn, "alpha", 0f, 1f);
-                rtTranslationAnimator = createConcaveCurve(btn_menu_btn,x, y, rt_endX, rt_endY);
+//                rtTranslationAnimator = createConcaveCurve(btn_menu_btn,x, y, rt_endX, rt_endY);
+                rtTranslationAnimator = createStraghtLine(btn_menu_btn,x, y, rt_endX, y);
+
                 rtSet = AnimUtils.playAnimations(200, null, rtAlphaAnimator, rtTranslationAnimator);
                 lfSet.start();
                 rtSet.start();
                 break;
             case R.id.btn_new_note:
-                ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(mAddNewNote, "rotation", 0f, -90f);
+                ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(btn_new_note, "rotation", 0f, -90f);
                 AnimatorSet animatorSet = AnimUtils.playAnimations(200,
                         new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
+                                Log.e(TAG, "onAnimationEnd");
                                 createNewNote();
                             }
                         }
@@ -723,38 +741,48 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 animatorSet.start();
                 break;
             case R.id.menu_button:
-                mState = ListEditState.NOTE_MENU;
+                mState = ListEditState.NOTE_BTN_GROUP;
                 break;
             case R.id.empty_view:
+                mState = ListEditState.NOTE_LIST;
                 btn_note_main.animate()
                         .alpha(1f)
                         .setDuration(200)
                         .withStartAction(() -> {
                             btn_note_main.setVisibility(View.VISIBLE);
                         })
-                        .withEndAction(() -> {
+
+                        .start();
+                mask_view.animate()
+                        .alpha(0f)
+                        .setDuration(200)
+                        .withEndAction(()->{
                             mask_view.setVisibility(View.GONE);
                         })
                         .start();
 
 
-                lfAlphaAnimator = ObjectAnimator.ofFloat(mAddNewNote, "alpha", 1f, 0f);
-                lfTranslationAnimator = createConvexCurve(mAddNewNote,lf_endX, lf_endY, x, y);
+                lfAlphaAnimator = ObjectAnimator.ofFloat(btn_new_note, "alpha", 1f, 0f);
+//                lfTranslationAnimator = createConvexCurve(btn_new_note,lf_endX, lf_endY, x, y);
+                lfTranslationAnimator = createStraghtLine(btn_new_note,lf_endX, y, x, y);
                 lfSet = AnimUtils.playAnimations(200,
                         new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                mAddNewNote.setVisibility(View.GONE);
+                                Log.e(TAG, "onAnimationEnd");
+                                btn_new_note.setVisibility(View.GONE);
                             }
                         }
                         , lfAlphaAnimator, lfTranslationAnimator);
 
                 rtAlphaAnimator = ObjectAnimator.ofFloat(btn_menu_btn, "alpha", 1f, 0f);
-                rtTranslationAnimator = createConvexCurve(btn_menu_btn,rt_endX, rt_endY, x, y);
+//                rtTranslationAnimator = createConvexCurve(btn_menu_btn,rt_endX, rt_endY, x, y);
+                rtTranslationAnimator = createStraghtLine(btn_menu_btn,rt_endX, y, x, y);
                 rtSet = AnimUtils.playAnimations(200,
                         new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
+                                Log.e(TAG, "onAnimationEnd");
                                 btn_menu_btn.setVisibility(View.GONE);
                             }
                         }
@@ -764,21 +792,28 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 break;
         }
     }
+    private ObjectAnimator createStraghtLine(Button btn, float sx, float sy, float ex, float ey) {
+        // 创建贝塞尔曲线
+        Path path = new Path();
+        path.moveTo(sx, sy);
+        path.lineTo(ex, ey);
+        return ObjectAnimator.ofFloat(btn, View.X, View.Y, path);
+    }
 
-
-    private ObjectAnimator createConvexCurve(Button btn,float sx, float sy,float ex, float ey) {
+    private ObjectAnimator createConvexCurve(Button btn, float sx, float sy, float ex, float ey) {
         // 创建贝塞尔曲线
         Path path = new Path();
         path.moveTo(sx, sy);
         path.quadTo(sx, ey, ex, ey);
-        return  ObjectAnimator.ofFloat(btn, View.X, View.Y, path);
+        return ObjectAnimator.ofFloat(btn, View.X, View.Y, path);
     }
-    private ObjectAnimator createConcaveCurve(Button btn,float sx, float sy,float ex, float ey) {
+
+    private ObjectAnimator createConcaveCurve(Button btn, float sx, float sy, float ex, float ey) {
         // 创建贝塞尔曲线
         Path path = new Path();
         path.moveTo(sx, sy);
         path.quadTo(ex, sy, ex, ey);
-        return  ObjectAnimator.ofFloat(btn, View.X, View.Y, path);
+        return ObjectAnimator.ofFloat(btn, View.X, View.Y, path);
     }
 
 
@@ -789,6 +824,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
 
     private void showSoftInput() {
+        Log.e(TAG, "showSoftInput");
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (inputMethodManager != null) {
             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -796,6 +832,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     private void hideSoftInput(View view) {
+        Log.e(TAG, "hideSoftInput: ");
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
@@ -875,6 +912,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     @Override
     public void onBackPressed() {
+        Log.e(TAG, "onBackPressed");
         switch (mState) {
             case SUB_FOLDER:
                 mCurrentFolderId = Notes.ID_ROOT_FOLDER;
@@ -885,7 +923,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             case CALL_RECORD_FOLDER:
                 mCurrentFolderId = Notes.ID_ROOT_FOLDER;
                 mState = ListEditState.NOTE_LIST;
-                mAddNewNote.setVisibility(View.VISIBLE);
+                btn_new_note.setVisibility(View.VISIBLE);
                 mTitleBar.setVisibility(View.GONE);
                 startAsyncNotesListQuery();
                 break;
@@ -901,6 +939,11 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
             case NOTE_MENU:
                 mState = ListEditState.NOTE_LIST;
                 btn_menu_btn.hiddenMenu();
+                break;
+            case NOTE_BTN_GROUP:
+                mState = ListEditState.NOTE_LIST;
+                mask_view.performClick();
+                break;
             default:
                 break;
         }
@@ -927,6 +970,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     private final OnCreateContextMenuListener mFolderOnCreateContextMenuListener = new OnCreateContextMenuListener() {
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+            Log.e(TAG, "onCreateContextMenu");
             if (mFocusNoteDataItem != null) {
                 menu.setHeaderTitle(mFocusNoteDataItem.getSnippet());
                 menu.add(0, MENU_FOLDER_VIEW, 0, R.string.menu_folder_view);
@@ -938,6 +982,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     @Override
     public void onContextMenuClosed(Menu menu) {
+        Log.e(TAG, "onContextMenuClosed");
         if (mNotesListView != null) {
             mNotesListView.setOnCreateContextMenuListener(null);
         }
@@ -946,6 +991,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Log.e(TAG, "onContextItemSelected");
         if (mFocusNoteDataItem == null) {
             Log.e(TAG, "The long click data item is null");
             return false;
@@ -976,6 +1022,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.e(TAG, "准备选项菜单");
         menu.clear();
         if (mState == ListEditState.NOTE_LIST) {
             getMenuInflater().inflate(R.menu.note_list, menu);
@@ -1086,6 +1133,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     private void startPreferenceActivity() {
+        Log.e(TAG, "前往 PreferenceActivity");
         Activity from = getParent() != null ? getParent() : this;
         Intent intent = new Intent(from, NotesPreferenceActivity.class);
         from.startActivityIfNeeded(intent, -1);
@@ -1094,6 +1142,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private class OnListItemClickListener implements OnItemClickListener {
 
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Log.e(TAG, "短按");
             if (view instanceof NotesListItem) {
                 NoteItemData item = ((NotesListItem) view).getItemData();
                 if (mNotesListAdapter.isInChoiceMode()) {
@@ -1150,10 +1199,13 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 NoteColumns.MODIFIED_DATE + " DESC");
     }
 
+    @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.e(TAG, "长按");
         if (view instanceof NotesListItem) {
             mFocusNoteDataItem = ((NotesListItem) view).getItemData();
             if (mFocusNoteDataItem.getType() == Notes.TYPE_NOTE && !mNotesListAdapter.isInChoiceMode()) {
+//                view.findViewById(R.id.is_top).setVisibility(View.VISIBLE);
                 if (mNotesListView.startActionMode(mModeCallBack) != null) {
                     mModeCallBack.onItemCheckedStateChanged(null, position, id, true);
                     mNotesListView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
@@ -1166,4 +1218,5 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         }
         return false;
     }
+
 }

@@ -1,88 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
 >
-	<TextView
+	<LinearLayout
 			android:id="@+id/top_bar"
-			android:text="Login"
-			android:textSize="24sp"
-			android:textStyle="bold"
+			android:layout_width="match_parent" android:layout_height="wrap_content"
+			android:orientation="horizontal"
 			android:gravity="center"
-			android:layout_width="match_parent"
-			android:layout_height="48dp"/>
+			android:layout_marginTop="80dp"
+	>
+		<TextView
+				android:text="H"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="50sp"
+				android:textStyle="bold"
+				android:textColor="@color/cutePink"
+				android:fontFamily="@font/font_consolas"
+		/>
+		<TextView
+				android:text="ello "
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="50sp"
+				android:textStyle="bold"
+				android:fontFamily="@font/font_consolas"
+		/>
+		<TextView
+				android:text="N"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="50sp"
+				android:textStyle="bold"
+				android:textColor="@color/cutePink"
+				android:fontFamily="@font/font_consolas"
+		/>
+		<TextView
+				android:text="ote"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="50sp"
+				android:textStyle="bold"
+				android:fontFamily="@font/font_consolas"
+		/>
+	</LinearLayout>
+
 
 	<LinearLayout
 			android:id="@+id/ll_login"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_width="280dp"
+			android:layout_height="60dp"
 			android:orientation="horizontal"
 			android:layout_below="@id/top_bar"
 			android:layout_marginTop="150dp"
 			android:layout_centerHorizontal="true"
+			android:background="@drawable/login_input_style"
+			android:elevation="3dp"
 	>
-		<TextView
-				android:text="手机号:"
-				android:textSize="20sp"
-				android:textColor="#000000"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginRight="20dp"
-		/>
 		<EditText
-				android:hint="请输入手机号码"
-				android:textSize="20sp"
 				android:id="@+id/note_login_phone_num"
+				android:hint="telephone number"
+				android:textSize="20sp"
+				android:fontFamily="@font/consolas"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:paddingLeft="20dp"
+				android:layout_height="match_parent"
 				android:inputType="phone"
+				android:background="@null"
+				android:gravity="center_vertical"
+				android:layout_marginStart="60dp"
+
 		/>
 
 	</LinearLayout>
 
-	<LinearLayout
+	<RelativeLayout
 			android:id="@+id/ll_password"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
+			android:layout_width="280dp"
+			android:layout_height="60dp"
 			android:layout_below="@+id/ll_login"
 			android:layout_marginTop="30dp"
 			android:layout_centerHorizontal="true"
+			android:background="@drawable/login_input_style"
+			android:elevation="3dp"
 	>
-		<TextView
-				android:text="验证码:"
-				android:textSize="20sp"
-				android:textColor="#000000"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginRight="20dp"
-		/>
 		<EditText
-				android:hint="请输入验证码"
-				android:textSize="20sp"
 				android:id="@+id/note_verification_code"
-				android:layout_width="0dp"
-				android:layout_weight="1"
-				android:layout_height="wrap_content"
-				android:paddingLeft="20dp"
+				android:hint="verify code"
+				android:textSize="20sp"
+				android:fontFamily="@font/consolas"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
 				android:inputType="number"
+				android:background="@null"
+				android:layout_centerVertical="true"
+				android:layout_marginStart="60dp"
 		/>
+
 		<net.micode.notes.ui.NoteVerificationButton
 				android:id="@+id/button_get_verification_code"
-				android:text="获取验证码"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-	</LinearLayout>
+				android:layout_width="50dp"
+				android:layout_height="50dp"
+				android:background="@drawable/verify_btn_bg"
+				android:gravity="center_vertical"
+				android:layout_alignParentEnd="true"
+				android:layout_marginEnd="5dp"
+				android:layout_marginTop="5dp"
+		/>
+	</RelativeLayout>
+
+
+
+
+
+
 	<RelativeLayout
 			android:id="@+id/btn_login_area"
 			android:background="@color/cutePink"
 			android:layout_alignParentBottom="true"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:elevation="3dp"
 	>
 		<net.micode.notes.ui.NbButton
 				android:id="@+id/btn_login"
@@ -90,7 +130,9 @@
 				android:layout_alignParentBottom="true"
 				android:layout_marginBottom="100dp"
 				android:textColor="#fff"
-				android:text="登陆"
+				android:text="sign in"
+				android:fontFamily="@font/consolas"
+				android:textSize="25sp"
 				android:layout_width="220dp"
 				android:layout_height="50dp" />
 	</RelativeLayout>

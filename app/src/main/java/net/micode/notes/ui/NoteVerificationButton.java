@@ -60,7 +60,6 @@ public class NoteVerificationButton extends androidx.appcompat.widget.AppCompatB
 
     @Override
     public void onClick(View v) {
-        Log.e(TAG, "onClick: ");
         if (!isClickable) return;
 
         note_login_phone_num = ((Activity) getContext()).findViewById(R.id.note_login_phone_num);

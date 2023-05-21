@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class NoteMenuListFragment extends Fragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.e(TAG, "创建菜单列表");
         now_list_type = getArguments().getInt(SHOW_LIST_KEY);
         View view = null;
         switch (now_list_type) {
@@ -203,6 +205,12 @@ public class NoteMenuListFragment extends Fragment implements View.OnClickListen
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onStop() {
+        Log.e(TAG, "onStop");
+        super.onStop();
     }
 }
 

@@ -261,14 +261,12 @@ public class NotesPreferenceActivity extends PreferenceActivity {
                 getString(R.string.preferences_menu_remove_account),
                 getString(R.string.preferences_menu_cancel)
         };
-        dialogBuilder.setItems(menuItemArray, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    showSelectAccountAlertDialog();
-                } else if (which == 1) {
-                    removeSyncAccount();
-                    refreshUI();
-                }
+        dialogBuilder.setItems(menuItemArray, (dialog, which) -> {
+            if (which == 0) {
+                showSelectAccountAlertDialog();
+            } else if (which == 1) {
+                removeSyncAccount();
+                refreshUI();
             }
         });
         dialogBuilder.show();

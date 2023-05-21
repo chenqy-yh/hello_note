@@ -4,6 +4,7 @@ ADDED from E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:18
 INJECTED from E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:18:1-194:12
 INJECTED from E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:18:1-194:12
 INJECTED from E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml:18:1-194:12
+MERGED from [com.tencent.mm.opensdk:wechat-sdk-android:6.8.24] E:\gradle_rep\caches\transforms-3\c47deef7e6aea09a4c16931908c89b4c\transformed\jetified-wechat-sdk-android-6.8.24\AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.material:material:1.4.0] E:\gradle_rep\caches\transforms-3\49dd37bf10937f4a5031c2e2032cd3be\transformed\material-1.4.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.cardview:cardview:1.0.0] E:\gradle_rep\caches\transforms-3\1f624a3ec658e1a90eb17b72d8f4e5aa\transformed\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] E:\gradle_rep\caches\transforms-3\8255cf8f73e0ec2d884b3aa8102e6cd4\transformed\coordinatorlayout-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -308,6 +309,8 @@ uses-sdk
 INJECTED from E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml
 INJECTED from E:\andriodProj\my_note\gitProject\app\src\main\AndroidManifest.xml
+MERGED from [com.tencent.mm.opensdk:wechat-sdk-android:6.8.24] E:\gradle_rep\caches\transforms-3\c47deef7e6aea09a4c16931908c89b4c\transformed\jetified-wechat-sdk-android-6.8.24\AndroidManifest.xml:5:5-7:41
+MERGED from [com.tencent.mm.opensdk:wechat-sdk-android:6.8.24] E:\gradle_rep\caches\transforms-3\c47deef7e6aea09a4c16931908c89b4c\transformed\jetified-wechat-sdk-android-6.8.24\AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.android.material:material:1.4.0] E:\gradle_rep\caches\transforms-3\49dd37bf10937f4a5031c2e2032cd3be\transformed\material-1.4.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.4.0] E:\gradle_rep\caches\transforms-3\49dd37bf10937f4a5031c2e2032cd3be\transformed\material-1.4.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.cardview:cardview:1.0.0] E:\gradle_rep\caches\transforms-3\1f624a3ec658e1a90eb17b72d8f4e5aa\transformed\cardview-1.0.0\AndroidManifest.xml:20:5-44

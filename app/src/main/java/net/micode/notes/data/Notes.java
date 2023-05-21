@@ -165,6 +165,12 @@ public class Notes {
          * <P> Type : INTEGER (long) </P>
          */
         public static final String VERSION = "version";
+
+        /**
+         * The Pin
+         * <P> Type : INTEGER (long) </P>
+         */
+        public static final String PIN = "pin";
     }
 
     public interface DataColumns {

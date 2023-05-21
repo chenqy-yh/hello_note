@@ -22,11 +22,8 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetManager;
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
+import android.database.Cursor;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -153,6 +150,10 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private String mUserQuery;
     private Pattern mPattern;
 
+//    ----------------------- Custom by chenqy -----------------------
+
+    private PinCheckBox pinCheckBox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,6 +183,8 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             Log.d(TAG, "Restoring from killed activity");
         }
     }
+
+
 
     // 初始化 Activity 状态
     private boolean initActivityState(Intent intent) {
@@ -417,6 +420,28 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             mFontSizeId = ResourceParser.BG_DEFAULT_FONT_SIZE;
         }
         mEditTextList = (LinearLayout) findViewById(R.id.note_edit_list);
+
+        //custom
+        initPinCheckbox();
+    }
+
+    private void initPinCheckbox(){
+        pinCheckBox = findViewById(R.id.cb_pin);
+        Cursor pin_query = getContentResolver().query(Notes.CONTENT_NOTE_URI, new String[]{Notes.NoteColumns.PIN}, Notes.NoteColumns.ID + "=?", new String[]{String.valueOf(mWorkingNote.getNoteId())}, null);
+        if (pin_query != null && pin_query.moveToFirst()) {
+            pinCheckBox.setChecked(pin_query.getInt(0) == 1);
+            pin_query.close();
+        }
+        pinCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ContentValues val = new ContentValues();
+            val.put(Notes.NoteColumns.PIN, isChecked ? 1 : 0);
+            boolean b = getContentResolver().update(
+                    ContentUris.withAppendedId(Notes.CONTENT_NOTE_URI, mWorkingNote.getNoteId()), val, null,
+                    null) == 0;
+            if (b) {
+                Toast.makeText(NoteEditActivity.this, "Pin failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -749,6 +774,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 
     private View getListItem(String item, int index) {
         View view = LayoutInflater.from(this).inflate(R.layout.note_edit_list_item, null);
+        ImageView pin_fire = view.findViewById(R.id.pin_fire);
         final NoteEditText edit = (NoteEditText) view.findViewById(R.id.et_edit_text);
         edit.setTextAppearance(this, TextAppearanceResources.getTexAppearanceResource(mFontSizeId));
         CheckBox cb = ((CheckBox) view.findViewById(R.id.cb_edit_item));

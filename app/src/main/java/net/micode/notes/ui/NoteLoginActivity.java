@@ -4,16 +4,22 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.*;
+import androidx.core.content.ContextCompat;
 import net.micode.notes.R;
 import net.micode.notes.data.Auth;
 import net.micode.notes.tool.NoteHttpServer;
@@ -43,8 +49,9 @@ public class NoteLoginActivity extends Activity {
     private Context context;
     private long mExitTime = 0;
     private boolean login_btn_isClickable = true;
-
     private static final String VERIFICATION_CODE_URL = "/verify/verifycode";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,7 @@ public class NoteLoginActivity extends Activity {
     }
 
     private void initResources() {
+
         context = this;
         server = new NoteHttpServer();
 
@@ -88,6 +96,7 @@ public class NoteLoginActivity extends Activity {
                 UIUtils.sendMsg(NoteLoginActivity.this, "验证码错误");
             }
         });
+
         //如果携带了phone信息
         Intent intent = getIntent();
         String phone = intent.getStringExtra("phone");
@@ -95,6 +104,7 @@ public class NoteLoginActivity extends Activity {
             note_login_phone_num.setText(phone);
         }
     }
+
 
     //checkIsLogin
     private void checkLogin() throws JSONException, IOException {

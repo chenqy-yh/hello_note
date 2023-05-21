@@ -60,7 +60,8 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
                     NoteColumns.LOCAL_MODIFIED + " INTEGER NOT NULL DEFAULT 0," +
                     NoteColumns.ORIGIN_PARENT_ID + " INTEGER NOT NULL DEFAULT 0," +
                     NoteColumns.GTASK_ID + " TEXT NOT NULL DEFAULT ''," +
-                    NoteColumns.VERSION + " INTEGER NOT NULL DEFAULT 0" +
+                    NoteColumns.VERSION + " INTEGER NOT NULL DEFAULT 0," +
+                    NoteColumns.PIN + " INTEGER NOT NULL DEFAULT 0" +
                     ")";
 
 
@@ -75,7 +76,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
                     DataColumns.DATA1 + " INTEGER," +    // 此列可能包含电话号码、电子邮件地址等。
                     DataColumns.DATA2 + " INTEGER," +   // 此列可能包含电话类型（家庭、工作等）、电子邮件类型等。
                     DataColumns.DATA3 + " TEXT NOT NULL DEFAULT ''," +   // 通常情况下，此列的使用与 DATA2 相同。
-                    DataColumns.DATA4 + " TEXT NOT NULL DEFAULT ''," +   // 保留供将来使用。
+                    DataColumns.DATA4 + " TEXT NOT NULL DEFAULT ''," +   // 保留供将来使用。 判断note是否顶置
                     DataColumns.DATA5 + " TEXT NOT NULL DEFAULT ''" +   //保留供将来使用
                     ")";
 

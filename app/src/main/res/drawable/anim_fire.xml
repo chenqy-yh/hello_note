@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+				android:oneshot="false">
+	<item android:drawable="@drawable/fire_1" android:duration="200" />
+	<item android:drawable="@drawable/fire_2" android:duration="200" />
+	<!-- 添加其他帧的项，每个项都指定相应的图像和持续时间 -->
+</animation-list>

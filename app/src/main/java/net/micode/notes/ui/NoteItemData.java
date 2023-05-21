@@ -16,6 +16,7 @@
 
 package net.micode.notes.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
@@ -76,12 +77,16 @@ public class NoteItemData {
     private boolean mIsOneNoteFollowingFolder;
     private boolean mIsMultiNotesFollowingFolder;
 
+    //custom
+    private long mPin;
+
     /**
      * 从cursor和context构造一个NoteItemData对象
      *
      * @param context 应用程序的上下文
      * @param cursor  包含NoteItemData对象数据的游标
      */
+    @SuppressLint("Range")
     public NoteItemData(Context context, Cursor cursor) {
         // 根据游标中的值设置实例变量
         mId = cursor.getLong(ID_COLUMN);
@@ -98,6 +103,7 @@ public class NoteItemData {
         mType = cursor.getInt(TYPE_COLUMN);
         mWidgetId = cursor.getInt(WIDGET_ID_COLUMN);
         mWidgetType = cursor.getInt(WIDGET_TYPE_COLUMN);
+        mPin = cursor.getLong(cursor.getColumnIndex("pin"));
 
         // 如果笔记在通话记录文件夹中，则设置电话号码和名称字段
         mPhoneNumber = "";

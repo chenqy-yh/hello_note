@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -19,6 +20,7 @@ public class NoteMenuButton extends androidx.appcompat.widget.AppCompatButton im
     private Context context;
     private NoteMenuMainFragment noteMenuMainFragment;
     private OnClickNoteMenuButton callback;
+    private View maks_view;
 
     public NoteMenuButton(Context context) {
         super(context);
@@ -43,16 +45,19 @@ public class NoteMenuButton extends androidx.appcompat.widget.AppCompatButton im
 
     private void init() {
         fm = ((Activity) context).getFragmentManager();
-        note_menu = ((Activity) context).findViewById(R.id.note_menu);
+        note_menu = ((Activity)context).findViewById(R.id.note_menu);
         noteMenuMainFragment = new NoteMenuMainFragment();
+        maks_view = ((Activity)context).findViewById(R.id.mask_view);
         setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        Log.e(TAG, "note menu btn onClick" );
         View maskView = ((Activity) context).findViewById(R.id.mask_view);
         maskView.setVisibility(View.VISIBLE);
         maskView.setOnClickListener(v1 -> {
+            Log.e(TAG, " maskView.setOnClickListener" );
             hideMenuWithAnimation();
         });
 
@@ -66,12 +71,14 @@ public class NoteMenuButton extends androidx.appcompat.widget.AppCompatButton im
         anim.setDuration(200);
         note_menu.startAnimation(anim);
         note_menu.setVisibility(View.VISIBLE);
+        note_menu.findViewById(R.id.note_menu_container).setVisibility(View.VISIBLE);
         fm.beginTransaction().replace(R.id.note_menu_container, noteMenuMainFragment).commit();
         //执行OnClickNoteMenuButton
         if (callback != null) callback.execute();
     }
 
     private void hideMenuWithAnimation() {
+
         AlphaAnimation anim = new AlphaAnimation(1.0f, 0.0f);
         anim.setDuration(200);
         anim.setFillAfter(true); // 设置动画结束后保持最后的状态
@@ -83,6 +90,8 @@ public class NoteMenuButton extends androidx.appcompat.widget.AppCompatButton im
             @Override
             public void onAnimationEnd(Animation animation) {
                 note_menu.setVisibility(View.GONE);
+                note_menu.findViewById(R.id.note_menu_container).setVisibility(View.GONE);
+
                 View maskView = ((Activity) context).findViewById(R.id.mask_view);
                 maskView.setVisibility(View.GONE);
 
@@ -100,9 +109,8 @@ public class NoteMenuButton extends androidx.appcompat.widget.AppCompatButton im
         note_menu.startAnimation(anim);
     }
 
-    public void hiddenMenu() {
-        View maskView = ((Activity) context).findViewById(R.id.mask_view);
-        maskView.performClick();
+    public  void hiddenMenu() {
+        hideMenuWithAnimation();
     }
 
     public void setOnClickNoteMenuButton(OnClickNoteMenuButton callback) {

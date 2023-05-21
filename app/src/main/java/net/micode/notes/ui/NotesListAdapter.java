@@ -16,13 +16,17 @@
 
 package net.micode.notes.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
+import android.widget.ImageView;
 import net.micode.notes.data.Notes;
 
 import java.util.Collection;
@@ -58,23 +62,39 @@ public class NotesListAdapter extends CursorAdapter {
      * 在列表视图中创建新项目的方法。
      *
      * @param context 上下文对象，表示当前应用程序的状态信息。
-     * @param cursor 数据库游标对象，用于访问查询结果集中的行。
-     * @param parent 列表视图的父级布局对象，用于在其中显示新项目。
-     *
+     * @param cursor  数据库游标对象，用于访问查询结果集中的行。
+     * @param parent  列表视图的父级布局对象，用于在其中显示新项目。
      * @return 返回一个 NotesListItem 对象，该对象表示列表视图中的新项目。
      */
+    @SuppressLint("Range")
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return new NotesListItem(context);
+        NotesListItem notesListItem = new NotesListItem(context);
+//        long note_id = cursor.getLong(cursor.getColumnIndex(Notes.NoteColumns.ID));
+//        notesListItem.setOnPinListener(fire -> {
+//            Cursor pin_query = context.getContentResolver().query(Notes.CONTENT_NOTE_URI, new String[]{Notes.NoteColumns.PIN}, Notes.NoteColumns.ID + " = ?", new String[]{String.valueOf(note_id)}, null);
+//            if (pin_query != null) {
+//                pin_query.moveToFirst();
+//                int pin = pin_query.getInt(pin_query.getColumnIndex(Notes.NoteColumns.PIN));
+//                if (pin == 1) {
+//                    fire.setVisibility(View.VISIBLE);
+//                    ((AnimationDrawable) fire.getBackground()).start();
+//                } else {
+//                    fire.setVisibility(View.GONE);
+//                    ((AnimationDrawable) fire.getBackground()).stop();
+//                }
+//            }
+//        });
+        return notesListItem;
     }
 
 
     /**
      * 将数据绑定到列表视图中的每个项目的方法。
      *
-     * @param view 表示当前项目的视图对象。对应 newView中返回的 NotesListItem 对象。
+     * @param view    表示当前项目的视图对象。对应 newView中返回的 NotesListItem 对象。
      * @param context 上下文对象，表示当前应用程序的状态信息。
-     * @param cursor 数据库游标对象，用于访问查询结果集中的行。
+     * @param cursor  数据库游标对象，用于访问查询结果集中的行。
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
@@ -113,7 +133,7 @@ public class NotesListAdapter extends CursorAdapter {
      * 将指定位置的列表项标记为已选或未选状态。
      *
      * @param position 列表项的位置。
-     * @param checked 是否选中该列表项。
+     * @param checked  是否选中该列表项。
      */
     public void setCheckedItem(final int position, final boolean checked) {
         // 将指定位置的列表项的选中状态更新到 mSelectedIndex 中
@@ -250,7 +270,6 @@ public class NotesListAdapter extends CursorAdapter {
         }
         return Boolean.TRUE.equals(mSelectedIndex.get(position));
     }
-
 
 
     /**

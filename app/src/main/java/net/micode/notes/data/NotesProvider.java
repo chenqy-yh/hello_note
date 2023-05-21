@@ -42,13 +42,13 @@ public class NotesProvider extends ContentProvider {
 
     private static final String TAG = "NotesProvider";
 
-    private static final int URI_NOTE            = 1;
-    private static final int URI_NOTE_ITEM       = 2;
-    private static final int URI_DATA            = 3;
-    private static final int URI_DATA_ITEM       = 4;
+    private static final int URI_NOTE = 1;
+    private static final int URI_NOTE_ITEM = 2;
+    private static final int URI_DATA = 3;
+    private static final int URI_DATA_ITEM = 4;
 
-    private static final int URI_SEARCH          = 5;
-    private static final int URI_SEARCH_SUGGEST  = 6;
+    private static final int URI_SEARCH = 5;
+    private static final int URI_SEARCH_SUGGEST = 6;
 
     static {
         mMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -66,18 +66,18 @@ public class NotesProvider extends ContentProvider {
      * we will trim '\n' and white space in order to show more information.
      */
     private static final String NOTES_SEARCH_PROJECTION = NoteColumns.ID + ","
-        + NoteColumns.ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA + ","
-        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_1 + ","
-        + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_2 + ","
-        + R.drawable.search_result + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1 + ","
-        + "'" + Intent.ACTION_VIEW + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_ACTION + ","
-        + "'" + Notes.TextNote.CONTENT_TYPE + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA;
+            + NoteColumns.ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA + ","
+            + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_1 + ","
+            + "TRIM(REPLACE(" + NoteColumns.SNIPPET + ", x'0A','')) AS " + SearchManager.SUGGEST_COLUMN_TEXT_2 + ","
+            + R.drawable.search_result + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1 + ","
+            + "'" + Intent.ACTION_VIEW + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_ACTION + ","
+            + "'" + Notes.TextNote.CONTENT_TYPE + "' AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA;
 
     private static String NOTES_SNIPPET_SEARCH_QUERY = "SELECT " + NOTES_SEARCH_PROJECTION
-        + " FROM " + TABLE.NOTE
-        + " WHERE " + NoteColumns.SNIPPET + " LIKE ?"
-        + " AND " + NoteColumns.PARENT_ID + "<>" + Notes.ID_TRASH_FOLER
-        + " AND " + NoteColumns.TYPE + "=" + Notes.TYPE_NOTE;
+            + " FROM " + TABLE.NOTE
+            + " WHERE " + NoteColumns.SNIPPET + " LIKE ?"
+            + " AND " + NoteColumns.PARENT_ID + "<>" + Notes.ID_TRASH_FOLER
+            + " AND " + NoteColumns.TYPE + "=" + Notes.TYPE_NOTE;
 
     @Override
     public boolean onCreate() {
@@ -85,9 +85,34 @@ public class NotesProvider extends ContentProvider {
         return true;
     }
 
+    private String[] appendPinColumnToProjection(String[] projection) {
+        if(projection == null) {
+            return null;
+        }
+        //判断pin是否存在与projection中
+        for (String column : projection) {
+            if (NoteColumns.PIN.equals(column)) {
+                return projection;
+            }
+        }
+        String[] newProjection = new String[projection.length + 1];
+        System.arraycopy(projection, 0, newProjection, 0, projection.length);
+    newProjection[projection.length] = NoteColumns.PIN;
+        return newProjection;
+    }
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
+        // ------- custom by chen ------------
+        //add note.culumn.pin to projection
+        if(uri.equals( Notes.CONTENT_NOTE_URI)){
+            projection = appendPinColumnToProjection(projection);
+            sortOrder = "pin DESC," + sortOrder;
+        }
+
+        // ------- custom by chen ------------
+
         // 初始化游标为空
         Cursor c = null;
         // 获取可读的数据库实例
@@ -147,7 +172,7 @@ public class NotesProvider extends ContentProvider {
                     // 格式化搜索关键词，加上通配符，执行笔记表的全文搜索操作
                     searchString = String.format("%%%s%%", searchString);
                     c = db.rawQuery(NOTES_SNIPPET_SEARCH_QUERY,
-                            new String[] { searchString });
+                            new String[]{searchString});
                 } catch (IllegalStateException ex) {
                     Log.e(TAG, "got exception: " + ex.toString());
                 }
