@@ -947,7 +947,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 }
                 break;
             case NOTE_MENU:
-                mState = ListEditState.NOTE_LIST;
+                mState = ListEditState.NOTE_BTN_GROUP;
                 btn_menu_btn.hiddenMenu();
                 break;
             case NOTE_BTN_GROUP:

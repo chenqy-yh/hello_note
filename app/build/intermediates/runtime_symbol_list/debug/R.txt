@@ -1829,6 +1829,8 @@ int drawable widget_4x_white 0x7f0800e4
 int drawable widget_4x_yellow 0x7f0800e5
 int font consolas 0x7f090000
 int font font_consolas 0x7f090001
+int font font_josefin_sans 0x7f090002
+int font josefin_sans 0x7f090003
 int id ALT 0x7f0a0000
 int id BOTTOM_END 0x7f0a0001
 int id BOTTOM_START 0x7f0a0002

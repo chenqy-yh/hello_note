@@ -120,6 +120,10 @@
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\layout\\note_item.xml"
     },
     {
+        "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\font-v26_font_josefin_sans.xml.flat",
+        "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\font-v26\\font_josefin_sans.xml"
+    },
+    {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_note_edit_color_selector_panel.png.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\drawable-hdpi\\note_edit_color_selector_panel.png"
     },
@@ -324,6 +328,10 @@
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\color\\secondary_text_dark.xml"
     },
     {
+        "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\font_font_josefin_sans.xml.flat",
+        "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\font\\font_josefin_sans.xml"
+    },
+    {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable_backup_note_checked.png.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\drawable\\backup_note_checked.png"
     },
@@ -362,6 +370,10 @@
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_call_record.png.flat",
         "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\drawable-hdpi\\call_record.png"
+    },
+    {
+        "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\font_josefin_sans.ttf.flat",
+        "source": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-main-7:\\font\\josefin_sans.ttf"
     },
     {
         "merged": "E:\\gradle_rep\\daemon\\7.5\\net.micode.notes.app-merged_res-5:\\drawable-hdpi_list_white_single.9.png.flat",

@@ -1830,6 +1830,8 @@ drawable widget_4x_white
 drawable widget_4x_yellow
 font consolas
 font font_consolas
+font font_josefin_sans
+font josefin_sans
 id ALT
 id BOTTOM_END
 id BOTTOM_START
