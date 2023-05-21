@@ -58,17 +58,19 @@
 				android:background="@color/white"
 		>
 
-			<com.google.android.material.button.MaterialButton
+			<net.micode.notes.ui.NoteCommonButton
 					android:id="@+id/note_pop_menu_list_btn_back"
 					android:text="返回"
 					android:layout_width="80dp"
-					android:layout_height="wrap_content" />
+					android:layout_height="40dp"
+					android:layout_marginRight="10dp"
+			/>
 
-			<com.google.android.material.button.MaterialButton
+			<net.micode.notes.ui.NoteCommonButton
 					android:id="@+id/note_pop_menu_list_btn_backup"
 					android:text="备份"
 					android:layout_width="80dp"
-					android:layout_height="wrap_content"
+					android:layout_height="40dp"
 					android:layout_toRightOf="@id/note_pop_menu_list_btn_back"
 					android:layout_marginLeft="10dp"
 					android:layout_marginRight="10dp"

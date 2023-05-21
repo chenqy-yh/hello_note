@@ -1789,7 +1789,10 @@ drawable new_note_normal
 drawable new_note_pressed
 drawable note_btn_lf
 drawable note_btn_main
+drawable note_btn_normal_background
+drawable note_btn_pressed_background
 drawable note_btn_rt
+drawable note_btn_style
 drawable note_edit_color_selector_panel
 drawable note_menu_bg
 drawable notification

@@ -1788,7 +1788,10 @@ int drawable new_note_normal 0x7f0800bb
 int drawable new_note_pressed 0x7f0800bc
 int drawable note_btn_lf 0x7f0800bd
 int drawable note_btn_main 0x7f0800be
+int drawable note_btn_normal_background 0x7f0800e7
+int drawable note_btn_pressed_background 0x7f0800e8
 int drawable note_btn_rt 0x7f0800bf
+int drawable note_btn_style 0x7f0800e6
 int drawable note_edit_color_selector_panel 0x7f0800c0
 int drawable note_menu_bg 0x7f0800c1
 int drawable notification 0x7f0800c2
