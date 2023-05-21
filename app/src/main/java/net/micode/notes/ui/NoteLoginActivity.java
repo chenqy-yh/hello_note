@@ -56,14 +56,21 @@ public class NoteLoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.note_login);
+        hiddenTheStatusBar();
+
         bindViews();
         initResources();
         try {
             checkLogin();
         } catch (JSONException | IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+    private void hiddenTheStatusBar(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.cutePink));
         }
     }
 

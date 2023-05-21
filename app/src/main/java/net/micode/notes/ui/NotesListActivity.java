@@ -27,8 +27,10 @@ import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -205,10 +207,18 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.note_list);
+        hiddenTheStatusBar();
         initResources();
         initCustom();
         //Insert an introduction when user firstly use this application
         setAppInfoFromRawRes();
+    }
+
+    private void hiddenTheStatusBar(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.cutePink));
+        }
     }
 
 

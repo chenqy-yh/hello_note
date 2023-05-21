@@ -120,9 +120,14 @@
 				android:elevation="10dp"/>
 
 	</RelativeLayout>
-	<View
+	<TextView
 			android:id="@+id/empty_view"
 			android:background="#10000000"
+			android:text="MENU"
+			android:textSize="80sp"
+			android:textColor="#eeeeee"
+			android:layout_gravity="center"
+			android:gravity="center"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:visibility="gone"
