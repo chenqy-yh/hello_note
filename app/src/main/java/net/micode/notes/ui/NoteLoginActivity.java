@@ -170,6 +170,7 @@ public class NoteLoginActivity extends Activity {
         server.sendAsyncPostRequest(url, jsonObject.toString(), NoteHttpServer.BodyType.FORM_DATA, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(TAG, call.toString() );
                 UIUtils.sendMsg(NoteLoginActivity.this, "网络错误");
             }
 

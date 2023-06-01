@@ -17,6 +17,7 @@
 package net.micode.notes.tool;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 
 import net.micode.notes.R;
@@ -24,24 +25,24 @@ import net.micode.notes.ui.NotesPreferenceActivity;
 
 public class ResourceParser {
 
-    public static final int YELLOW           = 0;
-    public static final int BLUE             = 1;
-    public static final int WHITE            = 2;
-    public static final int GREEN            = 3;
-    public static final int RED              = 4;
+    public static final int YELLOW = 0;
+    public static final int BLUE = 1;
+    public static final int WHITE = 2;
+    public static final int GREEN = 3;
+    public static final int RED = 4;
 
     public static final int BG_DEFAULT_COLOR = YELLOW;
 
-    public static final int TEXT_SMALL       = 0;
-    public static final int TEXT_MEDIUM      = 1;
-    public static final int TEXT_LARGE       = 2;
-    public static final int TEXT_SUPER       = 3;
+    public static final int TEXT_SMALL = 0;
+    public static final int TEXT_MEDIUM = 1;
+    public static final int TEXT_LARGE = 2;
+    public static final int TEXT_SUPER = 3;
 
     public static final int BG_DEFAULT_FONT_SIZE = TEXT_MEDIUM;
 
     public static class NoteBgResources {
         // 存储五种不同颜色的背景图片资源id
-        private final static int [] BG_EDIT_RESOURCES = new int [] {
+        private final static int[] BG_EDIT_RESOURCES = new int[]{
                 R.drawable.edit_yellow,  // 黄色背景图片
                 R.drawable.edit_blue,    // 蓝色背景图片
                 R.drawable.edit_white,   // 白色背景图片
@@ -50,7 +51,7 @@ public class ResourceParser {
         };
 
         // 存储五种不同颜色的标题栏背景图片资源id
-        private final static int [] BG_EDIT_TITLE_RESOURCES = new int [] {
+        private final static int[] BG_EDIT_TITLE_RESOURCES = new int[]{
                 R.drawable.edit_title_yellow,  // 黄色标题栏背景图片
                 R.drawable.edit_title_blue,    // 蓝色标题栏背景图片
                 R.drawable.edit_title_white,   // 白色标题栏背景图片
@@ -103,7 +104,7 @@ public class ResourceParser {
         /**
          * 笔记项在列表中作为第一个条目时的背景资源 ID
          */
-        private final static int [] BG_FIRST_RESOURCES = new int [] {
+        private final static int[] BG_FIRST_RESOURCES = new int[]{
                 R.drawable.list_yellow_up,
                 R.drawable.list_blue_up,
                 R.drawable.list_white_up,
@@ -114,7 +115,7 @@ public class ResourceParser {
         /**
          * 笔记项在列表中作为中间条目时的背景资源 ID
          */
-        private final static int [] BG_NORMAL_RESOURCES = new int [] {
+        private final static int[] BG_NORMAL_RESOURCES = new int[]{
                 R.drawable.list_yellow_middle,
                 R.drawable.list_blue_middle,
                 R.drawable.list_white_middle,
@@ -125,7 +126,7 @@ public class ResourceParser {
         /**
          * 笔记项在列表中作为最后一个条目时的背景资源 ID
          */
-        private final static int [] BG_LAST_RESOURCES = new int [] {
+        private final static int[] BG_LAST_RESOURCES = new int[]{
                 R.drawable.list_yellow_down,
                 R.drawable.list_blue_down,
                 R.drawable.list_white_down,
@@ -137,7 +138,7 @@ public class ResourceParser {
         /**
          * 笔记项在列表中作为唯一条目时的背景资源 ID
          */
-        private final static int [] BG_SINGLE_RESOURCES = new int [] {
+        private final static int[] BG_SINGLE_RESOURCES = new int[]{
                 R.drawable.list_yellow_single,
                 R.drawable.list_blue_single,
                 R.drawable.list_white_single,
@@ -201,7 +202,7 @@ public class ResourceParser {
         /**
          * 小部件在 2x2 模式下的背景资源 ID 数组
          */
-        private final static int [] BG_2X_RESOURCES = new int [] {
+        private final static int[] BG_2X_RESOURCES = new int[]{
                 R.drawable.widget_2x_yellow,
                 R.drawable.widget_2x_blue,
                 R.drawable.widget_2x_white,
@@ -222,7 +223,7 @@ public class ResourceParser {
         /**
          * 小部件在 4x4 模式下的背景资源 ID 数组
          */
-        private final static int [] BG_4X_RESOURCES = new int [] {
+        private final static int[] BG_4X_RESOURCES = new int[]{
                 R.drawable.widget_4x_yellow,
                 R.drawable.widget_4x_blue,
                 R.drawable.widget_4x_white,
@@ -246,7 +247,7 @@ public class ResourceParser {
         /**
          * 文字外观资源 ID 数组
          */
-        private final static int [] TEXTAPPEARANCE_RESOURCES = new int [] {
+        private final static int[] TEXTAPPEARANCE_RESOURCES = new int[]{
                 R.style.TextAppearanceNormal,
                 R.style.TextAppearanceMedium,
                 R.style.TextAppearanceLarge,
@@ -272,6 +273,29 @@ public class ResourceParser {
         }
 
         /**
+         * 文字字体资源
+         */
+        public final static int[] TYPEFACE_RES_LIST = new int[]{
+                R.font.roboto,
+                R.font.consolas,
+                R.font.ubuntu,
+                R.font.poppins
+        };
+
+        private static final String TYPEFACE_STR_ROBOTO = "Roboto";
+        private static final String TYPEFACE_STR_CONSOLAS = "Consolas";
+        private static final String TYPEFACE_STR_UBUNTO = "Ubuntu";
+        private static final String TYPEFACE_STR_POPPINS = "Poppins";
+
+
+        public final static String[] TYPEFACE_STR_LIST = new String[]{
+                TYPEFACE_STR_ROBOTO,
+                TYPEFACE_STR_CONSOLAS,
+                TYPEFACE_STR_UBUNTO,
+                TYPEFACE_STR_POPPINS
+        };
+
+        /**
          * 获取文字外观资源 ID 数组的长度
          *
          * @return 文字外观资源 ID 数组的长度
@@ -279,6 +303,5 @@ public class ResourceParser {
         public static int getResourcesSize() {
             return TEXTAPPEARANCE_RESOURCES.length;
         }
-
     }
 }

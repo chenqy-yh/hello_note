@@ -21,9 +21,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.app.*;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.database.Cursor;
@@ -63,10 +61,7 @@ import net.micode.notes.widget.NoteWidgetProvider_2x;
 import net.micode.notes.widget.NoteWidgetProvider_4x;
 import org.json.JSONException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -140,7 +135,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     public static final String SIGN_OUT_ACTION = "net.micode.notes.action.SIGN_OUT";
 
     private Button btn_note_main;
-    private NoteMenuButton btn_menu_btn;
+    private NoteMenuButton note_menu_btn;
     private View mask_view;
 
     //绑定状态
@@ -344,12 +339,31 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     private void initCustom() {
         //TODO initCustom
         btn_note_main = findViewById(R.id.btn_note_main);
-        btn_menu_btn = findViewById(R.id.menu_button);
+        note_menu_btn = findViewById(R.id.menu_button);
         mask_view = findViewById(R.id.empty_view);
-        btn_note_main.setOnClickListener(this);
-        mask_view.setOnClickListener(this);
         mask_view.setAlpha(0f);
-        btn_menu_btn.setOnClickNoteMenuButton(() -> mState = ListEditState.NOTE_MENU);
+        mask_view.setOnClickListener(this);
+        btn_note_main.setOnClickListener(this);
+        note_menu_btn.setNoteMenuMainFragment(new NoteMenuMainFragment());
+        note_menu_btn.setMaskView(R.id.mask_view);
+        note_menu_btn.setNoteMenu(R.id.note_menu);
+        note_menu_btn.setToggleMneuComponentListener(new NoteMenuButton.ToggleMneuComponentListener() {
+            @Override
+            public void show(Context context) {
+                ((Activity)context).findViewById(R.id.note_menu_container).setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void hide(Context context) {
+                ((Activity)context).findViewById(R.id.note_menu_container).setVisibility(View.GONE);
+            }
+            @Override
+            public void replace(Context context, Fragment menuFragment) {
+                FragmentManager fm = ((Activity) context).getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.note_menu_container, menuFragment).commit();
+            }
+        });
+        note_menu_btn.setOnClickNoteMenuButton(() -> mState = ListEditState.NOTE_MENU);
         bindBackupService();
     }
 
@@ -682,9 +696,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
     }
 
     public void onClick(View v) {
-
-
-        Log.e(TAG, "custem onClick" );
+        Log.e(TAG, "notelistActiviy custem onClick" );
         int id = v.getId();
         ObjectAnimator lfAlphaAnimator;
         ObjectAnimator lfTranslationAnimator;
@@ -697,109 +709,106 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
         float lf_endY = y - convertDpToPx(30);
         float rt_endX = x + convertDpToPx(70);
         float rt_endY = y - convertDpToPx(30);
-        switch (id) {
-            case R.id.btn_note_main:
-                mState = ListEditState.NOTE_BTN_GROUP;
-                btn_note_main.animate()
-                        .alpha(0f)
-                        .setDuration(200)
-                        .withEndAction(() -> {
-                            btn_note_main.setVisibility(View.GONE);
-                        })
-                        .start();
-                mask_view.animate()
-                        .alpha(1f)
-                        .setDuration(200)
-                        .withStartAction(()->{
-                            mask_view.setVisibility(View.VISIBLE);
-                        })
-                        .start();
+        if (id == R.id.btn_note_main){
+            mState = ListEditState.NOTE_BTN_GROUP;
+            btn_note_main.animate()
+                    .alpha(0f)
+                    .setDuration(200)
+                    .withEndAction(() -> {
+                        btn_note_main.setVisibility(View.GONE);
+                    })
+                    .start();
+            mask_view.animate()
+                    .alpha(1f)
+                    .setDuration(200)
+                    .withStartAction(()->{
+                        mask_view.setVisibility(View.VISIBLE);
+                        mask_view.setElevation(1);
+                    })
+                    .start();
 
-                // 左侧按钮可见性和位移动画
-                btn_new_note.setVisibility(View.VISIBLE);
-                lfAlphaAnimator = ObjectAnimator.ofFloat(btn_new_note, "alpha", 0f, 1f);
+            // 左侧按钮可见性和位移动画
+            btn_new_note.setVisibility(View.VISIBLE);
+            lfAlphaAnimator = ObjectAnimator.ofFloat(btn_new_note, "alpha", 0f, 1f);
 
 
 //                lfTranslationAnimator = createConcaveCurve(btn_new_note,x, y, lf_endX, lf_endY);
-                lfTranslationAnimator = createStraghtLine(btn_new_note,x, y, lf_endX, y);
+            lfTranslationAnimator = createStraghtLine(btn_new_note,x, y, lf_endX, y);
 
 
-                lfSet = AnimUtils.playAnimations(200, null, lfAlphaAnimator, lfTranslationAnimator);
+            lfSet = AnimUtils.playAnimations(200, null, lfAlphaAnimator, lfTranslationAnimator);
 
-                // 右侧按钮可见性和位移动画
-                btn_menu_btn.setVisibility(View.VISIBLE);
-                ObjectAnimator rtAlphaAnimator = ObjectAnimator.ofFloat(btn_menu_btn, "alpha", 0f, 1f);
+            // 右侧按钮可见性和位移动画
+            note_menu_btn.setVisibility(View.VISIBLE);
+            ObjectAnimator rtAlphaAnimator = ObjectAnimator.ofFloat(note_menu_btn, "alpha", 0f, 1f);
 //                rtTranslationAnimator = createConcaveCurve(btn_menu_btn,x, y, rt_endX, rt_endY);
-                rtTranslationAnimator = createStraghtLine(btn_menu_btn,x, y, rt_endX, y);
+            rtTranslationAnimator = createStraghtLine(note_menu_btn,x, y, rt_endX, y);
 
-                rtSet = AnimUtils.playAnimations(200, null, rtAlphaAnimator, rtTranslationAnimator);
-                lfSet.start();
-                rtSet.start();
-                break;
-            case R.id.btn_new_note:
-                ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(btn_new_note, "rotation", 0f, -90f);
-                AnimatorSet animatorSet = AnimUtils.playAnimations(200,
-                        new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                Log.e(TAG, "onAnimationEnd");
-                                createNewNote();
-                            }
+            rtSet = AnimUtils.playAnimations(200, null, rtAlphaAnimator, rtTranslationAnimator);
+            lfSet.start();
+            rtSet.start();
+        }else if (id == R.id.btn_new_note){
+            ObjectAnimator rotateAnimator = ObjectAnimator.ofFloat(btn_new_note, "rotation", 0f, -90f);
+            AnimatorSet animatorSet = AnimUtils.playAnimations(200,
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            Log.e(TAG, "onAnimationEnd");
+//                            createNewNote_new();
+                            createNewNote();
                         }
-                        , rotateAnimator);
-                animatorSet.start();
-                break;
-            case R.id.menu_button:
-                mState = ListEditState.NOTE_BTN_GROUP;
-                break;
-            case R.id.empty_view:
-                mState = ListEditState.NOTE_LIST;
-                btn_note_main.animate()
-                        .alpha(1f)
-                        .setDuration(200)
-                        .withStartAction(() -> {
-                            btn_note_main.setVisibility(View.VISIBLE);
-                        })
+                    }
+                    , rotateAnimator);
+            animatorSet.start();
+        }else if (id == R.id.menu_button){
+            mState = ListEditState.NOTE_BTN_GROUP;
+        }else if (id == R.id.empty_view){
+            Log.e(TAG, "onClick empty_view ");
+            mState = ListEditState.NOTE_LIST;
+            btn_note_main.animate()
+                    .alpha(1f)
+                    .setDuration(200)
+                    .withStartAction(() -> {
+                        btn_note_main.setVisibility(View.VISIBLE);
+                    })
+                    .start();
+            mask_view.animate()
+                    .alpha(0f)
+                    .setDuration(200)
+                    .withEndAction(()->{
+                        mask_view.setVisibility(View.GONE);
+                    })
+                    .start();
 
-                        .start();
-                mask_view.animate()
-                        .alpha(0f)
-                        .setDuration(200)
-                        .withEndAction(()->{
-                            mask_view.setVisibility(View.GONE);
-                        })
-                        .start();
 
-
-                lfAlphaAnimator = ObjectAnimator.ofFloat(btn_new_note, "alpha", 1f, 0f);
+            lfAlphaAnimator = ObjectAnimator.ofFloat(btn_new_note, "alpha", 1f, 0f);
 //                lfTranslationAnimator = createConvexCurve(btn_new_note,lf_endX, lf_endY, x, y);
-                lfTranslationAnimator = createStraghtLine(btn_new_note,lf_endX, y, x, y);
-                lfSet = AnimUtils.playAnimations(200,
-                        new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                Log.e(TAG, "onAnimationEnd");
-                                btn_new_note.setVisibility(View.GONE);
-                            }
+            lfTranslationAnimator = createStraghtLine(btn_new_note,lf_endX, y, x, y);
+            lfSet = AnimUtils.playAnimations(200,
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            Log.e(TAG, "onAnimationEnd");
+                            btn_new_note.setVisibility(View.GONE);
                         }
-                        , lfAlphaAnimator, lfTranslationAnimator);
+                    }
+                    , lfAlphaAnimator, lfTranslationAnimator);
 
-                rtAlphaAnimator = ObjectAnimator.ofFloat(btn_menu_btn, "alpha", 1f, 0f);
+            ObjectAnimator rtAlphaAnimator = ObjectAnimator.ofFloat(note_menu_btn, "alpha", 1f, 0f);
 //                rtTranslationAnimator = createConvexCurve(btn_menu_btn,rt_endX, rt_endY, x, y);
-                rtTranslationAnimator = createStraghtLine(btn_menu_btn,rt_endX, y, x, y);
-                rtSet = AnimUtils.playAnimations(200,
-                        new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                Log.e(TAG, "onAnimationEnd");
-                                btn_menu_btn.setVisibility(View.GONE);
-                            }
+            rtTranslationAnimator = createStraghtLine(note_menu_btn,rt_endX, y, x, y);
+            rtSet = AnimUtils.playAnimations(200,
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            Log.e(TAG, "onAnimationEnd");
+                            note_menu_btn.setVisibility(View.GONE);
                         }
-                        , rtAlphaAnimator, rtTranslationAnimator);
-                lfSet.start();
-                rtSet.start();
-                break;
+                    }
+                    , rtAlphaAnimator, rtTranslationAnimator);
+            lfSet.start();
+            rtSet.start();
         }
     }
     private ObjectAnimator createStraghtLine(Button btn, float sx, float sy, float ex, float ey) {
@@ -948,7 +957,7 @@ public class NotesListActivity extends Activity implements OnClickListener, OnIt
                 break;
             case NOTE_MENU:
                 mState = ListEditState.NOTE_BTN_GROUP;
-                btn_menu_btn.hiddenMenu();
+                note_menu_btn.hiddenMenu();
                 break;
             case NOTE_BTN_GROUP:
                 mState = ListEditState.NOTE_LIST;

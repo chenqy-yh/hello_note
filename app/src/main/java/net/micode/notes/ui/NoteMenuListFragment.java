@@ -33,6 +33,7 @@ import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +144,7 @@ public class NoteMenuListFragment extends Fragment implements View.OnClickListen
     @SuppressLint("Range")
     @Override
     public void onClick(View v) {
+        Log.e(TAG, "notemenulistfragment" );
         final int id = v.getId();
         switch (id) {
             case R.id.note_pop_menu_list_btn_backup:

@@ -16,15 +16,13 @@
 
 package net.micode.notes.ui;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.app.SearchManager;
+import android.app.*;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.database.Cursor;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
@@ -40,15 +38,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.*;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.core.content.res.ResourcesCompat;
 import net.micode.notes.R;
 import net.micode.notes.data.Notes;
 import net.micode.notes.data.Notes.TextNote;
@@ -61,6 +54,7 @@ import net.micode.notes.ui.DateTimePickerDialog.OnDateTimeSetListener;
 import net.micode.notes.ui.NoteEditText.OnTextViewChangeListener;
 import net.micode.notes.widget.NoteWidgetProvider_2x;
 import net.micode.notes.widget.NoteWidgetProvider_4x;
+import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -138,7 +132,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     private SharedPreferences mSharedPrefs;
     private int mFontSizeId;
 
-    private static final String PREFERENCE_FONT_SIZE = "pref_font_size";
+    public static final String PREFERENCE_FONT_SIZE = "pref_font_size";
 
     private static final int SHORTCUT_ICON_TITLE_MAX_LEN = 10;
 
@@ -153,6 +147,41 @@ public class NoteEditActivity extends Activity implements OnClickListener,
 //    ----------------------- Custom by chenqy -----------------------
 
     private PinCheckBox pinCheckBox;
+    private SeekBar font_size_seekbar;
+    private NoteMenuButton note_edit_menu_btn;
+    private static final String NOTE_EDIT_FONT_TYPEFACE_KEY= "note_edit_font_typeface_key";
+    public static final String CHANGE_FONT_SIZE = "net.micode.notes.note_edit_settings_change_font_size";
+    public static final String CHANGE_FONT_FAMILY = "net.micode.notes.note_edit_settings_change_font_family";
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.e(TAG, "onReceive   action = "+action);
+            switch (action) {
+                case CHANGE_FONT_SIZE:
+                    int fontSize = intent.getIntExtra("font_size", mFontSizeId);
+                    mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(NoteEditActivity.this);
+                    mFontSizeId = fontSize;
+                    mSharedPrefs.edit().putInt(PREFERENCE_FONT_SIZE, mFontSizeId).commit();
+                    if (mWorkingNote.getCheckListMode() == TextNote.MODE_CHECK_LIST) {
+                        getWorkingText();
+                        switchToListMode(mWorkingNote.getContent());
+                    } else {
+                        mNoteEditor.setTextAppearance(NoteEditActivity.this,
+                                TextAppearanceResources.getTexAppearanceResource(mFontSizeId));
+                    }
+                    break;
+                case CHANGE_FONT_FAMILY:
+                    Log.e(TAG, "change font family");
+                    int fontTypeface = intent.getIntExtra("typeface_res", R.font.roboto);
+                    Typeface typeface = ResourcesCompat.getFont(NoteEditActivity.this, fontTypeface);
+                    mNoteEditor.setTypeface(typeface);
+                    mSharedPrefs.edit().putInt(NOTE_EDIT_FONT_TYPEFACE_KEY, fontTypeface).commit();
+                    break;
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +193,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             return;
         }
         initResources();
+        initCustom();
     }
 
     /**
@@ -183,7 +213,6 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             Log.d(TAG, "Restoring from killed activity");
         }
     }
-
 
 
     // 初始化 Activity 状态
@@ -289,11 +318,23 @@ public class NoteEditActivity extends Activity implements OnClickListener,
     protected void onResume() {
         super.onResume();
         initNoteScreen();
+        initNoteEditTypeface();
     }
+
+    private void initNoteEditTypeface(){
+        int typeface_id = mSharedPrefs.getInt(NOTE_EDIT_FONT_TYPEFACE_KEY, TextAppearanceResources.TYPEFACE_RES_LIST[0]);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mNoteEditor.setTypeface(getResources().getFont(typeface_id));
+        }else{
+            Toast.makeText(NoteEditActivity.this,"当前版本太低,不支持修改字体",Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void initNoteScreen() {
         mNoteEditor.setTextAppearance(this, TextAppearanceResources
                 .getTexAppearanceResource(mFontSizeId));
+
         if (mWorkingNote.getCheckListMode() == TextNote.MODE_CHECK_LIST) {
             switchToListMode(mWorkingNote.getContent());
         } else {
@@ -316,6 +357,9 @@ public class NoteEditActivity extends Activity implements OnClickListener,
          * is not ready
          */
         showAlertHeader();
+
+
+
     }
 
     private void showAlertHeader() {
@@ -396,6 +440,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         mNoteHeaderHolder.ibSetBgColor = (ImageView) findViewById(R.id.btn_set_bg_color);
         mNoteHeaderHolder.ibSetBgColor.setOnClickListener(this);
         mNoteEditor = (EditText) findViewById(R.id.note_edit_view);
+
         mNoteEditorPanel = findViewById(R.id.sv_note_edit);
         mNoteBgColorSelector = findViewById(R.id.note_bg_color_selector);
         for (int id : sBgSelectorBtnsMap.keySet()) {
@@ -420,12 +465,40 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             mFontSizeId = ResourceParser.BG_DEFAULT_FONT_SIZE;
         }
         mEditTextList = findViewById(R.id.note_edit_list);
-
-        //custom
-        initPinCheckbox();
     }
 
-    private void initPinCheckbox(){
+    private void initCustom(){
+        note_edit_menu_btn = findViewById(R.id.note_edit_menu_btn);
+        note_edit_menu_btn.setNoteMenu(R.id.note_edit_setting_menu);
+        note_edit_menu_btn.setMaskView(R.id.mask_view);
+        note_edit_menu_btn.setNoteMenuMainFragment(new NoteEditSettingsMenu());
+        note_edit_menu_btn.setToggleMneuComponentListener(new NoteMenuButton.ToggleMneuComponentListener() {
+            @Override
+            public void show(Context context) {
+                ((Activity)context).findViewById(R.id.note_edit_settings_container).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void hide(Context context) {
+                ((Activity)context).findViewById(R.id.note_edit_settings_container).setVisibility(View.GONE);
+            }
+
+            @Override
+            public void replace(Context context, Fragment menuFragment) {
+                FragmentTransaction ft = ((Activity) context).getFragmentManager().beginTransaction();
+                ft.replace(R.id.note_edit_settings_container, menuFragment).commit();
+            }
+        });
+
+        initPinCheckbox();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(CHANGE_FONT_FAMILY);
+        filter.addAction(CHANGE_FONT_SIZE);
+        registerReceiver(receiver, filter);
+    }
+
+
+    private void initPinCheckbox() {
         pinCheckBox = findViewById(R.id.cb_pin);
         Cursor pin_query = getContentResolver().query(Notes.CONTENT_NOTE_URI, new String[]{Notes.NoteColumns.PIN}, Notes.NoteColumns.ID + "=?", new String[]{String.valueOf(mWorkingNote.getNoteId())}, null);
         if (pin_query != null && pin_query.moveToFirst()) {
@@ -436,7 +509,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             ContentValues val = new ContentValues();
             val.put(Notes.NoteColumns.PIN, isChecked ? 1 : 0);
             long note_id = mWorkingNote.getNoteId();
-            if(note_id != 0){
+            if (note_id != 0) {
                 //新创建的note,不需要更新数据库
                 // 因为在保存的时候会更新,老的note需要更新数据库
                 getContentResolver().update(Notes.CONTENT_NOTE_URI, val, Notes.NoteColumns.ID + "=?", new String[]{String.valueOf(note_id)});
@@ -479,9 +552,14 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             mNoteBgColorSelector.setVisibility(View.VISIBLE);
             findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
                     View.VISIBLE);
+            //TODO 点击背景颜色按钮时,显示colorwheels
         } else if (sBgSelectorBtnsMap.containsKey(id)) {
-            findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
-                    View.GONE);
+            int bgColorId = mWorkingNote.getBgColorId();
+            Integer sBgSelectorSelection = sBgSelectorSelectionMap.get(bgColorId);
+            View viewById = findViewById(sBgSelectorSelection);
+            viewById.setVisibility(View.GONE);
+//            findViewById(sBgSelectorSelectionMap.get(mWorkingNote.getBgColorId())).setVisibility(
+//                    View.GONE);
             mWorkingNote.setBgColorId(sBgSelectorBtnsMap.get(id));
             mNoteBgColorSelector.setVisibility(View.GONE);
         } else if (sFontSizeBtnsMap.containsKey(id)) {
@@ -860,7 +938,7 @@ public class NoteEditActivity extends Activity implements OnClickListener,
             /**
              * There are two modes from List view to edit view, open one note,
              * create/edit a node. Opening node requires to the original
-             * position in the list when back from edit view, while creating a
+             * position in the list when `back` from edit view, while creating a
              * new node requires to the top of the list. This code
              * {@link #RESULT_OK} is used to identify the create/edit state
              */
@@ -870,11 +948,11 @@ public class NoteEditActivity extends Activity implements OnClickListener,
         return saved;
     }
 
-    private void saveNotePin(){
+    private void saveNotePin() {
         //update pin
-        if (pinCheckBox.isChecked()){
+        if (pinCheckBox.isChecked()) {
             ContentValues values = new ContentValues();
-            values.put(Notes.NoteColumns.PIN, pinCheckBox.isChecked()?1:0);
+            values.put(Notes.NoteColumns.PIN, pinCheckBox.isChecked() ? 1 : 0);
             long note_id = mWorkingNote.getNoteId();
             int update = getContentResolver().update(
                     Notes.CONTENT_NOTE_URI,

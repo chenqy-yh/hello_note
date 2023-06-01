@@ -72,6 +72,7 @@
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        <!-- OLD EDIT -->
         <activity
             android:name="net.micode.notes.ui.NoteEditActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

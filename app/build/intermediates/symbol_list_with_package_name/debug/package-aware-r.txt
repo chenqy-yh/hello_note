@@ -57,6 +57,7 @@ animator mtrl_fab_transformation_sheet_collapse_spec
 animator mtrl_fab_transformation_sheet_expand_spec
 array format_for_exported_note
 array menu_share_ways
+array spinner_data
 attr actionBarDivider
 attr actionBarItemBackground
 attr actionBarPopupTheme
@@ -1693,6 +1694,7 @@ drawable abc_vector_test
 drawable anim_fire
 drawable avd_hide_password
 drawable avd_show_password
+drawable back
 drawable backup_note_checked
 drawable bg_btn_set_color
 drawable bg_color_btn_mask
@@ -1773,6 +1775,7 @@ drawable material_ic_menu_arrow_down_black_24dp
 drawable material_ic_menu_arrow_up_black_24dp
 drawable menu_delete
 drawable menu_move
+drawable more
 drawable mtrl_dialog_background
 drawable mtrl_dropdown_arrow
 drawable mtrl_ic_arrow_drop_down
@@ -1794,6 +1797,7 @@ drawable note_btn_pressed_background
 drawable note_btn_rt
 drawable note_btn_style
 drawable note_edit_color_selector_panel
+drawable note_edit_menu_btn
 drawable note_menu_bg
 drawable notification
 drawable notification_action_background
@@ -1808,6 +1812,7 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable pic_1
 drawable pin
 drawable pin_active
 drawable pin_bg
@@ -1834,7 +1839,13 @@ drawable widget_4x_yellow
 font consolas
 font font_consolas
 font font_josefin_sans
+font font_poppins
+font font_roboto
+font font_ubuntu
 font josefin_sans
+font poppins
+font roboto
+font ubuntu
 id ALT
 id BOTTOM_END
 id BOTTOM_START
@@ -2026,6 +2037,8 @@ id fitToContents
 id fixed
 id flip
 id floating
+id font_size_desc
+id font_size_seekbar
 id font_size_selector
 id forever
 id ghost_view
@@ -2033,6 +2046,9 @@ id ghost_view_holder
 id gone
 id graph
 id graph_wrap
+id grid_item_image
+id grid_item_text
+id gridview
 id group_divider
 id groups
 id guideline
@@ -2167,7 +2183,15 @@ id noScroll
 id none
 id normal
 id note_bg_color_selector
+id note_edit_font_settings_back
+id note_edit_font_settings_size
+id note_edit_font_settings_title
+id note_edit_font_settings_typeface
 id note_edit_list
+id note_edit_main_settings_menu_title
+id note_edit_menu_btn
+id note_edit_setting_menu
+id note_edit_settings_container
 id note_edit_view
 id note_item
 id note_list_activity
@@ -2340,6 +2364,7 @@ id tv_name
 id tv_time
 id tv_title
 id tv_title_bar
+id typeface_spinner
 id unchecked
 id uniform
 id unlabeled
@@ -2487,6 +2512,9 @@ layout mtrl_picker_text_input_date
 layout mtrl_picker_text_input_date_range
 layout note_edit
 layout note_edit_list_item
+layout note_edit_main_settings_menu
+layout note_edit_settings_font
+layout note_grid_item
 layout note_item
 layout note_list
 layout note_list_dropdown_menu

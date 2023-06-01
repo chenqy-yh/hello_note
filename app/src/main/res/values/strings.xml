@@ -139,4 +139,13 @@
         <item quantity="other"><xliff:g id="number" example="15">%1$s</xliff:g> results for \"<xliff:g id="search" example="???">%2$s</xliff:g>\"</item>
     </plurals>
 
+
+    <string-array name="spinner_data">
+        <item>山西</item>
+        <item>陕西</item>
+        <item>江西</item>
+    </string-array>
+
+
+
 </resources>

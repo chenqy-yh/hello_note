@@ -72,7 +72,7 @@
 
 
         </activity>
-
+        <!--   OLD EDIT   -->
         <activity
             android:name=".ui.NoteEditActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

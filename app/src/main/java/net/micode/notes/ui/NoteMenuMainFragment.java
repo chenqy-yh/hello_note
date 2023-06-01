@@ -48,7 +48,6 @@ public class NoteMenuMainFragment extends Fragment {
         return view;
     }
 
-
     private void bindView(View view) {
         btn_note_backup = view.findViewById(R.id.btn_note_backup);
         btn_note_sync = view.findViewById(R.id.btn_note_sync);

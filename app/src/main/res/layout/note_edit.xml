@@ -16,74 +16,83 @@
 -->
 
 <FrameLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/list_background"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <LinearLayout
+        <!--   TOP bar   -->
+        <!--    mHeadViewPanel    -->
+        <RelativeLayout
             android:id="@+id/note_title"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_modified_date"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginRight="8dip"
-                android:textAppearance="@style/TextAppearanceSecondaryItem" />
-
-            <ImageView
-                android:id="@+id/iv_alert_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/title_alert" />
-
-            <TextView
-                android:id="@+id/tv_alert_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="2dip"
-                android:layout_marginRight="8dip"
-                android:textAppearance="@style/TextAppearanceSecondaryItem"
-            />
-
-            <net.micode.notes.ui.PinCheckBox
-                    android:id="@+id/cb_pin"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-            />
+                    android:orientation="horizontal"
+            >
+                <TextView
+                        android:id="@+id/tv_modified_date"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_marginRight="8dip"
+                        android:textAppearance="@style/TextAppearanceSecondaryItem" />
+
+                <ImageView
+                        android:id="@+id/iv_alert_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/title_alert" />
+
+                <TextView
+                        android:id="@+id/tv_alert_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="2dip"
+                        android:layout_marginRight="8dip"
+                        android:textAppearance="@style/TextAppearanceSecondaryItem"
+                />
+
+                <net.micode.notes.ui.PinCheckBox
+                        android:id="@+id/cb_pin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                />
 
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/bg_btn_set_color" />
-        </LinearLayout>
+                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_btn_set_color" />
+            </LinearLayout>
 
+        </RelativeLayout>
+        <!--    edit body    -->
+        <!--   mNoteEditorPanel     -->
         <LinearLayout
             android:id="@+id/sv_note_edit"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <!--     line       -->
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="7dip"
                 android:background="@drawable/bg_color_btn_mask" />
 
+            <!--     Edit Content       -->
             <ScrollView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_weight="1"
                 android:scrollbars="none"
@@ -91,21 +100,28 @@
                 android:layout_gravity="left|top"
                 android:fadingEdgeLength="0dip">
 
+
+
+
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                >
 
                     <net.micode.notes.ui.NoteEditText
                         android:id="@+id/note_edit_view"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left|top"
+                        android:gravity="start|top"
                         android:background="@null"
                         android:autoLink="all"
+                        android:textSize="40sp"
                         android:linksClickable="false"
                         android:minLines="12"
                         android:textAppearance="@style/TextAppearancePrimaryItem"
-                        android:lineSpacingMultiplier="1.2" />
+                        android:lineSpacingMultiplier="1.2"
+                    />
 
                     <LinearLayout
                         android:id="@+id/note_edit_list"
@@ -118,7 +134,7 @@
             </ScrollView>
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="7dip"
                 android:background="@drawable/bg_color_btn_mask" />
         </LinearLayout>
@@ -405,4 +421,38 @@
                 android:src="@drawable/selected" />
         </FrameLayout>
     </LinearLayout>
+
+    <RelativeLayout
+            android:id="@+id/note_edit_setting_menu"
+            android:layout_width="300dp"
+            android:layout_height="500dp"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:elevation="10dp">
+        <FrameLayout
+                android:id="@+id/note_edit_settings_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:elevation="11dp"/>
+    </RelativeLayout>
+    <net.micode.notes.ui.NoteMenuButton
+            android:id="@+id/note_edit_menu_btn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/note_edit_menu_btn"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:elevation="0dp"
+    />
+    <View
+            android:id="@+id/mask_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:visibility="gone"
+            android:elevation="5dp"/>
+
+
+
 </FrameLayout>

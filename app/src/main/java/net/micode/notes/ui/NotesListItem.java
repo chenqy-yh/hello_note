@@ -54,10 +54,8 @@ public class NotesListItem extends LinearLayout {
         mCheckBox = findViewById(android.R.id.checkbox);
         pin_fire = findViewById(R.id.pin_fire);
         // 设置笔记项之间的间隙
-        int marginBottom = getResources().getDimensionPixelSize(R.dimen.note_item_margin_bottom);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, 0, 0, marginBottom);
         setLayoutParams(layoutParams);
 
     }

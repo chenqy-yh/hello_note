@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingTop="10dp"
+		android:paddingStart="20dp"
+>
+	<LinearLayout
+			android:id="@+id/note_edit_font_settings_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="center_vertical"
+			android:layout_marginBottom="40dp"
+	>
+		<Button
+				android:id="@+id/note_edit_font_settings_back"
+				android:layout_width="25dp"
+				android:layout_height="25dp"
+				android:background="@drawable/back"
+		/>
+		<TextView
+				android:text="字体设置"
+				android:textColor="@color/black"
+				android:textSize="20sp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_centerHorizontal="true"
+				android:gravity="center"
+		/>
+	</LinearLayout>
+
+
+	<!--  调整字体大小	-->
+	<LinearLayout
+			android:id="@+id/note_edit_font_settings_size"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_below="@id/note_edit_font_settings_title"
+			android:layout_marginBottom="20dp"
+	>
+		<TextView
+				android:text="字体大小"
+				android:textSize="18sp"
+				android:textColor="@color/black"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+		</TextView>
+		<SeekBar
+				android:id="@+id/font_size_seekbar"
+				android:layout_width="160dp"
+				android:layout_height="wrap_content"
+				android:max="3"
+				android:progress="0" />
+		<TextView
+				android:id="@+id/font_size_desc"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	</LinearLayout>
+
+
+	<!--  调整字体  -->
+	<LinearLayout
+			android:id="@+id/note_edit_font_settings_typeface"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_below="@id/note_edit_font_settings_size"
+	>
+		<TextView
+				android:text="调整字体"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<Spinner
+				android:id="@+id/typeface_spinner"
+				android:layout_width="150dp"
+				android:layout_height="wrap_content"
+				android:spinnerMode="dialog"
+		/>
+
+	</LinearLayout>
+</RelativeLayout>
